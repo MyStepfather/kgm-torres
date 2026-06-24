@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Dealer {
+  id            String         @id @default(cuid())
+  name          String
+  city          String
+  address       String?
+  login         String         @unique
+  pinHash       String
+  registrations Registration[]
+  createdAt     DateTime       @default(now())
+}
+
+model Registration {
+  id               String          @id @default(cuid())
+  token            String          @unique @default(uuid())
+  name             String
+  phone            String
+  phoneNormalized  String          @unique
+  email            String          @unique
+  city             String
+  dealerId         String
+  dealer           Dealer          @relation(fields: [dealerId], references: [id])
+  consentPersonal  Boolean
+  consentMarketing Boolean
+  isActivated      Boolean         @default(false)
+  activatedAt      DateTime?
+  testDriveDate    DateTime        @db.Date
+  scanUrl          String
+  qrDataUrl        String          @db.Text
+  createdAt        DateTime        @default(now())
+  giveawayWinner   GiveawayWinner?
+
+  @@index([dealerId])
+  @@index([token])
+  @@index([isActivated])
+}
+
+model GiveawayRun {
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
+  winners   GiveawayWinner[]
+}
+
+model GiveawayWinner {
+  id             String       @id @default(cuid())
+  runId          String
+  run            GiveawayRun  @relation(fields: [runId], references: [id], onDelete: Cascade)
+  registrationId String       @unique
+  registration   Registration @relation(fields: [registrationId], references: [id])
+  place          Int
+  emailSent      Boolean      @default(false)
+  emailSentAt    DateTime?
+  createdAt      DateTime     @default(now())
+
+  @@index([runId])
+}
+
+model Setting {
+  key       String   @id
+  value     Json
+  updatedAt DateTime @updatedAt
+}
