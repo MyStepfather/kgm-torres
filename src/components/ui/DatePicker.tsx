@@ -271,14 +271,14 @@ export function DatePicker({
           zIndex: 200,
           overflow: "auto",
         }}
-        className="rounded-2xl border border-white/10 bg-card p-4 shadow-2xl shadow-black/40"
+        className="rounded-2xl border border-border bg-surface p-4 shadow-2xl shadow-brand/10"
       >
         <div className="mb-4 flex items-center justify-between">
           <button
             type="button"
             disabled={!canGoPrev}
             onClick={() => shiftMonth(-1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted transition hover:border-accent hover:text-accent disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition hover:border-brand hover:text-brand disabled:opacity-30"
             aria-label="Предыдущий месяц"
           >
             ‹
@@ -288,7 +288,7 @@ export function DatePicker({
             type="button"
             disabled={!canGoNext}
             onClick={() => shiftMonth(1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-muted transition hover:border-accent hover:text-accent disabled:opacity-30"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-border text-muted transition hover:border-brand hover:text-brand disabled:opacity-30"
             aria-label="Следующий месяц"
           >
             ›
@@ -324,12 +324,12 @@ export function DatePicker({
                 title={isExcluded ? "Дата недоступна" : undefined}
                 className={`flex h-10 items-center justify-center rounded-xl text-sm transition ${
                   selected
-                    ? "bg-accent font-semibold text-slate-900"
+                    ? "bg-brand font-semibold text-white"
                     : disabled
-                      ? "cursor-not-allowed text-white/20"
+                      ? "cursor-not-allowed text-muted-light"
                       : isToday
-                        ? "border border-accent/40 text-accent hover:bg-white/5"
-                        : "text-foreground hover:bg-white/10"
+                        ? "border border-brand/30 text-brand hover:bg-brand/5"
+                        : "text-foreground hover:bg-brand/5"
                 }`}
               >
                 {day.getDate()}
@@ -354,8 +354,8 @@ export function DatePicker({
         type="button"
         disabled={!hasAvailableDates}
         onClick={() => setOpen((current) => !current)}
-        className={`flex w-full items-center justify-between rounded-xl border border-white/10 bg-background px-4 py-3 text-left outline-none transition focus:border-accent disabled:cursor-not-allowed disabled:opacity-60 ${
-          open ? "border-accent" : ""
+        className={`field-input flex items-center justify-between text-left ${
+          open ? "border-brand" : ""
         }`}
         aria-expanded={open}
         aria-haspopup="dialog"
@@ -368,7 +368,7 @@ export function DatePicker({
               : (placeholder ?? defaultPlaceholder)}
         </span>
         <svg
-          className="h-5 w-5 shrink-0 text-accent"
+          className="h-5 w-5 shrink-0 text-brand"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"

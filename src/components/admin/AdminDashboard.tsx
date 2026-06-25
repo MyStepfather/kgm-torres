@@ -61,8 +61,7 @@ type GiveawayRunRow = {
   }>;
 };
 
-const fieldClassName =
-  "w-full rounded-xl border border-white/10 bg-background px-4 py-3 outline-none focus:border-accent";
+const fieldClassName = "app-field";
 
 function formatDate(value: string) {
   return new Intl.DateTimeFormat("ru-RU", {
@@ -332,8 +331,8 @@ export function AdminDashboard() {
   const resetDealer = dealers.find((dealer) => dealer.id === resetDealerId);
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-white/10 bg-card/60">
+    <div className="app-shell">
+      <header className="app-header">
         <div className="section-container flex h-16 items-center justify-between">
           <div>
             <p className="text-sm font-semibold">Админ-панель KGM Torres</p>
@@ -366,9 +365,7 @@ export function AdminDashboard() {
                 setSuccess("");
               }}
               className={`rounded-full px-4 py-2 text-sm font-medium transition ${
-                tab === id
-                  ? "bg-accent text-slate-900"
-                  : "border border-white/10 bg-white/5 text-muted hover:text-white"
+                tab === id ? "app-tab-active" : "app-tab-inactive"
               }`}
             >
               {label}
@@ -377,20 +374,20 @@ export function AdminDashboard() {
         </div>
 
         {error && (
-          <p className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+          <p className="mt-6 alert-error">
             {error}
           </p>
         )}
 
         {success && (
-          <p className="mt-6 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
+          <p className="mt-6 alert-success">
             {success}
           </p>
         )}
 
         {createdCredentials && (
-          <div className="mt-4 rounded-xl border border-accent/30 bg-accent/10 px-4 py-3 text-sm">
-            <p className="font-medium text-accent">Учётные данные дилера</p>
+          <div className="mt-4 alert-info">
+            <p className="font-medium text-brand">Учётные данные дилера</p>
             <p className="mt-2">
               Логин: <code>{createdCredentials.login}</code>
             </p>
@@ -415,7 +412,7 @@ export function AdminDashboard() {
                 type="button"
                 onClick={handleExportResetPins}
                 disabled={exportingPins || !dealers.length}
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
+                className="btn-ghost"
               >
                 {exportingPins
                   ? "Генерация и выгрузка..."
@@ -424,7 +421,7 @@ export function AdminDashboard() {
             </div>
             <div className="overflow-x-auto card-surface">
             <table className="w-full min-w-[720px] text-left text-sm">
-              <thead className="border-b border-white/10 text-muted">
+              <thead className="app-table-head">
                 <tr>
                   <th className="px-4 py-3 font-medium">Название</th>
                   <th className="px-4 py-3 font-medium">Город</th>
@@ -438,7 +435,7 @@ export function AdminDashboard() {
                 {dealers.map((dealer) => (
                   <tr
                     key={dealer.id}
-                    className="border-b border-white/5 last:border-0"
+                    className="app-table-row"
                   >
                     <td className="px-4 py-3">
                       <div className="font-medium">{dealer.name}</div>
@@ -466,7 +463,7 @@ export function AdminDashboard() {
                           setError("");
                           setSuccess("");
                         }}
-                        className="text-sm text-accent hover:underline"
+                        className="link-brand"
                       >
                         Сменить PIN
                       </button>
@@ -480,7 +477,7 @@ export function AdminDashboard() {
         ) : tab === "registrations" ? (
           <div className="mt-8 overflow-x-auto card-surface">
             <table className="w-full min-w-[900px] text-left text-sm">
-              <thead className="border-b border-white/10 text-muted">
+              <thead className="app-table-head">
                 <tr>
                   <th className="px-4 py-3 font-medium">Клиент</th>
                   <th className="px-4 py-3 font-medium">Контакты</th>
@@ -494,7 +491,7 @@ export function AdminDashboard() {
                 {registrations.map((registration) => (
                   <tr
                     key={registration.id}
-                    className="border-b border-white/5 last:border-0"
+                    className="app-table-row"
                   >
                     <td className="px-4 py-3">
                       <div className="font-medium">{registration.name}</div>
@@ -518,8 +515,8 @@ export function AdminDashboard() {
                       <span
                         className={`rounded-full px-2 py-1 text-xs font-medium ${
                           registration.isActivated
-                            ? "bg-green-500/20 text-green-300"
-                            : "bg-amber-500/20 text-amber-200"
+                            ? "badge-success"
+                            : "badge-warning"
                         }`}
                       >
                         {registration.isActivated ? "Тест-драйв пройден" : "Ожидает"}
@@ -565,11 +562,11 @@ export function AdminDashboard() {
 
             {latestWinners && (
               <div className="card-surface overflow-x-auto">
-                <h3 className="border-b border-white/10 px-4 py-3 font-semibold">
+                <h3 className="app-card-header">
                   Результат последнего розыгрыша
                 </h3>
                 <table className="w-full min-w-[720px] text-left text-sm">
-                  <thead className="border-b border-white/10 text-muted">
+                  <thead className="app-table-head">
                     <tr>
                       <th className="px-4 py-3 font-medium">Место</th>
                       <th className="px-4 py-3 font-medium">Победитель</th>
@@ -581,7 +578,7 @@ export function AdminDashboard() {
                     {latestWinners.map((winner) => (
                       <tr
                         key={winner.place}
-                        className="border-b border-white/5 last:border-0"
+                        className="app-table-row"
                       >
                         <td className="px-4 py-3">{winner.place}</td>
                         <td className="px-4 py-3">
@@ -608,10 +605,10 @@ export function AdminDashboard() {
 
             {giveawayRuns.length > 0 && (
               <div className="card-surface overflow-x-auto">
-                <h3 className="border-b border-white/10 px-4 py-3 font-semibold">
+                <h3 className="app-card-header">
                   История розыгрышей
                 </h3>
-                <div className="divide-y divide-white/5">
+                <div className="app-divider">
                   {giveawayRuns.map((run) => (
                     <div key={run.id} className="px-4 py-4">
                       <p className="text-sm text-muted">
@@ -727,7 +724,7 @@ export function AdminDashboard() {
       </main>
 
       {resetDealerId && resetDealer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-4">
+        <div className="app-modal-overlay">
           <div className="w-full max-w-md card-surface p-8">
             <h2 className="text-lg font-semibold">Сменить PIN</h2>
             <p className="mt-2 text-sm text-muted">
@@ -753,7 +750,7 @@ export function AdminDashboard() {
               </label>
 
               {resetResult && (
-                <div className="rounded-xl border border-accent/30 bg-accent/10 px-4 py-3 text-sm">
+                <div className="alert-info">
                   <p>
                     Логин: <code>{resetResult.login}</code>
                   </p>

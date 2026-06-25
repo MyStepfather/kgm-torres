@@ -1,25 +1,41 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0b0f14;
-  --foreground: #f1f5f9;
-  --accent: #c8a24a;
-  --accent-hover: #d4b35c;
-  --brand: #1a3a2f;
-  --card: #121820;
-  --muted: #94a3b8;
+  --background: #f4f1ee;
+  --foreground: #2e2c4f;
+  --brand: #2e2c4f;
+  --brand-soft: #25243f;
+  --brand-muted: rgba(46, 44, 79, 0.3);
+  --brand-tint: rgba(46, 44, 79, 0.05);
+  --surface: #fdfaf7;
+  --surface-input: #fbf9f8;
+  --accent: #a78bfa;
+  --accent-light: #c4a6f5;
+  --accent-icon: #ede6f8;
+  --muted: #6f6f73;
+  --muted-light: #aeaeb2;
+  --border: #d9d9dd;
+  --card: #fdfaf7;
+  --hero-overlay: rgba(76, 30, 126, 0.7);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
   --color-brand: var(--brand);
-  --color-card: var(--card);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-muted: var(--brand-muted);
+  --color-brand-tint: var(--brand-tint);
+  --color-surface: var(--surface);
+  --color-surface-input: var(--surface-input);
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-icon: var(--accent-icon);
   --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-muted-light: var(--muted-light);
+  --color-border: var(--border);
+  --color-card: var(--card);
+  --font-sans: var(--font-noto-sans);
 }
 
 html {
@@ -33,17 +49,117 @@ body {
 }
 
 .section-container {
-  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-[1760px] px-4 sm:px-6 lg:px-10 xl:px-20;
+}
+
+.descriptor {
+  @apply text-xs font-bold uppercase tracking-[0.08em];
 }
 
 .btn-primary {
-  @apply inline-flex items-center justify-center rounded-full bg-accent px-6 py-3 text-sm font-semibold text-slate-900 transition hover:bg-accent-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  @apply inline-flex items-center justify-center rounded-full bg-brand px-6 py-3 text-base font-semibold text-white transition hover:bg-brand/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-semibold text-white transition hover:bg-white/10;
+  @apply inline-flex items-center justify-center rounded-full border border-border bg-surface px-6 py-3 text-base font-semibold text-brand transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand;
+}
+
+.btn-form {
+  @apply inline-flex w-full items-center justify-center rounded-full bg-brand px-6 py-4 text-[19px] font-semibold text-white transition hover:bg-brand/90 disabled:opacity-60;
+}
+
+.field-input {
+  @apply w-full rounded-[20px] border border-border bg-surface-input px-5 py-4 text-lg text-brand outline-none transition placeholder:text-muted-light focus:border-brand;
 }
 
 .card-surface {
-  @apply rounded-2xl border border-white/10 bg-card/80 backdrop-blur-sm;
+  @apply rounded-[40px] border border-border bg-surface;
+}
+
+.brand-badge {
+  @apply inline-flex items-center rounded-full bg-brand px-5 py-1.5 text-xs font-bold uppercase tracking-[0.08em] text-white;
+}
+
+.app-shell {
+  @apply min-h-screen bg-background;
+}
+
+.app-header {
+  @apply border-b border-border bg-surface;
+}
+
+.app-field {
+  @apply w-full rounded-[20px] border border-border bg-surface-input px-4 py-3 text-base text-brand outline-none transition placeholder:text-muted-light focus:border-brand;
+}
+
+.app-tab-active {
+  @apply bg-brand text-white;
+}
+
+.app-tab-inactive {
+  @apply border border-border bg-brand-tint text-muted hover:text-brand;
+}
+
+.app-table-head {
+  @apply border-b border-border text-muted;
+}
+
+.app-table-row {
+  @apply border-b border-border/60 last:border-0;
+}
+
+.app-panel {
+  @apply rounded-[20px] border border-border bg-surface-input p-4;
+}
+
+.app-panel-accent {
+  @apply rounded-[20px] border border-accent-light/40 bg-accent-icon p-4;
+}
+
+.alert-error {
+  @apply rounded-[20px] border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700;
+}
+
+.alert-success {
+  @apply rounded-[20px] border border-green-300 bg-green-50 px-4 py-3 text-sm text-green-700;
+}
+
+.alert-info {
+  @apply rounded-[20px] border border-accent-light/50 bg-accent-icon px-4 py-3 text-sm text-brand;
+}
+
+.badge-success {
+  @apply rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800;
+}
+
+.badge-warning {
+  @apply rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-800;
+}
+
+.btn-ghost {
+  @apply rounded-full border border-border bg-brand-tint px-4 py-2 text-sm font-medium text-brand transition hover:border-brand hover:bg-white disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+.step-badge {
+  @apply flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-brand text-xs font-bold text-white;
+}
+
+.brand-logo {
+  @apply flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-xs font-bold text-white;
+}
+
+.link-brand {
+  @apply text-sm text-brand hover:underline;
+}
+
+.app-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center bg-brand/40 px-4 backdrop-blur-sm;
+}
+
+.app-card-header {
+  @apply border-b border-border px-4 py-3 font-semibold;
+}
+
+.app-divider {
+  @apply divide-y divide-border;
 }

@@ -23,13 +23,11 @@ export default function DealerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-white/10 bg-card/60">
+    <div className="app-shell">
+      <header className="app-header">
         <div className="section-container flex h-16 items-center">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-xs font-bold text-accent">
-              KGM
-            </div>
+            <div className="brand-logo">KGM</div>
             <div>
               <p className="text-sm font-semibold">Кабинет дилера</p>
               <p className="text-xs text-muted">Подтверждение тест-драйва</p>
@@ -44,22 +42,22 @@ export default function DealerPage() {
             <h1 className="text-2xl font-bold">Как открыть заявку участника</h1>
             <ol className="mt-6 space-y-4 text-sm text-muted">
               <li className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-slate-900">
+                <span className="step-badge">
                   1
                 </span>
                 <span>
-                  Отсканируйте QR-код клиента <strong className="text-white">камерой телефона</strong>{" "}
+                  Отсканируйте QR-код клиента <strong className="text-brand">камерой телефона</strong>{" "}
                   (не через браузер — встроенным сканером камеры)
                 </span>
               </li>
               <li className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-slate-900">
+                <span className="step-badge">
                   2
                 </span>
                 <span>Откройте появившуюся ссылку — вы попадёте на страницу участника</span>
               </li>
               <li className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent text-xs font-bold text-slate-900">
+                <span className="step-badge">
                   3
                 </span>
                 <span>
@@ -80,13 +78,11 @@ export default function DealerPage() {
             <input
               value={manualToken}
               onChange={(e) => setManualToken(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 outline-none focus:border-accent"
+              className="app-field"
               placeholder="https://.../dealer/scan/..."
             />
             {error && (
-              <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                {error}
-              </p>
+              <p className="alert-error">{error}</p>
             )}
             <button type="submit" className="btn-primary w-full">
               Открыть заявку

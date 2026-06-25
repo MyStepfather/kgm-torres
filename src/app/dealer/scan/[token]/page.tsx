@@ -173,13 +173,11 @@ export default function DealerScanPage() {
     authStatus === "authenticated" && loadingRegistration && !registration;
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-white/10 bg-card/60">
+    <div className="app-shell">
+      <header className="app-header">
         <div className="section-container flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand text-xs font-bold text-accent">
-              KGM
-            </div>
+            <div className="brand-logo">KGM</div>
             <div>
               <p className="text-sm font-semibold">Кабинет дилера</p>
               <p className="text-xs text-muted">Участник тест-драйва</p>
@@ -216,7 +214,7 @@ export default function DealerScanPage() {
                   required
                   value={login}
                   onChange={(e) => setLogin(e.target.value)}
-                  className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 outline-none focus:border-accent"
+                  className="app-field"
                   autoComplete="username"
                 />
               </label>
@@ -234,16 +232,14 @@ export default function DealerScanPage() {
                   onChange={(e) =>
                     setPin(e.target.value.replace(/\D/g, "").slice(0, 4))
                   }
-                  className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 tracking-[0.5em] outline-none focus:border-accent"
+                  className="app-field tracking-[0.5em]"
                   placeholder="••••"
                   autoComplete="current-password"
                 />
               </label>
 
               {error && (
-                <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                  {error}
-                </p>
+                <p className="alert-error">{error}</p>
               )}
 
               <button
@@ -263,16 +259,12 @@ export default function DealerScanPage() {
           <div className="mx-auto max-w-2xl card-surface p-8">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-widest text-accent">
-                  Данные участника
-                </p>
+                <p className="brand-badge">Данные участника</p>
                 <h1 className="mt-2 text-2xl font-bold">{registration.name}</h1>
               </div>
               <span
                 className={`rounded-full px-4 py-1 text-xs font-semibold ${
-                  registration.isActivated
-                    ? "bg-green-500/20 text-green-300"
-                    : "bg-amber-500/20 text-amber-200"
+                  registration.isActivated ? "badge-success" : "badge-warning"
                 }`}
               >
                 {registration.isActivated
@@ -282,19 +274,19 @@ export default function DealerScanPage() {
             </div>
 
             <dl className="mt-8 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-xl border border-white/10 bg-background/50 p-4">
+              <div className="app-panel">
                 <dt className="text-xs text-muted">Телефон</dt>
                 <dd className="mt-1 font-medium">{registration.phone}</dd>
               </div>
-              <div className="rounded-xl border border-white/10 bg-background/50 p-4">
+              <div className="app-panel">
                 <dt className="text-xs text-muted">Email</dt>
                 <dd className="mt-1 font-medium">{registration.email}</dd>
               </div>
-              <div className="rounded-xl border border-white/10 bg-background/50 p-4">
+              <div className="app-panel">
                 <dt className="text-xs text-muted">Город клиента</dt>
                 <dd className="mt-1 font-medium">{registration.city}</dd>
               </div>
-              <div className="rounded-xl border border-white/10 bg-background/50 p-4">
+              <div className="app-panel">
                 <dt className="text-xs text-muted">Дилерский центр</dt>
                 <dd className="mt-1 font-medium">
                   {registration.dealer.name}, {registration.dealer.city}
@@ -305,22 +297,22 @@ export default function DealerScanPage() {
                   </dd>
                 )}
               </div>
-              <div className="rounded-xl border border-accent/20 bg-accent/5 p-4 sm:col-span-2">
-                <dt className="text-xs text-accent">Дата тест-драйва</dt>
+              <div className="app-panel-accent sm:col-span-2">
+                <dt className="text-xs font-semibold text-brand">Дата тест-драйва</dt>
                 <dd className="mt-1 font-medium">
                   {formatTestDriveDate(registration.testDriveDate)}
                 </dd>
               </div>
-              <div className="rounded-xl border border-white/10 bg-background/50 p-4 sm:col-span-2">
+              <div className="app-panel sm:col-span-2">
                 <dt className="text-xs text-muted">Дата регистрации</dt>
                 <dd className="mt-1 font-medium">
                   {formatDate(registration.createdAt)}
                 </dd>
               </div>
               {registration.activatedAt && (
-                <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-4 sm:col-span-2">
-                  <dt className="text-xs text-green-300">Дата подтверждения</dt>
-                  <dd className="mt-1 font-medium text-green-200">
+                <div className="alert-success sm:col-span-2">
+                  <dt className="text-xs font-semibold text-green-800">Дата подтверждения</dt>
+                  <dd className="mt-1 font-medium text-green-900">
                     {formatDate(registration.activatedAt)}
                   </dd>
                 </div>
@@ -328,15 +320,11 @@ export default function DealerScanPage() {
             </dl>
 
             {error && (
-              <p className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-                {error}
-              </p>
+              <p className="mt-6 alert-error">{error}</p>
             )}
 
             {success && (
-              <p className="mt-6 rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
-                {success}
-              </p>
+              <p className="mt-6 alert-success">{success}</p>
             )}
 
             {!registration.isActivated && (

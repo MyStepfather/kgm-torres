@@ -106,17 +106,9 @@ export function AdminSettings() {
 
   return (
     <form onSubmit={handleSave} className="mt-8 max-w-2xl space-y-6">
-      {error && (
-        <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-          {error}
-        </p>
-      )}
+      {error && <p className="alert-error">{error}</p>}
 
-      {success && (
-        <p className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
-          {success}
-        </p>
-      )}
+      {success && <p className="alert-success">{success}</p>}
 
       <div className="card-surface p-8">
         <h2 className="text-lg font-semibold">Период тест-драйва</h2>
@@ -208,13 +200,13 @@ export function AdminSettings() {
             {schedule.excludedDates.map((iso) => (
               <li
                 key={iso}
-                className="flex items-center justify-between rounded-xl border border-white/10 bg-background/50 px-4 py-3 text-sm"
+                className="app-panel flex items-center justify-between text-sm"
               >
                 <span>{formatTestDriveDate(iso)}</span>
                 <button
                   type="button"
                   onClick={() => removeExclusion(iso)}
-                  className="text-red-300 hover:underline"
+                  className="text-red-700 hover:underline"
                 >
                   Удалить
                 </button>

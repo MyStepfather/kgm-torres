@@ -1,31 +1,49 @@
+import Image from "next/image";
 import Link from "next/link";
+import { LANDING_IMAGES } from "@/lib/landing-assets";
+
+const navLinks = [
+  { href: "#about", label: "О KGM Torres" },
+  { href: "#prizes", label: "Призы розыгрыша" },
+  { href: "#how", label: "Как участвовать" },
+];
 
 export function Header() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-background/80 backdrop-blur-md">
-      <div className="section-container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand text-sm font-bold tracking-wider text-accent">
-            KGM
-          </div>
-          <span className="hidden text-xs text-muted sm:inline">×</span>
-          <div className="hidden rounded-lg border border-accent/30 px-3 py-1 text-xs font-semibold text-accent sm:block">
-            CHAMPION
-          </div>
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-10 xl:px-20">
+      <div className="mx-auto flex h-[70px] max-w-[1760px] items-center rounded-full bg-black/95 px-2 backdrop-blur-sm">
+        <div className="flex min-w-0 items-center gap-4 rounded-full bg-white/5 px-5 py-2">
+          <Image
+            src={LANDING_IMAGES.logoKgm}
+            alt="KGM"
+            width={126}
+            height={27}
+            className="h-7 w-auto"
+            priority
+          />
+          <Image
+            src={LANDING_IMAGES.logoChampion}
+            alt="Champion"
+            width={146}
+            height={24}
+            className="hidden h-6 w-auto sm:block"
+            priority
+          />
         </div>
-        <nav className="hidden items-center gap-6 text-sm text-muted md:flex">
-          <a href="#about" className="hover:text-white">
-            О Torres
-          </a>
-          <a href="#prizes" className="hover:text-white">
-            Призы
-          </a>
-          <a href="#how" className="hover:text-white">
-            Как участвовать
-          </a>
+
+        <nav className="mx-auto hidden items-center gap-10 text-[15px] font-medium text-white md:flex">
+          {navLinks.map((link) => (
+            <a key={link.href} href={link.href} className="transition hover:text-accent-light">
+              {link.label}
+            </a>
+          ))}
         </nav>
-        <Link href="#register" className="btn-primary text-xs sm:text-sm">
-          Записаться
+
+        <Link
+          href="#register"
+          className="ml-auto inline-flex h-14 items-center justify-center rounded-full border border-white/30 bg-surface px-6 text-[19px] font-semibold text-brand transition hover:bg-white"
+        >
+          Регистрация
         </Link>
       </div>
     </header>

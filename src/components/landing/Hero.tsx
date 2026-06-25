@@ -1,61 +1,68 @@
+import Image from "next/image";
+import { ArrowButton } from "@/components/landing/ArrowButton";
 import { GIVEAWAY_DATE } from "@/lib/constants";
+import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-16">
-      <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(200,162,74,0.18),transparent_40%),radial-gradient(circle_at_80%_0%,rgba(26,58,47,0.5),transparent_35%),linear-gradient(180deg,#0b0f14_0%,#121820_55%,#0b0f14_100%)]" />
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(115deg, transparent, transparent 80px, rgba(255,255,255,0.02) 80px, rgba(255,255,255,0.02) 81px)",
-          }}
-        />
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent" />
-      </div>
+    <section className="relative min-h-screen overflow-hidden rounded-b-[80px]">
+      <Image
+        src={LANDING_IMAGES.heroBg}
+        alt=""
+        fill
+        priority
+        className="object-cover object-center"
+        sizes="100vw"
+      />
 
-      <div className="section-container relative z-10 py-20">
-        <div className="mb-8 flex flex-wrap items-center gap-3">
-          <span className="rounded-full border border-white/15 bg-white/5 px-4 py-1 text-xs font-medium uppercase tracking-widest text-muted">
-            Партнёрство KGM × Champion
-          </span>
-          <span className="rounded-full bg-accent/15 px-4 py-1 text-xs font-semibold text-accent">
-            Розыгрыш {GIVEAWAY_DATE}
-          </span>
-        </div>
-
-        <h1 className="max-w-4xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-          Почувствуй дух приключений. Пройдите тест-драйв{" "}
-          <span className="text-accent">KGM Torres</span> и выиграйте садовую
-          технику Champion
-        </h1>
-
-        <p className="mt-6 max-w-2xl text-lg text-muted">
-          Розыгрыш 3 призов. Дата проведения розыгрыша — {GIVEAWAY_DATE}.
-          Запишитесь на тест-драйв, получите QR-код и участвуйте в акции.
-        </p>
-
-        <div className="mt-10 flex flex-wrap gap-4">
-          <a href="#register" className="btn-primary">
-            Записаться на тест-драйв / участвовать в розыгрыше
-          </a>
-          <a href="#how" className="btn-secondary">
-            Как это работает
-          </a>
-        </div>
-
-        <div className="mt-16 grid gap-4 sm:grid-cols-3">
-          {[
-            { label: "Призовых мест", value: "3" },
-            { label: "Шагов до участия", value: "3" },
-            { label: "Мощность Torres", value: "163 л.с." },
-          ].map((item) => (
-            <div key={item.label} className="card-surface p-5">
-              <div className="text-2xl font-bold text-accent">{item.value}</div>
-              <div className="mt-1 text-sm text-muted">{item.label}</div>
+      <div className="section-container relative z-10 flex min-h-screen flex-col justify-between pb-10 pt-28 lg:pb-16">
+        <div className="max-w-3xl pt-16 lg:pt-24">
+          <div className="inline-flex rounded-full border border-[rgba(76,30,126,0.5)] bg-[rgba(76,30,126,0.7)] px-5 py-2 backdrop-blur-sm">
+            <div className="flex flex-wrap items-center gap-4">
+              <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-white">
+                <span className="h-1.5 w-1.5 rounded-sm bg-accent" />
+                Дата проведения
+              </span>
+              <span className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.08em] text-white">
+                <span className="h-1.5 w-1.5 rounded-sm bg-accent" />
+                Розыгрыш 3 призов
+              </span>
             </div>
-          ))}
+          </div>
+
+          <h1 className="mt-5 max-w-2xl text-5xl font-bold leading-none tracking-[-0.02em] text-white sm:text-6xl lg:text-[65px]">
+            Почувствуйте
+            <br />
+            дух приключений
+          </h1>
+          <p className="mt-4 text-lg text-white/70">
+            Розыгрыш {GIVEAWAY_DATE}. Запишитесь на тест-драйв и участвуйте в акции.
+          </p>
+        </div>
+
+        <div className="ml-auto w-full max-w-[385px] rounded-[50px] border border-white/30 bg-surface p-4">
+          <div className="relative overflow-hidden rounded-[40px]">
+            <Image
+              src={LANDING_IMAGES.heroTestDrive}
+              alt="KGM Torres"
+              width={355}
+              height={191}
+              className="h-[191px] w-full object-cover"
+            />
+            <span className="brand-badge absolute left-5 top-5">KGM Torres</span>
+          </div>
+
+          <div className="px-2 py-5">
+            <h2 className="text-[26px] font-bold leading-tight text-brand">
+              ТЕСТ-ДРАЙВ
+            </h2>
+            <p className="mt-3 text-lg leading-snug text-brand">
+              Пройдите тест-драйв KGM Torres и выиграйте садовую технику Champion
+            </p>
+            <div className="mt-6">
+              <ArrowButton href="#register">Записаться на тест-драйв</ArrowButton>
+            </div>
+          </div>
         </div>
       </div>
     </section>

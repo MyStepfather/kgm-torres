@@ -320,7 +320,7 @@ export function AdminStatistics({
           type="button"
           onClick={() => handleExport("all")}
           disabled={exporting !== null}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-ghost"
         >
           {exporting === "all" ? "Выгрузка..." : "Выгрузить за всё время"}
         </button>
@@ -328,7 +328,7 @@ export function AdminStatistics({
           type="button"
           onClick={() => handleExport("period")}
           disabled={exporting !== null}
-          className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:border-accent hover:text-accent disabled:cursor-not-allowed disabled:opacity-50"
+          className="btn-ghost"
         >
           {exporting === "period" ? "Выгрузка..." : "Выгрузить за период"}
         </button>
@@ -336,7 +336,7 @@ export function AdminStatistics({
 
       <div className="overflow-x-auto card-surface">
         <table className="w-full min-w-[900px] text-left text-sm">
-          <thead className="border-b border-white/10 text-muted">
+          <thead className="app-table-head">
             <tr>
               <th className="px-4 py-3 font-medium">Клиент</th>
               <th className="px-4 py-3 font-medium">Контакты</th>
@@ -357,7 +357,7 @@ export function AdminStatistics({
               data.items.map((registration) => (
                 <tr
                   key={registration.id}
-                  className="border-b border-white/5 last:border-0"
+                  className="app-table-row"
                 >
                   <td className="px-4 py-3">
                     <div className="font-medium">{registration.name}</div>
@@ -381,8 +381,8 @@ export function AdminStatistics({
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${
                         registration.isActivated
-                          ? "bg-green-500/20 text-green-300"
-                          : "bg-amber-500/20 text-amber-200"
+                          ? "badge-success"
+                          : "badge-warning"
                       }`}
                     >
                       {registration.isActivated ? "Тест-драйв пройден" : "Ожидает"}

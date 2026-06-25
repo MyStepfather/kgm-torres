@@ -39,11 +39,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="app-shell flex items-center justify-center px-4">
       <div className="w-full max-w-md card-surface p-8">
-        <p className="text-sm font-semibold uppercase tracking-widest text-accent">
-          KGM Torres
-        </p>
+        <p className="brand-badge">KGM Torres</p>
         <h1 className="mt-2 text-2xl font-bold">Админ-панель</h1>
         <p className="mt-2 text-sm text-muted">
           Вход для управления дилерами и регистрациями
@@ -56,7 +54,7 @@ export default function AdminLoginPage() {
               required
               value={login}
               onChange={(e) => setLogin(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 outline-none focus:border-accent"
+              className="app-field"
               autoComplete="username"
             />
           </label>
@@ -68,15 +66,13 @@ export default function AdminLoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-background px-4 py-3 outline-none focus:border-accent"
+              className="app-field"
               autoComplete="current-password"
             />
           </label>
 
           {error && (
-            <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
-              {error}
-            </p>
+            <p className="alert-error">{error}</p>
           )}
 
           <button

@@ -146,14 +146,14 @@ export function SearchableSelect({
           width: dropdownPosition.width,
           zIndex: 200,
         }}
-        className="max-h-60 overflow-auto rounded-xl border border-white/10 bg-card shadow-2xl shadow-black/40"
+        className="max-h-60 overflow-auto rounded-[20px] border border-border bg-surface shadow-lg"
       >
         <li>
           <button
             type="button"
             onClick={() => handleSelect("")}
-            className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-white/5 ${
-              !value ? "bg-accent/15 text-accent" : ""
+            className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-brand-tint ${
+              !value ? "bg-accent-icon text-brand font-medium" : ""
             }`}
           >
             {emptyLabel}
@@ -164,8 +164,8 @@ export function SearchableSelect({
             <button
               type="button"
               onClick={() => handleSelect(option.value)}
-              className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-white/5 ${
-                value === option.value ? "bg-accent/15 text-accent" : ""
+              className={`block w-full px-4 py-2 text-left text-sm transition hover:bg-brand-tint ${
+                value === option.value ? "bg-accent-icon text-brand font-medium" : ""
               }`}
             >
               {option.label}
