@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminStatistics } from "@/components/admin/AdminStatistics";
+import { PRIZES } from "@/lib/constants";
 import { formatTestDriveDate } from "@/lib/dates";
 
 type DealerRow = {
@@ -102,11 +103,15 @@ export function AdminDashboard() {
   const [exportingPins, setExportingPins] = useState(false);
 
   const [giveawayRuns, setGiveawayRuns] = useState<GiveawayRunRow[]>([]);
-  const [latestWinners, setLatestWinners] = useState<GiveawayWinnerRow[] | null>(
-    null,
-  );
+  const [latestGiveaway, setLatestGiveaway] = useState<{
+    runId: string;
+    winners: GiveawayWinnerRow[];
+  } | null>(null);
   const [runningGiveaway, setRunningGiveaway] = useState(false);
+  const [sendingWinnerEmails, setSendingWinnerEmails] = useState(false);
   const [eligibleCount, setEligibleCount] = useState(0);
+  const [giveawayAvailable, setGiveawayAvailable] = useState(false);
+  const [testDriveEndsAtLabel, setTestDriveEndsAtLabel] = useState("");
 
   const loadDealers = useCallback(async () => {
     const response = await fetch("/api/admin/dealers");
@@ -134,6 +139,8 @@ export function AdminDashboard() {
     }
     setGiveawayRuns(data.runs);
     setEligibleCount(data.eligibleCount);
+    setGiveawayAvailable(Boolean(data.giveawayAvailable));
+    setTestDriveEndsAtLabel(data.testDriveEndsAtLabel ?? "");
   }, []);
 
   const loadData = useCallback(async () => {
@@ -302,7 +309,7 @@ export function AdminDashboard() {
     setRunningGiveaway(true);
     setError("");
     setSuccess("");
-    setLatestWinners(null);
+    setLatestGiveaway(null);
 
     try {
       const response = await fetch("/api/admin/giveaway", { method: "POST" });
@@ -311,10 +318,10 @@ export function AdminDashboard() {
         throw new Error(data.error ?? "Не удалось провести розыгрыш");
       }
 
-      setLatestWinners(data.winners);
+      setLatestGiveaway({ runId: data.runId, winners: data.winners });
       setEligibleCount(data.eligibleCount);
       setSuccess(
-        `Розыгрыш проведён. Выбрано победителей: ${data.winners.length}. Поздравительные письма отправлены.`,
+        `Розыгрыш проведён. Выбрано победителей: ${data.winners.length}.`,
       );
       await loadGiveaway();
     } catch (giveawayError) {
@@ -325,6 +332,42 @@ export function AdminDashboard() {
       );
     } finally {
       setRunningGiveaway(false);
+    }
+  }
+
+  async function handleSendWinnerEmails() {
+    if (!latestGiveaway) {
+      return;
+    }
+
+    setSendingWinnerEmails(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch(
+        `/api/admin/giveaway/${latestGiveaway.runId}/send-emails`,
+        { method: "POST" },
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Не удалось отправить письма");
+      }
+
+      setLatestGiveaway({
+        runId: data.runId,
+        winners: data.winners,
+      });
+      setSuccess(`Письма отправлены: ${data.sentCount}`);
+      await loadGiveaway();
+    } catch (sendError) {
+      setError(
+        sendError instanceof Error
+          ? sendError.message
+          : "Не удалось отправить письма",
+      );
+    } finally {
+      setSendingWinnerEmails(false);
     }
   }
 
@@ -543,24 +586,30 @@ export function AdminDashboard() {
               <h2 className="text-lg font-semibold">Розыгрыш Champion</h2>
               <p className="mt-2 text-sm text-muted">
                 Случайный выбор 3 победителей среди участников, прошедших
-                тест-драйв. Победителям автоматически отправляется
-                поздравительный email.
+                тест-драйв. После розыгрыша отправьте письма победителям отдельной
+                кнопкой.
               </p>
               <p className="mt-4 text-sm">
                 Доступно для розыгрыша: <strong>{eligibleCount}</strong>{" "}
                 участников
               </p>
+              {!giveawayAvailable && testDriveEndsAtLabel && (
+                <p className="mt-2 text-sm text-muted">
+                  Кнопка станет доступна после окончания периода тест-драйва (
+                  {testDriveEndsAtLabel}).
+                </p>
+              )}
               <button
                 type="button"
                 onClick={handleRunGiveaway}
-                disabled={runningGiveaway}
-                className="btn-primary mt-6 disabled:opacity-60"
+                disabled={runningGiveaway || !giveawayAvailable || eligibleCount === 0}
+                className="btn-primary mt-6 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {runningGiveaway ? "Проводим розыгрыш..." : "Провести розыгрыш"}
               </button>
             </div>
 
-            {latestWinners && (
+            {latestGiveaway && (
               <div className="card-surface overflow-x-auto">
                 <h3 className="app-card-header">
                   Результат последнего розыгрыша
@@ -569,18 +618,25 @@ export function AdminDashboard() {
                   <thead className="app-table-head">
                     <tr>
                       <th className="px-4 py-3 font-medium">Место</th>
+                      <th className="px-4 py-3 font-medium">Приз</th>
                       <th className="px-4 py-3 font-medium">Победитель</th>
                       <th className="px-4 py-3 font-medium">Контакты</th>
                       <th className="px-4 py-3 font-medium">Email</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {latestWinners.map((winner) => (
+                    {latestGiveaway.winners.map((winner) => {
+                      const prize = PRIZES.find((item) => item.place === winner.place);
+
+                      return (
                       <tr
                         key={winner.place}
                         className="app-table-row"
                       >
                         <td className="px-4 py-3">{winner.place}</td>
+                        <td className="px-4 py-3 text-muted">
+                          {prize ? `${prize.title} ${prize.model}` : "—"}
+                        </td>
                         <td className="px-4 py-3">
                           <div className="font-medium">{winner.name}</div>
                           <div className="mt-1 text-xs text-muted">
@@ -597,9 +653,24 @@ export function AdminDashboard() {
                           </div>
                         </td>
                       </tr>
-                    ))}
+                      );
+                    })}
                   </tbody>
                 </table>
+                {latestGiveaway.winners.some((winner) => !winner.emailSent) && (
+                  <div className="border-t border-white/10 px-4 py-4">
+                    <button
+                      type="button"
+                      onClick={handleSendWinnerEmails}
+                      disabled={sendingWinnerEmails}
+                      className="btn-primary disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {sendingWinnerEmails
+                        ? "Отправляем письма..."
+                        : "Отправить сообщения победителям"}
+                    </button>
+                  </div>
+                )}
               </div>
             )}
 

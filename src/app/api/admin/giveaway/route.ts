@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
-import { sendWinnerEmail } from "@/lib/email";
+import { formatTestDriveDate } from "@/lib/dates";
+import { isGiveawayPeriodEnded } from "@/lib/giveaway";
 import { prisma } from "@/lib/prisma";
+import { getTestDriveSchedule } from "@/lib/settings";
 
 const WINNER_COUNT = 3;
 
@@ -17,6 +19,9 @@ function pickRandomWinners<T>(items: T[], count: number) {
 }
 
 export async function GET() {
+  const schedule = await getTestDriveSchedule();
+  const giveawayAvailable = isGiveawayPeriodEnded(schedule);
+
   const [runs, eligibleCount] = await Promise.all([
     prisma.giveawayRun.findMany({
       orderBy: { createdAt: "desc" },
@@ -48,11 +53,28 @@ export async function GET() {
     }),
   ]);
 
-  return NextResponse.json({ runs, eligibleCount });
+  return NextResponse.json({
+    runs,
+    eligibleCount,
+    giveawayAvailable,
+    testDriveEndsAt: schedule.dateTo,
+    testDriveEndsAtLabel: formatTestDriveDate(schedule.dateTo),
+  });
 }
 
 export async function POST() {
   try {
+    const schedule = await getTestDriveSchedule();
+
+    if (!isGiveawayPeriodEnded(schedule)) {
+      return NextResponse.json(
+        {
+          error: `Розыгрыш будет доступен после окончания периода тест-драйва (${formatTestDriveDate(schedule.dateTo)})`,
+        },
+        { status: 400 },
+      );
+    }
+
     const eligible = await prisma.registration.findMany({
       where: {
         isActivated: true,
@@ -76,30 +98,12 @@ export async function POST() {
     const run = await prisma.giveawayRun.create({ data: {} });
 
     const winners = await Promise.all(
-      selected.map(async (registration, index) => {
-        const place = index + 1;
-        let emailSent = false;
-        let emailSentAt: Date | null = null;
-
-        try {
-          const result = await sendWinnerEmail({
-            name: registration.name,
-            email: registration.email,
-            place,
-          });
-          emailSent = result.ok;
-          emailSentAt = emailSent ? new Date() : null;
-        } catch (emailError) {
-          console.error("Winner email error:", emailError);
-        }
-
-        return prisma.giveawayWinner.create({
+      selected.map((registration, index) =>
+        prisma.giveawayWinner.create({
           data: {
             runId: run.id,
             registrationId: registration.id,
-            place,
-            emailSent,
-            emailSentAt,
+            place: index + 1,
           },
           include: {
             registration: {
@@ -114,8 +118,8 @@ export async function POST() {
               },
             },
           },
-        });
-      }),
+        }),
+      ),
     );
 
     const remaining = await prisma.registration.count({

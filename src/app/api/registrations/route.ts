@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendRegistrationEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { formatPhone, normalizePhone } from "@/lib/phone";
 import { buildRegistrationQr } from "@/lib/qrcode";
@@ -189,6 +190,22 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    try {
+      await sendRegistrationEmail({
+        name: saved.name,
+        email: saved.email,
+        phone: saved.phone,
+        city: saved.city,
+        dealerName: saved.dealer.name,
+        dealerCity: saved.dealer.city,
+        testDriveDate: saved.testDriveDate,
+        scanUrl: saved.scanUrl,
+        qrDataUrl: saved.qrDataUrl,
+      });
+    } catch (emailError) {
+      console.error("Registration email error:", emailError);
+    }
 
     return registrationResponse(saved);
   } catch (error) {

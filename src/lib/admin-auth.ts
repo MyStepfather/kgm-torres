@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { useSecureCookies } from "@/lib/secure-cookies";
 
 export const ADMIN_SESSION_COOKIE = "admin_session";
 
@@ -32,7 +33,7 @@ export async function setAdminSession() {
   const cookieStore = await cookies();
   cookieStore.set(ADMIN_SESSION_COOKIE, getAdminSessionToken(), {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: useSecureCookies(),
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 12,

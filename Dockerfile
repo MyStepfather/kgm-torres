@@ -3,12 +3,16 @@
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
 
 FROM base AS deps
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN npm ci --ignore-scripts
 
 FROM base AS builder
+ENV DATABASE_URL="postgresql://kgm:kgm@localhost:5432/kgm_torres?schema=public"
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npx prisma generate
@@ -19,14 +23,12 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-RUN apt-get update \
-  && apt-get install -y --no-install-recommends openssl ca-certificates \
-  && rm -rf /var/lib/apt/lists/* \
-  && groupadd --system --gid 1001 nodejs \
+RUN groupadd --system --gid 1001 nodejs \
   && useradd --system --uid 1001 --gid nodejs nextjs
 
 COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm install prisma@7.8.0
+RUN npm ci --omit=dev --ignore-scripts \
+  && npm install prisma@7.8.0 --ignore-scripts
 
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./

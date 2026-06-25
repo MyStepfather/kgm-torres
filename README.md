@@ -15,7 +15,7 @@
 # 1. Установить зависимости
 npm install
 
-# 2. Запустить PostgreSQL
+# 2. Запустить PostgreSQL (docker-compose.yml)
 npm run db:up
 
 # 3. Применить миграции
@@ -56,6 +56,8 @@ npm run dev
 DATABASE_URL="postgresql://kgm:kgm_secret@localhost:5432/kgm_torres?schema=public"
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
 ```
+
+Порт `5432` проброшен из контейнера `kgm-torres-db` (`docker-compose.yml`).
 
 ## Полезные команды
 

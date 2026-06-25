@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { useSecureCookies } from "@/lib/secure-cookies";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
@@ -26,7 +27,7 @@ export async function setDealerSession(dealerId: string) {
   const cookieStore = await cookies();
   cookieStore.set(DEALER_SESSION_COOKIE, dealerId, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: useSecureCookies(),
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 8,
