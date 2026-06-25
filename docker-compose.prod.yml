@@ -1,0 +1,49 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kgm-torres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-kgm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-kgm_torres}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5432:5432"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-kgm} -d ${POSTGRES_DB:-kgm_torres}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kgm
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kgm-torres-app
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-kgm}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-kgm_torres}?schema=public
+    ports:
+      - "127.0.0.1:3000:3000"
+    networks:
+      - kgm
+
+networks:
+  kgm:
+    driver: bridge
+
+volumes:
+  postgres_data:
