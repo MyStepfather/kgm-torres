@@ -8,20 +8,20 @@ export function Footer() {
       <div className="section-container">
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div>
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center gap-6">
               <Image
-                src={LANDING_IMAGES.logoKgm}
+                src={LANDING_IMAGES.logoKgmWhite}
                 alt="KGM"
-                width={146}
-                height={33}
-                className="h-8 w-auto brightness-0 invert"
+                width={252}
+                height={54}
+                className="h-8 w-auto"
               />
               <Image
-                src={LANDING_IMAGES.logoChampion}
+                src={LANDING_IMAGES.logoChampionWhite}
                 alt="Champion"
-                width={174}
-                height={29}
-                className="h-7 w-auto brightness-0 invert"
+                width={332}
+                height={116}
+                className="h-7 w-auto"
               />
             </div>
             <p className="mt-5 max-w-md text-base leading-relaxed text-white/60">

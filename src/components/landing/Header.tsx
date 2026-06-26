@@ -44,19 +44,19 @@ export function Header() {
 
           <div className="relative flex h-full items-center gap-6 px-8 sm:gap-8 sm:px-10">
             <Image
-              src={LANDING_IMAGES.logoKgm}
+              src={LANDING_IMAGES.logoKgmWhite}
               alt="KGM"
-              width={146}
-              height={33}
-              className="h-[26px] w-auto brightness-0 invert sm:h-[28px]"
+              width={252}
+              height={54}
+              className="h-[26px] w-auto sm:h-[28px]"
               priority
             />
             <Image
-              src={LANDING_IMAGES.logoChampion}
+              src={LANDING_IMAGES.logoChampionWhite}
               alt="Champion"
-              width={174}
-              height={29}
-              className="h-[26px] w-auto brightness-0 invert sm:h-[28px]"
+              width={332}
+              height={116}
+              className="h-[26px] w-auto sm:h-[28px]"
               priority
             />
           </div>
