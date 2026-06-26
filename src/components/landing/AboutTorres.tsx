@@ -20,7 +20,7 @@ function SpecIcon({ type }: { type: (typeof TORRES_SPECS)[number]["icon"] }) {
 
 export function AboutTorres() {
   return (
-    <section id="about" className="py-16 lg:py-20">
+    <section id="about" className="pt-16 pb-10 lg:pt-20 lg:pb-16">
       <div className="section-container space-y-5">
         <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
           <div className="relative min-h-[320px] overflow-hidden rounded-[50px] border border-border lg:min-h-[543px]">
@@ -66,7 +66,7 @@ export function AboutTorres() {
                 {spec.value}
               </p>
               <p className="mt-2 text-lg text-muted">{spec.label}</p>
-              <div className="pointer-events-none absolute -right-10 -top-16 h-40 w-40 rounded-full bg-brand/5" />
+              <div className="spec-card-blob pointer-events-none absolute rounded-full bg-brand/5" />
             </div>
           ))}
         </div>
@@ -91,7 +91,7 @@ export function AboutTorres() {
               src={LANDING_IMAGES.aboutMotion}
               alt="KGM Torres динамика"
               fill
-              className="object-cover object-[center_30%]"
+              className="object-cover object-[center_68%]"
               sizes="(max-width: 1024px) 100vw, 66vw"
             />
             <span className="brand-badge absolute left-7 top-7">KGM Torres</span>

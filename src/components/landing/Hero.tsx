@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { ArrowButton } from "@/components/landing/ArrowButton";
-import { GIVEAWAY_DATE } from "@/lib/constants";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 export function Hero() {
@@ -35,9 +34,6 @@ export function Hero() {
             <br />
             дух приключений
           </h1>
-          <p className="mt-4 text-lg text-white/70">
-            Розыгрыш {GIVEAWAY_DATE}. Запишитесь на тест-драйв и участвуйте в акции.
-          </p>
         </div>
 
         <div className="ml-auto w-full max-w-[385px] rounded-[50px] border border-white/30 bg-surface p-4">

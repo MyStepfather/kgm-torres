@@ -99,25 +99,33 @@ sudo systemctl reload nginx
 
 ## HTTPS с Certbot
 
-Когда домен `example.com` указывает A-записью на IP сервера:
+Когда домен `kgm-drive.ru` указывает A-записью на IP сервера (`104.128.129.200`):
 
-1. Обновите `.env`:
+1. В `.env` на сервере:
    ```env
-   NEXT_PUBLIC_APP_URL="https://example.com"
+   NEXT_PUBLIC_APP_URL="https://kgm-drive.ru"
    ```
 2. Пересоберите app (нужен для `NEXT_PUBLIC_*`):
    ```bash
    docker compose -f docker-compose.prod.yml up -d --build app
    ```
-3. Подготовьте конфиг — замените `example.com` в `deploy/nginx/kgm-torres-https.conf`
-4. Установите конфиг и получите сертификат:
+3. Nginx с блоком для домена:
    ```bash
-   sudo cp deploy/nginx/kgm-torres-https.conf /etc/nginx/sites-available/kgm-torres
+   sudo cp deploy/nginx/kgm-torres-http-domain.conf /etc/nginx/sites-available/kgm-torres
+   sudo ln -sf /etc/nginx/sites-available/kgm-torres /etc/nginx/sites-enabled/
    sudo mkdir -p /var/www/certbot
    sudo nginx -t && sudo systemctl reload nginx
-   sudo certbot --nginx -d example.com
    ```
-5. Автопродление уже настроено через systemd timer certbot.
+4. Проверьте DNS (должен вернуть IP сервера):
+   ```bash
+   dig +short kgm-drive.ru A
+   ```
+5. Сертификат:
+   ```bash
+   sudo certbot --nginx -d kgm-drive.ru -d www.kgm-drive.ru \
+     --non-interactive --agree-tos -m promo@kgm-drive.ru --redirect
+   ```
+6. Автопродление — через systemd timer certbot (уже есть после установки certbot).
 
 ---
 

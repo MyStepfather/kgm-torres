@@ -1,11 +1,14 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
+import { ArrowButton } from "@/components/landing/ArrowButton";
 import { SectionLabel } from "@/components/landing/SectionLabel";
 import { DatePicker } from "@/components/ui/DatePicker";
 import { GIVEAWAY_DATE } from "@/lib/constants";
 import type { DealerOption } from "@/lib/dealers";
 import { formatTestDriveDate } from "@/lib/dates";
+import { LANDING_IMAGES } from "@/lib/landing-assets";
 import { applyPhoneMaskKeyDown, isValidPhone, maskPhoneInput } from "@/lib/phone";
 import { isValidTestDriveDate, type TestDriveSchedule } from "@/lib/test-drive-schedule";
 import { isValidEmail } from "@/lib/validation";
@@ -30,12 +33,24 @@ const fieldClassName = "field-input";
 const fieldLabelClassName =
   "mb-2 block text-[15px] font-medium uppercase tracking-[0.08em] text-muted";
 
-const benefits = [
-  "Регистрация занимает меньше минуты",
-  "QR-код придёт сразу после заявки",
-  "Ваши данные в безопасности",
-  `Розыгрыш — ${GIVEAWAY_DATE}`,
-];
+const registrationBenefits = [
+  {
+    icon: LANDING_IMAGES.registerBenefit1,
+    text: "Регистрация занимает меньше минуты",
+  },
+  {
+    icon: LANDING_IMAGES.registerBenefit2,
+    text: "QR-код придёт сразу после заявки",
+  },
+  {
+    icon: LANDING_IMAGES.registerBenefit3,
+    text: "Ваши данные в безопасности",
+  },
+  {
+    icon: LANDING_IMAGES.registerBenefit4,
+    text: `Розыгрыш — ${GIVEAWAY_DATE}`,
+  },
+] as const;
 
 export function RegistrationForm({
   dealers,
@@ -142,7 +157,7 @@ export function RegistrationForm({
 
   if (result) {
     return (
-      <section id="register" className="rounded-t-[80px] bg-brand py-16 lg:py-20">
+      <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 lg:pt-28 lg:pb-20">
         <div className="section-container">
           <div className="mx-auto max-w-xl rounded-[50px] bg-surface p-8 text-center lg:p-10">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-icon text-2xl text-brand">
@@ -157,6 +172,11 @@ export function RegistrationForm({
               {result.isDuplicate
                 ? "Ваш QR-код"
                 : `Покажите QR-код дилеру при визите в ${result.dealer.name}, ${result.dealer.city}`}
+            </p>
+            <p className="mt-2 text-base text-muted">
+              {result.isDuplicate
+                ? `Письмо с QR-кодом было отправлено на ${form.email} при регистрации`
+                : `QR-код также отправлен на почту ${form.email}`}
             </p>
             {result.testDriveDate && (
               <p className="mt-2 text-base font-semibold text-brand">
@@ -188,55 +208,58 @@ export function RegistrationForm({
   }
 
   return (
-    <section id="register" className="rounded-t-[80px] bg-brand py-16 lg:py-20">
+    <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 lg:pt-28 lg:pb-20">
       <div className="section-container">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-10">
-          <div className="text-white">
-            <SectionLabel variant="on-brand">Регистрация</SectionLabel>
-            <h2 className="mt-5 text-3xl font-semibold leading-tight sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
-              Получите QR-код
-              <br />
-              и запишитесь сейчас
-            </h2>
+        <SectionLabel variant="on-brand">Регистрация</SectionLabel>
+        <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
+          Получите QR-код
+          <br />
+          и запишитесь сейчас
+        </h2>
 
-            <div className="mt-10 rounded-[60px] bg-brand-soft p-6 lg:p-8">
-              <p className="text-2xl font-semibold leading-snug sm:text-[32px] lg:text-[40px] lg:leading-[1.2]">
-                Один тест-драйв —{" "}
-                <span className="text-accent-light">шанс выиграть</span> садовую
-                технику Champion
-              </p>
-              <p className="mt-4 text-[15px] leading-relaxed text-white/45">
-                Пройдите тест-драйв KGM Torres и выиграйте садовую технику Champion
-              </p>
+        <div className="mt-10 rounded-[60px] bg-brand-soft p-5 sm:p-6 lg:mt-12 lg:p-8">
+          <div className="grid gap-8 lg:grid-cols-[1fr_1.08fr] lg:items-stretch lg:gap-6 xl:gap-8">
+            <div className="flex h-full min-h-0 flex-col text-white lg:py-2 lg:pr-2">
+              <div className="shrink-0">
+                <p className="text-2xl px-5 font-semibold leading-snug sm:text-[32px] sm:px-6 lg:px-7 lg:text-[40px] lg:leading-[1.2]">
+                  Один тест-драйв —{" "}
+                  <span className="text-[#BA99FF]">шанс выиграть</span> садовую
+                  технику Champion
+                </p>
+              </div>
 
-              <div className="mt-8 rounded-[50px] bg-white/5 p-6">
-                <ul className="space-y-4">
-                  {benefits.map((benefit) => (
-                    <li key={benefit} className="flex items-center gap-3 text-lg text-white">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(84,40,143,0.8)]">
-                        <svg
-                          viewBox="0 0 24 24"
-                          className="h-4 w-4"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          aria-hidden
-                        >
-                          <path d="M5 12l5 5L20 7" />
-                        </svg>
-                      </span>
-                      {benefit}
-                    </li>
-                  ))}
-                </ul>
+              <div className="mt-auto flex flex-col">
+                <p className="mb-8 px-5 text-[15px] leading-relaxed text-white/45 sm:px-6 lg:px-7 lg:text-base">
+                  Пройдите тест-драйв KGM Torres
+                  <br />
+                  и выиграйте садовую технику Champion
+                </p>
+
+                <div className="rounded-[50px] bg-white/5 p-5 sm:p-6 lg:p-7">
+                  <ul className="space-y-4">
+                    {registrationBenefits.map((benefit) => (
+                      <li key={benefit.text} className="flex items-center gap-3 text-base text-white lg:text-lg">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(84,40,143,0.8)]">
+                          <Image
+                            src={benefit.icon}
+                            alt=""
+                            width={18}
+                            height={18}
+                            aria-hidden
+                          />
+                        </span>
+                        {benefit.text}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="rounded-[50px] bg-surface p-6 sm:p-8 lg:p-10">
+            <div className="h-full rounded-[50px] bg-surface p-6 sm:p-8 lg:p-10">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
-                <div className="sm:col-span-2 lg:col-span-1">
+                <div>
                   <label htmlFor="name" className={fieldLabelClassName}>
                     Имя
                   </label>
@@ -430,10 +453,11 @@ export function RegistrationForm({
                 </p>
               )}
 
-              <button type="submit" disabled={loading} className="btn-form">
+              <ArrowButton type="submit" disabled={loading} className="text-[19px]">
                 {loading ? "Отправка..." : "Получить QR-код и записаться"}
-              </button>
+              </ArrowButton>
             </form>
+            </div>
           </div>
         </div>
       </div>

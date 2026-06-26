@@ -110,9 +110,6 @@ function buildRegistrationEmailHtml(payload: RegistrationEmailPayload) {
       <p style="text-align: center; margin: 24px 0;">
         <img src="${payload.qrDataUrl}" alt="QR-код участника" width="220" height="220" style="display: inline-block;" />
       </p>
-      <p style="text-align: center;">
-        <a href="${payload.scanUrl}" style="color: #1a3a2f;">${payload.scanUrl}</a>
-      </p>
       <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM Torres</p>
     </div>
   `;

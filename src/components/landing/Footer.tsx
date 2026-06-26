@@ -4,47 +4,47 @@ import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-surface py-12 lg:py-16">
+    <footer className="bg-brand-soft py-12 text-white lg:py-16">
       <div className="section-container">
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_1fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr]">
           <div>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <Image
                 src={LANDING_IMAGES.logoKgm}
                 alt="KGM"
                 width={146}
                 height={33}
-                className="h-8 w-auto"
+                className="h-8 w-auto brightness-0 invert"
               />
               <Image
                 src={LANDING_IMAGES.logoChampion}
                 alt="Champion"
                 width={174}
                 height={29}
-                className="h-7 w-auto"
+                className="h-7 w-auto brightness-0 invert"
               />
             </div>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-muted">
+            <p className="mt-5 max-w-md text-base leading-relaxed text-white/60">
               Официальная акция KGM Torres. Пройдите тест-драйв и участвуйте в
               розыгрыше садовой техники Champion.
             </p>
           </div>
 
           <div>
-            <h3 className="descriptor text-brand">Документы</h3>
-            <ul className="mt-5 space-y-3 text-base text-muted">
+            <h3 className="descriptor text-white/80">Документы</h3>
+            <ul className="mt-5 space-y-3 text-base">
               <li>
-                <Link href="#" className="transition hover:text-brand">
+                <Link href="#" className="text-white/60 transition hover:text-white">
                   Полные правила акции
                 </Link>
               </li>
               <li>
-                <Link href="#" className="transition hover:text-brand">
+                <Link href="#" className="text-white/60 transition hover:text-white">
                   Политика конфиденциальности
                 </Link>
               </li>
               <li>
-                <Link href="#" className="transition hover:text-brand">
+                <Link href="#" className="text-white/60 transition hover:text-white">
                   Условия участия в розыгрыше
                 </Link>
               </li>
@@ -52,17 +52,20 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="descriptor text-brand">Контакты</h3>
-            <ul className="mt-5 space-y-3 text-base text-muted">
+            <h3 className="descriptor text-white/80">Контакты</h3>
+            <ul className="mt-5 space-y-3 text-base">
               <li>
-                <a href="tel:88000000000" className="transition hover:text-brand">
+                <a
+                  href="tel:88000000000"
+                  className="text-white/60 transition hover:text-white"
+                >
                   8 800 000 00 00
                 </a>
               </li>
               <li>
                 <a
                   href="mailto:support@kgm-promo.ru"
-                  className="transition hover:text-brand"
+                  className="text-white/60 transition hover:text-white"
                 >
                   support@kgm-promo.ru
                 </a>
@@ -74,7 +77,7 @@ export function Footer() {
                 <a
                   key={label}
                   href="#"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-sm font-semibold text-brand transition hover:bg-brand hover:text-white"
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-xs font-bold text-white transition hover:bg-white hover:text-brand"
                 >
                   {label}
                 </a>
@@ -83,7 +86,7 @@ export function Footer() {
           </div>
         </div>
 
-        <p className="mt-10 border-t border-border pt-6 text-center text-sm text-muted">
+        <p className="mt-10 border-t border-white/10 pt-6 text-center text-sm text-white/40">
           © {new Date().getFullYear()} KGM Torres × Champion. Все права защищены.
         </p>
       </div>

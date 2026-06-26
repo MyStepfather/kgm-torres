@@ -17,52 +17,53 @@ const placeLabels: Record<number, string> = {
 
 export function Prizes() {
   return (
-    <section id="prizes" className="py-10 lg:py-16">
-      <div className="section-container">
+    <section id="prizes" className="pb-10 lg:pb-16">
+      <div className="section-container-wide">
         <div className="overflow-hidden rounded-[60px] bg-brand-tint px-6 py-12 sm:px-10 lg:px-14 lg:py-16">
-          <div className="max-w-4xl">
+          <div>
             <SectionLabel>Розыгрыш Champion</SectionLabel>
-            <h2 className="mt-5 text-3xl font-semibold leading-tight text-brand sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
-              Три победителя, выбранные по итогу акции случайным образом!
+            <h2 className="mt-5 w-full max-w-[980px] text-3xl font-semibold leading-tight text-brand sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
+              <span className="block">Три победителя, выбранные по</span>
+              <span className="block">итогу акции случайным образом!</span>
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          <div className="mt-16 grid items-stretch gap-5 sm:mt-20 lg:mt-28 lg:grid-cols-3">
             {PRIZES.map((prize) => {
               const featured = prize.place === 1;
 
               return (
                 <article
                   key={prize.place}
-                  className={`overflow-hidden rounded-[40px] border ${
+                  className={`flex flex-col overflow-hidden rounded-[40px] border ${
                     featured
                       ? "border-accent-light/30 bg-brand"
                       : "border-white/40 bg-white/30"
                   }`}
                 >
-                  <div className="relative h-[260px] overflow-hidden rounded-[40px] bg-surface">
+                  <div className="relative -mx-px -mt-px h-[260px] w-[calc(100%+2px)] shrink-0 overflow-hidden rounded-[40px] bg-white">
                     <Image
                       src={prizeImages[prize.imageKey]}
                       alt={prize.title}
                       fill
-                      className="object-contain object-center p-6"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
+                      className="origin-right scale-[1.2] object-contain object-right sm:scale-[1.28] lg:scale-[1.35]"
+                      sizes="(max-width: 1024px) 100vw, 620px"
                     />
                     <span className="brand-badge absolute left-5 top-5">
                       {placeLabels[prize.place]}
                     </span>
                   </div>
 
-                  <div className="space-y-4 p-8">
+                  <div className="flex flex-1 flex-col p-8">
                     <h3
-                      className={`text-2xl font-bold ${
+                      className={`mb-2 text-2xl font-bold ${
                         featured ? "text-white" : "text-brand"
                       }`}
                     >
                       {prize.title}
                     </h3>
 
-                    <ul className="space-y-2">
+                    <ul className="flex-1 space-y-2">
                       {prize.specs.map((spec) => (
                         <li
                           key={spec}
@@ -71,7 +72,7 @@ export function Prizes() {
                           }`}
                         >
                           <span
-                            className={`h-1 w-1 rounded-full ${
+                            className={`h-1 w-1 shrink-0 rounded-full ${
                               featured ? "bg-white" : "bg-brand"
                             }`}
                           />
@@ -81,7 +82,7 @@ export function Prizes() {
                     </ul>
 
                     <span
-                      className={`inline-flex rounded-full px-5 py-1.5 text-sm font-bold uppercase tracking-[0.08em] ${
+                      className={`mt-8 inline-flex w-fit rounded-full px-5 py-1.5 text-sm font-bold uppercase tracking-[0.08em] ${
                         featured
                           ? "bg-white/10 text-white"
                           : "bg-brand/10 text-brand"

@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 const navLinks = [
@@ -8,32 +11,64 @@ const navLinks = [
   { href: "#how", label: "Как участвовать" },
 ];
 
+const SCROLL_THRESHOLD = 56;
+
 export function Header() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > SCROLL_THRESHOLD);
+    }
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-10 xl:px-20">
-      <div className="mx-auto flex h-[70px] max-w-[1760px] items-center rounded-full bg-black/95 px-2 backdrop-blur-sm">
-        <div className="flex min-w-0 items-center gap-4 rounded-full bg-white/5 px-5 py-2">
-          <Image
-            src={LANDING_IMAGES.logoKgm}
-            alt="KGM"
-            width={126}
-            height={27}
-            className="h-7 w-auto"
-            priority
+    <header className="fixed inset-x-0 top-0 z-50 bg-transparent pt-4 transition-all duration-300 ease-in-out">
+      <div className="section-container">
+        <div
+          className={`grid h-[70px] grid-cols-[auto_1fr_auto] items-center px-3 transition-all duration-300 ease-in-out lg:grid-cols-[1fr_auto_1fr] ${
+            scrolled ? "rounded-full bg-black" : ""
+          }`}
+        >
+        <div className="relative flex h-[52px] shrink-0 items-center justify-self-start">
+          <div
+            aria-hidden
+            className={`absolute inset-0 rounded-full bg-black/30 backdrop-blur-md transition-all duration-300 ease-in-out ${
+              scrolled ? "pointer-events-none scale-95 opacity-0" : "scale-100 opacity-100"
+            }`}
           />
-          <Image
-            src={LANDING_IMAGES.logoChampion}
-            alt="Champion"
-            width={146}
-            height={24}
-            className="hidden h-6 w-auto sm:block"
-            priority
-          />
+
+          <div className="relative flex h-full items-center gap-6 px-8 sm:gap-8 sm:px-10">
+            <Image
+              src={LANDING_IMAGES.logoKgm}
+              alt="KGM"
+              width={146}
+              height={33}
+              className="h-[26px] w-auto brightness-0 invert sm:h-[28px]"
+              priority
+            />
+            <Image
+              src={LANDING_IMAGES.logoChampion}
+              alt="Champion"
+              width={174}
+              height={29}
+              className="h-[26px] w-auto brightness-0 invert sm:h-[28px]"
+              priority
+            />
+          </div>
         </div>
 
-        <nav className="mx-auto hidden items-center gap-10 text-[15px] font-medium text-white md:flex">
+        <nav className="hidden items-center justify-self-center gap-8 text-[15px] font-medium text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] lg:flex xl:gap-10">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="transition hover:text-accent-light">
+            <a
+              key={link.href}
+              href={link.href}
+              className="transition-colors duration-300 ease-in-out hover:text-white/75"
+            >
               {link.label}
             </a>
           ))}
@@ -41,10 +76,11 @@ export function Header() {
 
         <Link
           href="#register"
-          className="ml-auto inline-flex h-14 items-center justify-center rounded-full border border-white/30 bg-surface px-6 text-[19px] font-semibold text-brand transition hover:bg-white"
+          className="inline-flex h-[52px] shrink-0 items-center justify-center justify-self-end rounded-full bg-surface px-6 text-base font-semibold text-brand transition hover:bg-white sm:px-8 sm:text-[17px]"
         >
           Регистрация
         </Link>
+        </div>
       </div>
     </header>
   );
