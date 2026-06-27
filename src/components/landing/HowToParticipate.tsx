@@ -56,6 +56,7 @@ type StepCardProps = {
   showNumber?: boolean;
   wide?: boolean;
   qrImage?: boolean;
+  badge?: string;
 };
 
 function StepCard({
@@ -65,25 +66,31 @@ function StepCard({
   showNumber = true,
   wide = false,
   qrImage = false,
+  badge,
 }: StepCardProps) {
   if (wide && qrImage) {
     return (
-      <article className="relative min-h-[378px] overflow-hidden rounded-[40px] border border-border bg-surface p-8 lg:col-span-2">
-        <div className="flex h-full min-h-[280px] flex-row items-stretch justify-between gap-8 sm:gap-10 lg:gap-12">
+      <article className="relative min-h-[378px] overflow-hidden rounded-[40px] border border-border bg-surface p-8 md:col-span-2">
+        <div className="flex h-full min-h-[280px] flex-row items-stretch justify-between gap-8 sm:gap-10 md:gap-12">
           <div className="flex min-w-0 flex-1 flex-col">
             <div className="flex h-[52px] w-[52px] items-center justify-center rounded-2xl bg-accent-icon">
               <StepIcon type={stepIcons[step]} />
             </div>
 
             <div className="mt-auto pt-20">
+              {badge && (
+                <span className="mb-4 inline-flex rounded-full bg-brand px-4 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-white">
+                  {badge}
+                </span>
+              )}
               <h3 className="text-2xl font-semibold text-brand">{title}</h3>
-              <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted">
+              <p className="mt-4 max-w-xl text-lg leading-relaxed text-muted whitespace-pre-line">
                 {description}
               </p>
             </div>
           </div>
 
-          <div className="relative h-[180px] w-[140px] shrink-0 self-end sm:h-[220px] sm:w-[180px] lg:h-[280px] lg:w-[240px]">
+          <div className="relative h-[180px] w-[140px] shrink-0 self-end sm:h-[220px] sm:w-[180px] md:h-[280px] md:w-[240px]">
             <Image
               src={LANDING_IMAGES.qrDemo}
               alt="QR-код участника"
@@ -100,7 +107,7 @@ function StepCard({
   return (
     <article
       className={`relative overflow-hidden rounded-[40px] border border-border bg-surface p-8 ${
-        wide ? "lg:col-span-2" : "min-h-[378px]"
+        wide ? "md:col-span-2" : "min-h-[378px]"
       }`}
     >
       {showNumber && <StepNumber value={step} />}
@@ -108,7 +115,7 @@ function StepCard({
       <div
         className={
           wide
-            ? "grid h-full gap-6 lg:grid-cols-[1fr_auto] lg:items-stretch"
+            ? "grid h-full gap-6 md:grid-cols-[1fr_auto] md:items-stretch"
             : "flex h-full min-h-[300px] flex-col"
         }
       >
@@ -118,13 +125,20 @@ function StepCard({
           </div>
 
           <div className={wide ? "mt-8" : "mt-auto pt-20"}>
+            {badge && (
+              <span className="mb-4 inline-flex rounded-full bg-brand px-4 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-white">
+                {badge}
+              </span>
+            )}
             <h3 className="text-2xl font-semibold text-brand">{title}</h3>
-            <p className="mt-4 text-lg leading-relaxed text-muted">{description}</p>
+            <p className="mt-4 text-lg leading-relaxed text-muted whitespace-pre-line">
+              {description}
+            </p>
           </div>
         </div>
 
         {qrImage && (
-          <div className="relative mx-auto h-[220px] w-[220px] shrink-0 lg:mx-0 lg:hidden">
+          <div className="relative mx-auto h-[220px] w-[220px] shrink-0 md:mx-0 md:hidden">
             <Image
               src={LANDING_IMAGES.qrDemo}
               alt="QR-код участника"
@@ -139,45 +153,40 @@ function StepCard({
   );
 }
 
-export function HowToParticipate() {
+export function HowToParticipate({
+  testDrivePeriodLabel,
+}: {
+  testDrivePeriodLabel: string;
+}) {
   const featured = STEPS.find((step) => step.variant === "featured")!;
   const step1 = STEPS.find((step) => step.step === 1)!;
   const step2 = STEPS.find((step) => step.step === 2)!;
   const step3 = STEPS.find((step) => step.variant === "wide")!;
 
   return (
-    <section id="how" className="pb-10 lg:pb-16">
+    <section id="how" className="pb-10 md:pb-16">
       <div className="section-container space-y-8">
         <div className="max-w-2xl">
           <SectionLabel>Как участвовать</SectionLabel>
-          <h2 className="mt-5 text-3xl font-semibold leading-tight text-brand sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
+          <h2 className="mt-5 text-3xl font-semibold leading-tight text-brand sm:text-4xl md:text-[54px] md:leading-[1.1]">
             Три шага до приза
           </h2>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-3 lg:grid-rows-[auto_auto]">
-          <article className="relative flex flex-col overflow-hidden rounded-[40px] bg-brand lg:row-span-2">
-            <div className="relative mx-4 mt-4 h-[240px] overflow-hidden rounded-[32px] sm:h-[300px] lg:mx-5 lg:mt-5 lg:h-[374px]">
+        <div className="grid gap-5 md:grid-cols-3 md:grid-rows-[auto_auto]">
+          <article className="relative flex flex-col overflow-hidden rounded-[40px] bg-brand md:row-span-2">
+            <div className="relative mx-4 mt-4 h-[240px] overflow-hidden rounded-[32px] sm:h-[300px] md:mx-5 md:mt-5 md:h-[374px]">
               <Image
                 src={LANDING_IMAGES.howToParticipate}
                 alt="Садовая техника Champion"
                 fill
-                className="object-cover object-center"
-                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="object-cover object-[35%_center] sm:object-[90%_center] sm:scale-[1.1] lg:object-[100%_center] lg:scale-[1.3]"
+                sizes="(max-width: 60rem) 100vw, 33vw"
               />
             </div>
 
-            <div className="flex flex-1 flex-col p-5 pt-6 lg:p-8 lg:pt-7">
-              <div className="flex rounded-full border border-white/20 bg-white p-1">
-                <span className="flex-1 rounded-full bg-brand px-4 py-2.5 text-center text-sm font-medium text-white">
-                  Форма
-                </span>
-                <span className="flex-1 px-4 py-2.5 text-center text-sm font-medium text-brand">
-                  QR-код
-                </span>
-              </div>
-
-              <h3 className="mt-8 text-2xl font-semibold text-white">
+            <div className="flex flex-1 flex-col p-5 pt-6 md:p-8 md:pt-7">
+              <h3 className="text-2xl font-semibold text-white">
                 {featured.title}
               </h3>
               <p className="mt-4 flex-1 text-lg leading-relaxed text-white/70">
@@ -211,6 +220,7 @@ export function HowToParticipate() {
             showNumber={false}
             wide
             qrImage
+            badge={`результаты ${testDrivePeriodLabel}`}
           />
         </div>
       </div>

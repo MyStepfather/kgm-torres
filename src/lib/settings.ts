@@ -1,4 +1,4 @@
-import { formatTestDriveDate } from "@/lib/dates";
+import { formatTestDriveDate, formatTestDrivePeriodLabel } from "@/lib/dates";
 import {
   getDefaultGiveawayDate,
   GIVEAWAY_DATE_KEY,
@@ -96,4 +96,9 @@ export async function saveGiveawayDateSetting(
 export async function getGiveawayDateLabel() {
   const { date } = await getGiveawayDateSetting();
   return formatTestDriveDate(date);
+}
+
+export async function getTestDrivePeriodLabel() {
+  const schedule = await getTestDriveSchedule();
+  return formatTestDrivePeriodLabel(schedule.dateFrom, schedule.dateTo);
 }

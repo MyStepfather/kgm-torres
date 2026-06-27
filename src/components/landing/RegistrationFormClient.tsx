@@ -24,14 +24,14 @@ const RegistrationForm = dynamic(
 
 type RegistrationFormClientProps = {
   dealers: DealerOption[];
-  giveawayDateLabel: string;
+  testDrivePeriodLabel: string;
 };
 
 export function RegistrationFormClient({
   dealers,
-  giveawayDateLabel,
+  testDrivePeriodLabel,
 }: RegistrationFormClientProps) {
   return (
-    <RegistrationForm dealers={dealers} giveawayDateLabel={giveawayDateLabel} />
+    <RegistrationForm dealers={dealers} testDrivePeriodLabel={testDrivePeriodLabel} />
   );
 }

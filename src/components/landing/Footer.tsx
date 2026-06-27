@@ -4,9 +4,9 @@ import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 export function Footer() {
   return (
-    <footer className="bg-brand-soft py-12 text-white lg:py-16">
+    <footer className="bg-brand-soft py-12 text-white md:py-16">
       <div className="section-container">
-        <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr]">
+        <div className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
             <div className="flex flex-wrap items-center gap-6">
               <Image
@@ -24,28 +24,19 @@ export function Footer() {
                 className="h-7 w-auto"
               />
             </div>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/60">
-              Официальная акция KGM Torres. Пройдите тест-драйв и участвуйте в
-              розыгрыше садовой техники Champion.
-            </p>
           </div>
 
           <div>
             <h3 className="descriptor text-white/80">Документы</h3>
             <ul className="mt-5 space-y-3 text-base">
               <li>
-                <Link href="#" className="text-white/60 transition hover:text-white">
+                <Link href="/rules" className="text-white/60 transition hover:text-white">
                   Полные правила акции
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-white/60 transition hover:text-white">
+                <Link href="/privacy" className="text-white/60 transition hover:text-white">
                   Политика конфиденциальности
-                </Link>
-              </li>
-              <li>
-                <Link href="#" className="text-white/60 transition hover:text-white">
-                  Условия участия в розыгрыше
                 </Link>
               </li>
             </ul>
@@ -56,18 +47,10 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-base">
               <li>
                 <a
-                  href="tel:88000000000"
+                  href="tel:88001013353"
                   className="text-white/60 transition hover:text-white"
                 >
-                  8 800 000 00 00
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:support@kgm-promo.ru"
-                  className="text-white/60 transition hover:text-white"
-                >
-                  support@kgm-promo.ru
+                  8 800 101-33-53
                 </a>
               </li>
             </ul>
@@ -85,10 +68,6 @@ export function Footer() {
             </div>
           </div>
         </div>
-
-        <p className="mt-10 border-t border-white/10 pt-6 text-center text-sm text-white/40">
-          © {new Date().getFullYear()} KGM Torres × Champion. Все права защищены.
-        </p>
       </div>
     </footer>
   );

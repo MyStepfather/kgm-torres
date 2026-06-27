@@ -17,18 +17,17 @@ const placeLabels: Record<number, string> = {
 
 export function Prizes() {
   return (
-    <section id="prizes" className="pb-10 lg:pb-16">
+    <section id="prizes" className="pb-10 md:pb-16">
       <div className="section-container-wide">
-        <div className="overflow-hidden rounded-[60px] bg-brand-tint px-6 py-12 sm:px-10 lg:px-14 lg:py-16">
+        <div className="overflow-hidden rounded-[60px] bg-brand-tint px-6 py-12 sm:px-10 md:px-14 md:py-16">
           <div>
-            <SectionLabel>Розыгрыш Champion</SectionLabel>
-            <h2 className="mt-5 w-full max-w-[980px] text-3xl font-semibold leading-tight text-brand sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
-              <span className="block">Три победителя, выбранные по</span>
-              <span className="block">итогу акции случайным образом!</span>
+            <SectionLabel>призы розыгрыша</SectionLabel>
+            <h2 className="mt-5 w-full max-w-[980px] text-3xl font-semibold leading-tight text-brand sm:text-4xl md:text-[54px] md:leading-[1.1]">
+              Три победителя, выбранные по итогу акции случайным образом!
             </h2>
           </div>
 
-          <div className="mt-16 grid items-stretch gap-5 sm:mt-20 lg:mt-28 lg:grid-cols-3">
+          <div className="mt-12 grid items-stretch gap-5 sm:mt-16 sm:grid-cols-3 md:mt-28">
             {PRIZES.map((prize) => {
               const featured = prize.place === 1;
 
@@ -46,17 +45,17 @@ export function Prizes() {
                       src={prizeImages[prize.imageKey]}
                       alt={prize.title}
                       fill
-                      className="origin-right scale-[1.2] object-contain object-right sm:scale-[1.28] lg:scale-[1.35]"
-                      sizes="(max-width: 1024px) 100vw, 620px"
+                      className="origin-right scale-[1.2] object-contain object-right sm:scale-[1.28] md:scale-[1.35]"
+                      sizes="(max-width: 60rem) 100vw, 620px"
                     />
                     <span className="brand-badge absolute left-5 top-5">
                       {placeLabels[prize.place]}
                     </span>
                   </div>
 
-                  <div className="flex flex-1 flex-col p-8">
+                  <div className="flex flex-1 flex-col p-6 md:p-8">
                     <h3
-                      className={`mb-2 text-2xl font-bold ${
+                      className={`mb-2 text-xl font-bold md:text-2xl ${
                         featured ? "text-white" : "text-brand"
                       }`}
                     >
@@ -67,7 +66,7 @@ export function Prizes() {
                       {prize.specs.map((spec) => (
                         <li
                           key={spec}
-                          className={`flex items-center gap-3 text-lg ${
+                          className={`flex items-center gap-3 text-base md:text-lg ${
                             featured ? "text-white/50" : "text-brand/50"
                           }`}
                         >

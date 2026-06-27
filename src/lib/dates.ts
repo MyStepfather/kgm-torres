@@ -38,6 +38,28 @@ export function formatTestDriveDateRange(from: string, to: string) {
   return `${formatTestDriveDate(from)} — ${formatTestDriveDate(to)}`;
 }
 
+export function formatTestDrivePeriodLabel(from: string, to: string) {
+  const fromParsed = parseIsoDate(from.slice(0, 10));
+  const toParsed = parseIsoDate(to.slice(0, 10));
+  if (!fromParsed || !toParsed) return "";
+
+  const dayMonthFormatter = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+  });
+
+  const fromLabel = dayMonthFormatter.format(fromParsed);
+  const toLabel = dayMonthFormatter.format(toParsed);
+  const fromYear = fromParsed.getFullYear();
+  const toYear = toParsed.getFullYear();
+
+  if (fromYear === toYear) {
+    return `с ${fromLabel} по ${toLabel} ${toYear}`;
+  }
+
+  return `с ${fromLabel} ${fromYear} по ${toLabel} ${toYear}`;
+}
+
 export function getCalendarDays(month: Date) {
   const year = month.getFullYear();
   const monthIndex = month.getMonth();

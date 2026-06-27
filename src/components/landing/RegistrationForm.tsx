@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
 import { ArrowButton } from "@/components/landing/ArrowButton";
 import { SectionLabel } from "@/components/landing/SectionLabel";
@@ -21,7 +22,7 @@ type RegistrationResult = {
 
 type RegistrationFormProps = {
   dealers: DealerOption[];
-  giveawayDateLabel: string;
+  testDrivePeriodLabel: string;
 };
 
 const fieldClassName = "field-input";
@@ -30,7 +31,7 @@ const fieldLabelClassName =
 
 export function RegistrationForm({
   dealers,
-  giveawayDateLabel,
+  testDrivePeriodLabel,
 }: RegistrationFormProps) {
   const registrationBenefits = useMemo(
     () => [
@@ -40,7 +41,7 @@ export function RegistrationForm({
       },
       {
         icon: LANDING_IMAGES.registerBenefit2,
-        text: "QR-код придёт сразу после заявки",
+        text: "Получите QR-код сразу после заполнения заявки",
       },
       {
         icon: LANDING_IMAGES.registerBenefit3,
@@ -48,10 +49,10 @@ export function RegistrationForm({
       },
       {
         icon: LANDING_IMAGES.registerBenefit4,
-        text: `Розыгрыш — ${giveawayDateLabel}`,
+        text: testDrivePeriodLabel,
       },
     ],
-    [giveawayDateLabel],
+    [testDrivePeriodLabel],
   );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -143,9 +144,9 @@ export function RegistrationForm({
 
   if (result) {
     return (
-      <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 lg:pt-28 lg:pb-20">
+      <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 md:pt-28 md:pb-20">
         <div className="section-container">
-          <div className="mx-auto max-w-xl rounded-[50px] bg-surface p-8 text-center lg:p-10">
+          <div className="mx-auto max-w-xl rounded-[50px] bg-surface p-8 text-center md:p-10">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-icon text-2xl text-brand">
               ✓
             </div>
@@ -189,37 +190,37 @@ export function RegistrationForm({
   }
 
   return (
-    <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 lg:pt-28 lg:pb-20">
+    <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 md:pt-28 md:pb-20">
       <div className="section-container">
         <SectionLabel variant="on-brand">Регистрация</SectionLabel>
-        <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-[54px] lg:leading-[1.1]">
-          Получите QR-код
+        <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-[54px] md:leading-[1.1]">
+          Запишитесь сейчас
           <br />
-          и запишитесь сейчас
+          и получите QR-код
         </h2>
 
-        <div className="mt-10 rounded-[60px] bg-brand-soft p-5 sm:p-6 lg:mt-12 lg:p-8">
-          <div className="grid gap-8 lg:grid-cols-[1fr_1.08fr] lg:items-stretch lg:gap-6 xl:gap-8">
-            <div className="flex h-full min-h-0 flex-col text-white lg:py-2 lg:pr-2">
+        <div className="mt-10 rounded-[60px] bg-brand-soft p-5 sm:p-6 md:mt-12 md:p-8">
+          <div className="grid gap-8 md:grid-cols-[1fr_1.08fr] md:items-stretch md:gap-6 lg:gap-8">
+            <div className="flex h-full min-h-0 flex-col text-white md:py-2 md:pr-2">
               <div className="shrink-0">
-                <p className="text-2xl px-5 font-semibold leading-snug sm:text-[32px] sm:px-6 lg:px-7 lg:text-[40px] lg:leading-[1.2]">
-                  Один тест-драйв —{" "}
+                <p className="px-5 text-2xl font-semibold leading-snug sm:px-6 sm:text-[32px] md:px-7 md:text-[40px] md:leading-[1.2]">
+                  Тест-драйв KGM Torres —{" "}
                   <span className="text-[#BA99FF]">шанс выиграть</span> садовую
                   технику Champion
                 </p>
               </div>
 
               <div className="mt-auto flex flex-col">
-                <p className="mb-8 px-5 text-[15px] leading-relaxed text-white/45 sm:px-6 lg:px-7 lg:text-base">
+                <p className="mb-8 px-5 text-[15px] leading-relaxed text-white/45 sm:px-6 md:px-7 md:text-base">
                   Пройдите тест-драйв KGM Torres
                   <br />
                   и выиграйте садовую технику Champion
                 </p>
 
-                <div className="rounded-[50px] bg-white/5 p-5 sm:p-6 lg:p-7">
+                <div className="rounded-[50px] bg-white/5 p-5 sm:p-6 md:p-7">
                   <ul className="space-y-4">
                     {registrationBenefits.map((benefit) => (
-                      <li key={benefit.text} className="flex items-center gap-3 text-base text-white lg:text-lg">
+                      <li key={benefit.text} className="flex items-center gap-3 text-base text-white md:text-lg">
                         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] bg-[rgba(84,40,143,0.8)]">
                           <Image
                             src={benefit.icon}
@@ -237,7 +238,7 @@ export function RegistrationForm({
               </div>
             </div>
 
-            <div className="h-full rounded-[50px] bg-surface p-6 sm:p-8 lg:p-10">
+            <div className="h-full rounded-[50px] bg-surface p-6 sm:p-8 md:p-10">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 sm:grid-cols-2">
                 <div>
@@ -381,9 +382,10 @@ export function RegistrationForm({
                   className="mt-1 h-6 w-6 rounded-md border-2 border-border"
                 />
                 <span>
-                  Я соглашаюсь с{" "}
-                  <span className="text-brand">обработкой персональных данных</span>{" "}
-                  в соответствии с Политикой конфиденциальности
+                  Я соглашаюсь с обработкой персональных данных в соответствии с{" "}
+                  <Link href="/privacy" className="text-brand hover:underline">
+                    Политикой конфиденциальности
+                  </Link>
                 </span>
               </label>
 
@@ -401,7 +403,7 @@ export function RegistrationForm({
                 />
                 <span>
                   Я согласен на получение рекламной и информационной рассылки
-                  (email, SMS, push) от АО «РЭКС Моторс»
+                  (email, SMS) от АО «РЭКС Моторс»
                 </span>
               </label>
 
@@ -419,7 +421,7 @@ export function RegistrationForm({
               )}
 
               <ArrowButton type="submit" disabled={loading} className="text-[19px]">
-                {loading ? "Отправка..." : "Получить QR-код и записаться"}
+                {loading ? "Отправка..." : "Записаться и получить QR-код"}
               </ArrowButton>
             </form>
             </div>
