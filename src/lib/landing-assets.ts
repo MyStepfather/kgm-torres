@@ -4,6 +4,7 @@ export const LANDING_IMAGES = {
   logoKgmWhite: "/images/landing/logo-kgm-white.png",
   logoChampionWhite: "/images/landing/logo-champion-white.png",
   aboutExterior: "/images/landing/about-exterior.jpg",
+  bigExterior: "/images/landing/big-exterior.png",
   aboutInterior: "/images/landing/about-interior.jpg",
   aboutMotion: "/images/landing/about-motion.jpg",
   prize1: "/images/landing/prize-1.jpg",

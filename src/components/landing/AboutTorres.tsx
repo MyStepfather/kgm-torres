@@ -23,31 +23,29 @@ export function AboutTorres() {
     <section id="about" className="pt-16 pb-10 lg:pt-20 lg:pb-16">
       <div className="section-container space-y-5">
         <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
-          <div className="relative min-h-[320px] overflow-hidden rounded-[50px] border border-border lg:min-h-[543px]">
+          <div className="relative h-[320px] overflow-hidden rounded-[50px] border border-border lg:h-[407px]">
             <Image
-              src={LANDING_IMAGES.aboutExterior}
+              src={LANDING_IMAGES.bigExterior}
               alt="KGM Torres экстерьер"
               fill
               className="object-cover"
               sizes="(max-width: 1024px) 100vw, 60vw"
             />
             <span className="brand-badge absolute left-7 top-7">KGM Torres</span>
-            <p className="descriptor absolute bottom-6 left-7 text-white/70">
-              Экстерьер
-            </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-[50px] border border-border bg-brand p-8 lg:min-h-[543px] lg:p-10">
-            <div className="pointer-events-none absolute -left-32 -top-32 h-[690px] w-[866px] rounded-full bg-accent/20 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-20 -right-10 h-[295px] w-[304px] rounded-full bg-accent/30 blur-2xl" />
+          <div className="relative flex h-[320px] flex-col justify-between overflow-hidden rounded-[50px] border border-border bg-brand p-6 lg:h-[407px] lg:p-8">
+            <div className="pointer-events-none absolute -left-16 -top-16 h-[320px] w-[320px] rounded-full bg-white/[0.04] lg:h-[690px] lg:w-[866px]" />
+            <div className="pointer-events-none absolute bottom-[calc(var(--spacing)*-40)] right-[calc(var(--spacing)*-21)] h-[295px] w-[304px] rounded-full bg-white/[0.04]" />
 
-            <h2 className="relative max-w-xl text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-[40px]">
-              Дизайн, продиктованный движением. Технологии для любых дорог.
+            <h2 className="relative max-w-xl text-[30px] font-semibold leading-tight text-white">
+              Надежный корейский автомобиль с официальной гарантией производителя
+              сроком 5 лет.
             </h2>
 
-            <div className="relative mt-auto pt-16 lg:absolute lg:bottom-10 lg:left-10 lg:pt-0">
-              <ArrowButton href="#register" variant="white">
-                Записаться на тест-драйв
+            <div className="relative mt-8 w-full">
+              <ArrowButton href="#register" variant="white" className="w-full">
+                Ознакомиться
               </ArrowButton>
             </div>
           </div>
