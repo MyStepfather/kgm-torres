@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import { ArrowButton } from "@/components/landing/ArrowButton";
 import { SectionLabel } from "@/components/landing/SectionLabel";
 import { DatePicker } from "@/components/ui/DatePicker";
-import { GIVEAWAY_DATE } from "@/lib/constants";
 import type { DealerOption } from "@/lib/dealers";
 import { formatTestDriveDate } from "@/lib/dates";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
@@ -27,35 +26,39 @@ type RegistrationResult = {
 type RegistrationFormProps = {
   dealers: DealerOption[];
   testDriveSchedule: TestDriveSchedule;
+  giveawayDateLabel: string;
 };
 
 const fieldClassName = "field-input";
 const fieldLabelClassName =
   "mb-2 block text-[15px] font-medium uppercase tracking-[0.08em] text-muted";
 
-const registrationBenefits = [
-  {
-    icon: LANDING_IMAGES.registerBenefit1,
-    text: "Регистрация занимает меньше минуты",
-  },
-  {
-    icon: LANDING_IMAGES.registerBenefit2,
-    text: "QR-код придёт сразу после заявки",
-  },
-  {
-    icon: LANDING_IMAGES.registerBenefit3,
-    text: "Ваши данные в безопасности",
-  },
-  {
-    icon: LANDING_IMAGES.registerBenefit4,
-    text: `Розыгрыш — ${GIVEAWAY_DATE}`,
-  },
-] as const;
-
 export function RegistrationForm({
   dealers,
   testDriveSchedule,
+  giveawayDateLabel,
 }: RegistrationFormProps) {
+  const registrationBenefits = useMemo(
+    () => [
+      {
+        icon: LANDING_IMAGES.registerBenefit1,
+        text: "Регистрация занимает меньше минуты",
+      },
+      {
+        icon: LANDING_IMAGES.registerBenefit2,
+        text: "QR-код придёт сразу после заявки",
+      },
+      {
+        icon: LANDING_IMAGES.registerBenefit3,
+        text: "Ваши данные в безопасности",
+      },
+      {
+        icon: LANDING_IMAGES.registerBenefit4,
+        text: `Розыгрыш — ${giveawayDateLabel}`,
+      },
+    ],
+    [giveawayDateLabel],
+  );
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<RegistrationResult | null>(null);

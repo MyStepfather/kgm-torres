@@ -1,3 +1,10 @@
+import { formatTestDriveDate } from "@/lib/dates";
+import {
+  getDefaultGiveawayDate,
+  GIVEAWAY_DATE_KEY,
+  normalizeGiveawayDateSetting,
+  type GiveawayDateSetting,
+} from "@/lib/giveaway-settings";
 import { prisma } from "@/lib/prisma";
 import {
   getDefaultTestDriveSchedule,
@@ -43,4 +50,50 @@ export async function saveTestDriveSchedule(
   });
 
   return normalized;
+}
+
+export async function getGiveawayDateSetting(): Promise<GiveawayDateSetting> {
+  const existing = await prisma.setting.findUnique({
+    where: { key: GIVEAWAY_DATE_KEY },
+  });
+
+  if (existing) {
+    return normalizeGiveawayDateSetting(
+      existing.value as Partial<GiveawayDateSetting>,
+    );
+  }
+
+  const defaultSetting = getDefaultGiveawayDate();
+  await prisma.setting.create({
+    data: {
+      key: GIVEAWAY_DATE_KEY,
+      value: defaultSetting,
+    },
+  });
+
+  return defaultSetting;
+}
+
+export async function saveGiveawayDateSetting(
+  setting: GiveawayDateSetting,
+): Promise<GiveawayDateSetting> {
+  const normalized = normalizeGiveawayDateSetting(setting);
+
+  await prisma.setting.upsert({
+    where: { key: GIVEAWAY_DATE_KEY },
+    create: {
+      key: GIVEAWAY_DATE_KEY,
+      value: normalized,
+    },
+    update: {
+      value: normalized,
+    },
+  });
+
+  return normalized;
+}
+
+export async function getGiveawayDateLabel() {
+  const { date } = await getGiveawayDateSetting();
+  return formatTestDriveDate(date);
 }

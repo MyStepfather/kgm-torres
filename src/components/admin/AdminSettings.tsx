@@ -8,6 +8,7 @@ import {
   TEST_DRIVE_MAX_DATE,
   toIsoDate,
 } from "@/lib/dates";
+import type { GiveawayDateSetting } from "@/lib/giveaway-settings";
 import {
   isDateInRange,
   type TestDriveSchedule,
@@ -17,6 +18,9 @@ const maxScheduleIso = toIsoDate(startOfDay(TEST_DRIVE_MAX_DATE));
 
 export function AdminSettings() {
   const [schedule, setSchedule] = useState<TestDriveSchedule | null>(null);
+  const [giveawayDate, setGiveawayDate] = useState<GiveawayDateSetting | null>(
+    null,
+  );
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -24,9 +28,14 @@ export function AdminSettings() {
   const [newExclusion, setNewExclusion] = useState("");
 
   useEffect(() => {
-    fetch("/api/admin/settings/test-drive-schedule")
-      .then((res) => res.json())
-      .then((data) => setSchedule(data))
+    Promise.all([
+      fetch("/api/admin/settings/test-drive-schedule").then((res) => res.json()),
+      fetch("/api/admin/settings/giveaway-date").then((res) => res.json()),
+    ])
+      .then(([scheduleData, giveawayData]) => {
+        setSchedule(scheduleData);
+        setGiveawayDate(giveawayData);
+      })
       .catch(() => setError("Не удалось загрузить настройки"))
       .finally(() => setLoading(false));
   }, []);
@@ -65,26 +74,40 @@ export function AdminSettings() {
 
   async function handleSave(event: React.FormEvent) {
     event.preventDefault();
-    if (!schedule) return;
+    if (!schedule || !giveawayDate) return;
 
     setSaving(true);
     setError("");
     setSuccess("");
 
     try {
-      const response = await fetch("/api/admin/settings/test-drive-schedule", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(schedule),
-      });
+      const [scheduleResponse, giveawayResponse] = await Promise.all([
+        fetch("/api/admin/settings/test-drive-schedule", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(schedule),
+        }),
+        fetch("/api/admin/settings/giveaway-date", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(giveawayDate),
+        }),
+      ]);
 
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error ?? "Не удалось сохранить");
+      const scheduleData = await scheduleResponse.json();
+      const giveawayData = await giveawayResponse.json();
+
+      if (!scheduleResponse.ok) {
+        throw new Error(scheduleData.error ?? "Не удалось сохранить период тест-драйва");
       }
 
-      setSchedule(data);
-      setSuccess("Настройки тест-драйва сохранены");
+      if (!giveawayResponse.ok) {
+        throw new Error(giveawayData.error ?? "Не удалось сохранить дату розыгрыша");
+      }
+
+      setSchedule(scheduleData);
+      setGiveawayDate(giveawayData);
+      setSuccess("Настройки сохранены");
     } catch (saveError) {
       setError(
         saveError instanceof Error ? saveError.message : "Не удалось сохранить",
@@ -98,7 +121,7 @@ export function AdminSettings() {
     return <p className="mt-8 text-muted">Загрузка настроек...</p>;
   }
 
-  if (!schedule) {
+  if (!schedule || !giveawayDate) {
     return (
       <p className="mt-8 text-muted">Не удалось загрузить настройки</p>
     );
@@ -109,6 +132,38 @@ export function AdminSettings() {
       {error && <p className="alert-error">{error}</p>}
 
       {success && <p className="alert-success">{success}</p>}
+
+      <div className="card-surface p-8">
+        <h2 className="text-lg font-semibold">Дата розыгрыша</h2>
+        <p className="mt-2 text-sm text-muted">
+          В этот день в админке станет доступна кнопка «Провести розыгрыш».
+          Дата также отображается на лендинге.
+        </p>
+
+        <div className="mt-6 max-w-xs">
+          <label
+            htmlFor="giveaway-date"
+            className="mb-2 block text-sm text-muted"
+          >
+            Дата розыгрыша *
+          </label>
+          <DatePicker
+            id="giveaway-date"
+            required
+            value={giveawayDate.date}
+            onChange={(date) =>
+              setGiveawayDate((prev) => (prev ? { ...prev, date } : prev))
+            }
+            placeholder="Выберите дату"
+            showRangeFooter={false}
+          />
+          {giveawayDate.date && (
+            <p className="mt-2 text-sm text-muted">
+              На сайте: {formatTestDriveDate(giveawayDate.date)}
+            </p>
+          )}
+        </div>
+      </div>
 
       <div className="card-surface p-8">
         <h2 className="text-lg font-semibold">Период тест-драйва</h2>

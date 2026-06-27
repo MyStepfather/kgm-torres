@@ -192,3 +192,8 @@ body {
 .app-divider {
   @apply divide-y divide-border;
 }
+
+.hero-section {
+  height: 100svh;
+  min-height: 100vh;
+}

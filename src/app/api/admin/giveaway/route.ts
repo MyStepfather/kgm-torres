@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { formatTestDriveDate } from "@/lib/dates";
-import { isGiveawayPeriodEnded } from "@/lib/giveaway";
+import { isGiveawayAvailable } from "@/lib/giveaway";
 import { prisma } from "@/lib/prisma";
-import { getTestDriveSchedule } from "@/lib/settings";
+import { getGiveawayDateSetting } from "@/lib/settings";
 
 const WINNER_COUNT = 3;
 
@@ -19,8 +19,8 @@ function pickRandomWinners<T>(items: T[], count: number) {
 }
 
 export async function GET() {
-  const schedule = await getTestDriveSchedule();
-  const giveawayAvailable = isGiveawayPeriodEnded(schedule);
+  const giveawaySetting = await getGiveawayDateSetting();
+  const giveawayAvailable = isGiveawayAvailable(giveawaySetting.date);
 
   const [runs, eligibleCount] = await Promise.all([
     prisma.giveawayRun.findMany({
@@ -57,19 +57,19 @@ export async function GET() {
     runs,
     eligibleCount,
     giveawayAvailable,
-    testDriveEndsAt: schedule.dateTo,
-    testDriveEndsAtLabel: formatTestDriveDate(schedule.dateTo),
+    giveawayDate: giveawaySetting.date,
+    giveawayDateLabel: formatTestDriveDate(giveawaySetting.date),
   });
 }
 
 export async function POST() {
   try {
-    const schedule = await getTestDriveSchedule();
+    const giveawaySetting = await getGiveawayDateSetting();
 
-    if (!isGiveawayPeriodEnded(schedule)) {
+    if (!isGiveawayAvailable(giveawaySetting.date)) {
       return NextResponse.json(
         {
-          error: `Розыгрыш будет доступен после окончания периода тест-драйва (${formatTestDriveDate(schedule.dateTo)})`,
+          error: `Розыгрыш будет доступен с ${formatTestDriveDate(giveawaySetting.date)}`,
         },
         { status: 400 },
       );

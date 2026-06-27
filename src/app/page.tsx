@@ -6,14 +6,15 @@ import { HowToParticipate } from "@/components/landing/HowToParticipate";
 import { Prizes } from "@/components/landing/Prizes";
 import { RegistrationFormClient } from "@/components/landing/RegistrationFormClient";
 import { getDealers } from "@/lib/dealers";
-import { getTestDriveSchedule } from "@/lib/settings";
+import { getGiveawayDateLabel, getTestDriveSchedule } from "@/lib/settings";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [dealers, testDriveSchedule] = await Promise.all([
+  const [dealers, testDriveSchedule, giveawayDateLabel] = await Promise.all([
     getDealers(),
     getTestDriveSchedule(),
+    getGiveawayDateLabel(),
   ]);
 
   return (
@@ -27,6 +28,7 @@ export default async function HomePage() {
         <RegistrationFormClient
           dealers={dealers}
           testDriveSchedule={testDriveSchedule}
+          giveawayDateLabel={giveawayDateLabel}
         />
       </main>
       <Footer />

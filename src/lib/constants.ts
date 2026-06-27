@@ -1,5 +1,3 @@
-export const GIVEAWAY_DATE = "30 сентября 2026";
-
 export const PRIZES = [
   {
     place: 1,

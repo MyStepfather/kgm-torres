@@ -111,7 +111,7 @@ export function AdminDashboard() {
   const [sendingWinnerEmails, setSendingWinnerEmails] = useState(false);
   const [eligibleCount, setEligibleCount] = useState(0);
   const [giveawayAvailable, setGiveawayAvailable] = useState(false);
-  const [testDriveEndsAtLabel, setTestDriveEndsAtLabel] = useState("");
+  const [giveawayDateLabel, setGiveawayDateLabel] = useState("");
 
   const loadDealers = useCallback(async () => {
     const response = await fetch("/api/admin/dealers");
@@ -140,7 +140,7 @@ export function AdminDashboard() {
     setGiveawayRuns(data.runs);
     setEligibleCount(data.eligibleCount);
     setGiveawayAvailable(Boolean(data.giveawayAvailable));
-    setTestDriveEndsAtLabel(data.testDriveEndsAtLabel ?? "");
+    setGiveawayDateLabel(data.giveawayDateLabel ?? "");
   }, []);
 
   const loadData = useCallback(async () => {
@@ -593,10 +593,9 @@ export function AdminDashboard() {
                 Доступно для розыгрыша: <strong>{eligibleCount}</strong>{" "}
                 участников
               </p>
-              {!giveawayAvailable && testDriveEndsAtLabel && (
+              {!giveawayAvailable && giveawayDateLabel && (
                 <p className="mt-2 text-sm text-muted">
-                  Кнопка станет доступна после окончания периода тест-драйва (
-                  {testDriveEndsAtLabel}).
+                  Кнопка станет доступна с даты розыгрыша ({giveawayDateLabel}).
                 </p>
               )}
               <button
