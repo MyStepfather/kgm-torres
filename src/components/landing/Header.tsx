@@ -90,14 +90,14 @@ export function Header({ solid = false }: HeaderProps) {
 
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 bg-transparent pt-4 transition-all duration-300 ease-in-out">
+      <header className="fixed inset-x-0 top-0 z-50 bg-transparent pt-3 transition-all duration-300 ease-in-out sm:pt-4">
         <div className="section-container">
           <div
-            className={`grid h-[70px] grid-cols-[auto_1fr_auto] items-center px-3 transition-all duration-300 ease-in-out md:grid-cols-[1fr_auto_1fr] ${
+            className={`grid h-[52px] grid-cols-[auto_1fr_auto] items-center px-2 transition-all duration-300 ease-in-out sm:h-[70px] sm:px-3 md:grid-cols-[1fr_auto_1fr] ${
               isSolid ? "rounded-full bg-black" : ""
             }`}
           >
-            <div className="relative flex h-[52px] shrink-0 items-center justify-self-start">
+            <div className="relative flex h-[40px] shrink-0 items-center justify-self-start sm:h-[52px]">
               <div
                 aria-hidden
                 className={`absolute inset-0 rounded-full bg-black/30 backdrop-blur-md transition-all duration-300 ease-in-out ${
@@ -107,13 +107,13 @@ export function Header({ solid = false }: HeaderProps) {
                 }`}
               />
 
-              <div className="relative flex h-full items-center px-8 sm:px-10">
+              <div className="relative flex h-full items-center px-5 sm:px-10">
                 <Image
                   src={LANDING_IMAGES.logoKgmWhite}
                   alt="KGM"
                   width={252}
                   height={54}
-                  className="h-[26px] w-auto sm:h-[28px]"
+                  className="h-[20px] w-auto sm:h-[28px]"
                   priority
                 />
               </div>
@@ -144,7 +144,7 @@ export function Header({ solid = false }: HeaderProps) {
               aria-controls="header-mobile-menu"
               aria-label={menuOpen ? "Закрыть меню" : "Открыть меню"}
               onClick={toggleMenu}
-              className="inline-flex h-[52px] w-[72px] shrink-0 items-center justify-center justify-self-end rounded-full bg-surface transition hover:bg-white sm:hidden"
+              className="inline-flex h-[40px] w-[80px] shrink-0 items-center justify-center justify-self-end rounded-full bg-surface transition hover:bg-white sm:hidden"
             >
               <BurgerIcon open={menuOpen} />
             </button>
@@ -169,13 +169,13 @@ export function Header({ solid = false }: HeaderProps) {
         />
 
         <div
-          className={`section-container absolute inset-x-0 top-[98px] transition-[opacity,transform] duration-300 ease-out ${
+          className={`section-container absolute inset-x-0 top-[72px] transition-[opacity,transform] duration-300 ease-out ${
             menuOpen
               ? "translate-y-0 opacity-100"
               : "-translate-y-3 opacity-0"
           }`}
         >
-          <nav className="overflow-hidden rounded-[40px] border border-white/20 bg-surface/95 p-6 shadow-[0_24px_60px_rgba(46,44,79,0.18)] backdrop-blur-md">
+          <nav className="overflow-hidden rounded-[20px] border border-white/20 bg-surface/95 p-6 shadow-[0_24px_60px_rgba(46,44,79,0.18)] backdrop-blur-md">
             <ul className="flex flex-col gap-1">
               {navLinks.map((link, index) => (
                 <li key={link.href}>

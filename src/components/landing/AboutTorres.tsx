@@ -23,7 +23,7 @@ export function AboutTorres() {
     <section id="about" className="pt-16 pb-10 md:pt-20 md:pb-16">
       <div className="section-container space-y-5">
         <div className="grid gap-5 sm:grid-cols-[1.4fr_1fr]">
-          <div className="relative order-2 h-[245px] overflow-hidden rounded-[50px] border border-border sm:order-1 sm:h-[288px] md:h-[407px] lg:h-[543px]">
+          <div className="relative order-2 h-[245px] overflow-hidden rounded-[20px] border border-border sm:order-1 sm:h-[288px] sm:rounded-[50px] md:h-[407px] lg:h-[543px]">
             <Image
               src={LANDING_IMAGES.bigExterior}
               alt="KGM Torres экстерьер"
@@ -34,7 +34,7 @@ export function AboutTorres() {
             <span className="brand-badge absolute left-7 top-7">KGM Torres</span>
           </div>
 
-          <div className="relative order-1 flex h-[289px] flex-col justify-between overflow-hidden rounded-[50px] border border-border bg-brand p-6 sm:order-2 sm:h-[289px] md:h-[407px] md:p-8 lg:h-[543px]">
+          <div className="relative order-1 flex h-[289px] flex-col justify-between overflow-hidden rounded-[20px] border border-border bg-brand p-6 sm:order-2 sm:h-[289px] sm:rounded-[50px] md:h-[407px] md:p-8 lg:h-[543px]">
             <div className="pointer-events-none absolute -left-16 -top-16 h-[320px] w-[320px] rounded-full bg-white/[0.04] md:h-[517px] md:w-[650px] lg:h-[690px] lg:w-[866px]" />
             <div className="pointer-events-none absolute bottom-[calc(var(--spacing)*-40)] right-[calc(var(--spacing)*-21)] h-[221px] w-[228px] rounded-full bg-white/[0.04] md:h-[295px] md:w-[304px]" />
 
@@ -55,7 +55,7 @@ export function AboutTorres() {
           {TORRES_SPECS.map((spec) => (
             <div
               key={spec.label}
-              className="relative overflow-hidden rounded-[50px] border border-border bg-surface p-6 md:p-8"
+              className="relative overflow-hidden rounded-[20px] border border-border bg-surface p-6 sm:rounded-[50px] md:p-8"
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-accent-icon md:h-14 md:w-14">
                 <SpecIcon type={spec.icon} />
@@ -70,7 +70,7 @@ export function AboutTorres() {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-[1fr_2fr]">
-          <div className="relative min-h-[245px] overflow-hidden rounded-[50px] border border-border sm:min-h-[245px] md:min-h-[245px] lg:min-h-[327px]">
+          <div className="relative min-h-[245px] overflow-hidden rounded-[20px] border border-border sm:min-h-[245px] sm:rounded-[50px] md:min-h-[245px] lg:min-h-[327px]">
             <Image
               src={LANDING_IMAGES.aboutInterior}
               alt="KGM Torres интерьер"
@@ -84,7 +84,7 @@ export function AboutTorres() {
             </p>
           </div>
 
-          <div className="relative min-h-[245px] overflow-hidden rounded-[50px] border border-border sm:min-h-[245px] md:min-h-[245px] lg:min-h-[327px]">
+          <div className="relative min-h-[245px] overflow-hidden rounded-[20px] border border-border sm:min-h-[245px] sm:rounded-[50px] md:min-h-[245px] lg:min-h-[327px]">
             <Image
               src={LANDING_IMAGES.aboutMotion}
               alt="KGM Torres динамика"

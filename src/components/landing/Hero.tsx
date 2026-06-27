@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { ArrowButton } from "@/components/landing/ArrowButton";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
@@ -6,14 +7,28 @@ type HeroProps = {
   testDrivePeriodLabel: string;
 };
 
+const heroBadgeClassName =
+  "w-fit rounded-full border border-[rgba(76,30,126,0.5)] bg-[rgba(76,30,126,0.7)] px-4 py-1.5 backdrop-blur-sm md:px-5 md:py-2";
+
+const heroBadgeTextClassName =
+  "flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white md:text-sm";
+
+function HeroBadge({ children }: { children: ReactNode }) {
+  return (
+    <div className={heroBadgeClassName}>
+      <span className={heroBadgeTextClassName}>{children}</span>
+    </div>
+  );
+}
+
 function HeroTestDriveCard({ stacked = false }: { stacked?: boolean }) {
   return (
-    <div className="rounded-[50px] border border-white/30 bg-surface p-4">
+    <div className="rounded-[20px] border border-white/30 bg-surface p-4 sm:rounded-[50px]">
       <div
         className={
           stacked
-            ? "relative aspect-[355/191] w-full overflow-hidden rounded-[40px]"
-            : "relative h-[191px] w-full overflow-hidden rounded-[40px]"
+            ? "relative aspect-[355/191] w-full overflow-hidden rounded-[16px] sm:rounded-[40px]"
+            : "relative h-[191px] w-full overflow-hidden rounded-[16px] sm:rounded-[40px]"
         }
       >
         <Image
@@ -46,8 +61,8 @@ function HeroTestDriveCard({ stacked = false }: { stacked?: boolean }) {
 export function Hero({ testDrivePeriodLabel }: HeroProps) {
   return (
     <>
-      <section className="relative h-svh min-h-svh overflow-hidden rounded-b-[80px]">
-        <div className="absolute inset-0 overflow-hidden rounded-b-[80px]">
+      <section className="relative h-svh min-h-svh overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
+        <div className="absolute inset-0 overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
           <Image
             src={LANDING_IMAGES.heroBg}
             alt=""
@@ -62,16 +77,27 @@ export function Hero({ testDrivePeriodLabel }: HeroProps) {
           />
         </div>
 
-        <div className="section-container relative z-10 flex h-full min-h-0 flex-col pb-10 pt-28 sm:grid sm:h-full sm:grid-rows-[minmax(0,1fr)_auto] sm:gap-6 sm:pb-10 md:pb-12 md:pt-28 lg:pt-32">
+        <div className="section-container relative z-10 flex h-full min-h-0 flex-col pb-10 pt-24 sm:grid sm:h-full sm:grid-rows-[minmax(0,1fr)_auto] sm:gap-6 sm:pb-10 sm:pt-28 md:pb-12 md:pt-28 lg:pt-32">
           <div className="flex min-h-0 flex-col items-start justify-start pt-6 md:pt-8 lg:pt-16">
-            <div className="w-fit rounded-full border border-[rgba(76,30,126,0.5)] bg-[rgba(76,30,126,0.7)] px-4 py-1.5 backdrop-blur-sm md:px-5 md:py-2">
-              <div className="flex flex-wrap items-center gap-3 md:gap-4">
-                <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white md:text-sm">
-                  <span className="h-1.5 w-1.5 rounded-sm bg-accent" />
+            <div className="flex flex-col items-start gap-2 sm:hidden">
+              <HeroBadge>
+                <span className="h-1.5 w-1.5 shrink-0 rounded-sm bg-accent" />
+                {testDrivePeriodLabel}
+              </HeroBadge>
+              <HeroBadge>
+                <span className="h-1.5 w-1.5 shrink-0 rounded-sm bg-accent" />
+                Розыгрыш 3 призов
+              </HeroBadge>
+            </div>
+
+            <div className={`hidden sm:block ${heroBadgeClassName}`}>
+              <div className="flex items-center gap-3 md:gap-4">
+                <span className={heroBadgeTextClassName}>
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-sm bg-accent" />
                   {testDrivePeriodLabel}
                 </span>
-                <span className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.08em] text-white md:text-sm">
-                  <span className="h-1.5 w-1.5 rounded-sm bg-accent" />
+                <span className={heroBadgeTextClassName}>
+                  <span className="h-1.5 w-1.5 shrink-0 rounded-sm bg-accent" />
                   Розыгрыш 3 призов
                 </span>
               </div>

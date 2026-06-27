@@ -89,7 +89,31 @@ body {
 }
 
 .field-input {
-  @apply w-full rounded-[20px] border border-border bg-surface-input px-5 py-4 text-lg text-brand outline-none transition placeholder:text-muted-light focus:border-brand;
+  @apply w-full rounded-[20px] border border-border bg-surface-input px-4 py-3 text-[15px] leading-snug text-brand outline-none transition placeholder:text-muted-light focus:border-brand sm:px-5 sm:py-4 sm:text-lg sm:leading-normal;
+}
+
+.field-select {
+  @apply w-full appearance-none rounded-[20px] border border-border bg-surface-input py-3 pr-12 pl-4 text-[15px] leading-snug text-brand outline-none transition placeholder:text-muted-light focus:border-brand sm:py-4 sm:pr-14 sm:pl-5 sm:text-lg sm:leading-normal;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232e2c4f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.25rem center;
+  background-size: 1.125rem;
+}
+
+.field-select option {
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 60rem) {
+  .field-select {
+    background-position: right 1.5rem center;
+    background-size: 1.25rem;
+  }
+
+  .field-select option {
+    font-size: 1.125rem;
+  }
 }
 
 .card-surface {
@@ -110,6 +134,14 @@ body {
 
 .app-field {
   @apply w-full rounded-[20px] border border-border bg-surface-input px-4 py-3 text-base text-brand outline-none transition placeholder:text-muted-light focus:border-brand;
+}
+
+.app-field-select {
+  @apply w-full appearance-none rounded-[20px] border border-border bg-surface-input py-3 pr-12 pl-4 text-base text-brand outline-none transition placeholder:text-muted-light focus:border-brand;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232e2c4f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1.5rem center;
+  background-size: 1.25rem;
 }
 
 .app-tab-active {

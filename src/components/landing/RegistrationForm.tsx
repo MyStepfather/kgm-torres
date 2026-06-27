@@ -26,8 +26,15 @@ type RegistrationFormProps = {
 };
 
 const fieldClassName = "field-input";
+const selectClassName = "field-select";
 const fieldLabelClassName =
-  "mb-2 block text-[15px] font-medium uppercase tracking-[0.08em] text-muted";
+  "mb-1.5 block text-xs font-medium uppercase tracking-[0.08em] text-muted sm:mb-2 sm:text-[13px] md:text-[15px]";
+
+const checkboxLabelClassName =
+  "flex items-start gap-3 text-sm leading-snug text-muted sm:gap-4 sm:text-base md:text-lg";
+
+const checkboxInputClassName =
+  "mt-0.5 h-5 w-5 shrink-0 rounded-md border-2 border-border sm:mt-1 sm:h-6 sm:w-6";
 
 export function RegistrationForm({
   dealers,
@@ -144,29 +151,29 @@ export function RegistrationForm({
 
   if (result) {
     return (
-      <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 md:pt-28 md:pb-20">
+      <section id="register" className="rounded-t-[40px] bg-brand pt-20 pb-16 sm:rounded-t-[80px] md:pt-28 md:pb-20">
         <div className="section-container">
-          <div className="mx-auto max-w-xl rounded-[50px] bg-surface p-8 text-center md:p-10">
+          <div className="mx-auto max-w-xl rounded-[20px] bg-surface p-8 text-center sm:rounded-[50px] md:p-10">
             <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-accent-icon text-2xl text-brand">
               ✓
             </div>
-            <h2 className="mt-4 text-3xl font-semibold text-brand">
+            <h2 className="mt-4 text-2xl font-semibold text-brand sm:text-3xl">
               {result.isDuplicate
                 ? "Вы уже зарегистрированы"
                 : "Вы записаны на тест-драйв!"}
             </h2>
-            <p className="mt-2 text-lg text-muted">
+            <p className="mt-2 text-base text-muted sm:text-lg">
               {result.isDuplicate
                 ? "Ваш QR-код"
                 : `Покажите QR-код дилеру при визите в ${result.dealer.name}, ${result.dealer.city}`}
             </p>
-            <p className="mt-2 text-base text-muted">
+            <p className="mt-2 text-sm text-muted sm:text-base">
               {result.isDuplicate
                 ? `Письмо с QR-кодом было отправлено на ${form.email} при регистрации`
                 : `QR-код также отправлен на почту ${form.email}`}
             </p>
 
-            <div className="mt-6 inline-block rounded-[28px] border border-border bg-white p-4">
+            <div className="mt-6 inline-block rounded-[16px] border border-border bg-white p-4 sm:rounded-[28px]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={result.qrDataUrl}
@@ -190,7 +197,7 @@ export function RegistrationForm({
   }
 
   return (
-    <section id="register" className="rounded-t-[80px] bg-brand pt-20 pb-16 md:pt-28 md:pb-20">
+    <section id="register" className="rounded-t-[40px] bg-brand pt-20 pb-16 sm:rounded-t-[80px] md:pt-28 md:pb-20">
       <div className="section-container">
         <SectionLabel variant="on-brand">Регистрация</SectionLabel>
         <h2 className="mt-5 max-w-3xl text-3xl font-semibold leading-tight text-white sm:text-4xl md:text-[54px] md:leading-[1.1]">
@@ -199,7 +206,7 @@ export function RegistrationForm({
           и получите QR-код
         </h2>
 
-        <div className="mt-10 rounded-[60px] bg-brand-soft p-5 sm:p-6 md:mt-12 md:p-8">
+        <div className="mt-10 rounded-[32px] bg-brand-soft p-5 sm:rounded-[60px] sm:p-6 md:mt-12 md:p-8">
           <div className="grid gap-8 md:grid-cols-[1fr_1.08fr] md:items-stretch md:gap-6 lg:gap-8">
             <div className="flex h-full min-h-0 flex-col text-white md:py-2 md:pr-2">
               <div className="shrink-0">
@@ -217,7 +224,7 @@ export function RegistrationForm({
                   и выиграйте садовую технику Champion
                 </p>
 
-                <div className="rounded-[50px] bg-white/5 p-5 sm:p-6 md:p-7">
+                <div className="rounded-[20px] bg-white/5 p-5 sm:rounded-[50px] sm:p-6 md:p-7">
                   <ul className="space-y-4">
                     {registrationBenefits.map((benefit) => (
                       <li key={benefit.text} className="flex items-center gap-3 text-base text-white md:text-lg">
@@ -238,9 +245,9 @@ export function RegistrationForm({
               </div>
             </div>
 
-            <div className="h-full rounded-[50px] bg-surface p-6 sm:p-8 md:p-10">
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid gap-5 sm:grid-cols-2">
+            <div className="h-full rounded-[20px] bg-surface p-5 sm:rounded-[50px] sm:p-8 md:p-10">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+              <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
                 <div>
                   <label htmlFor="name" className={fieldLabelClassName}>
                     Имя
@@ -323,7 +330,7 @@ export function RegistrationForm({
                     disabled={cities.length === 0}
                     value={form.city}
                     onChange={(e) => handleCityChange(e.target.value)}
-                    className={fieldClassName}
+                    className={selectClassName}
                   >
                     <option value="">Выберите город</option>
                     {cities.map((city) => (
@@ -350,7 +357,7 @@ export function RegistrationForm({
                         dealerId: e.target.value,
                       }))
                     }
-                    className={fieldClassName}
+                    className={selectClassName}
                   >
                     <option value="">
                       {!form.city
@@ -368,7 +375,7 @@ export function RegistrationForm({
                 </div>
               </div>
 
-              <label className="flex items-start gap-4 text-lg text-muted">
+              <label className={checkboxLabelClassName}>
                 <input
                   required
                   type="checkbox"
@@ -379,7 +386,7 @@ export function RegistrationForm({
                       consentPersonal: e.target.checked,
                     }))
                   }
-                  className="mt-1 h-6 w-6 rounded-md border-2 border-border"
+                  className={checkboxInputClassName}
                 />
                 <span>
                   Я соглашаюсь с обработкой персональных данных в соответствии с{" "}
@@ -389,7 +396,7 @@ export function RegistrationForm({
                 </span>
               </label>
 
-              <label className="flex items-start gap-4 text-lg text-muted">
+              <label className={checkboxLabelClassName}>
                 <input
                   type="checkbox"
                   checked={form.consentMarketing}
@@ -399,7 +406,7 @@ export function RegistrationForm({
                       consentMarketing: e.target.checked,
                     }))
                   }
-                  className="mt-1 h-6 w-6 rounded-md border-2 border-border"
+                  className={checkboxInputClassName}
                 />
                 <span>
                   Я согласен на получение рекламной и информационной рассылки
@@ -420,8 +427,21 @@ export function RegistrationForm({
                 </p>
               )}
 
-              <ArrowButton type="submit" disabled={loading} className="text-[19px]">
-                {loading ? "Отправка..." : "Записаться и получить QR-код"}
+              <ArrowButton
+                type="submit"
+                disabled={loading}
+                className="text-base sm:text-[19px]"
+              >
+                {loading ? (
+                  "Отправка..."
+                ) : (
+                  <>
+                    <span className="min-[501px]:hidden">Отправить</span>
+                    <span className="hidden min-[501px]:inline">
+                      Записаться и получить QR-код
+                    </span>
+                  </>
+                )}
               </ArrowButton>
             </form>
             </div>

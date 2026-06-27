@@ -70,14 +70,14 @@ function StepCard({
 }: StepCardProps) {
   if (wide && qrImage) {
     return (
-      <article className="relative min-h-[378px] overflow-hidden rounded-[40px] border border-border bg-surface p-8 md:col-span-2">
-        <div className="flex h-full min-h-[280px] flex-row items-stretch justify-between gap-8 sm:gap-10 md:gap-12">
+      <article className="relative overflow-hidden rounded-[20px] border border-border bg-surface p-8 sm:min-h-[378px] sm:rounded-[40px] md:col-span-2">
+        <div className="flex flex-col gap-4 sm:min-h-[280px] sm:flex-row sm:items-stretch sm:justify-between sm:gap-10 md:gap-12">
           <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex h-[52px] w-[52px] items-center justify-center rounded-2xl bg-accent-icon">
+            <div className="hidden h-[52px] w-[52px] items-center justify-center rounded-2xl bg-accent-icon sm:flex">
               <StepIcon type={stepIcons[step]} />
             </div>
 
-            <div className="mt-auto pt-20">
+            <div className="sm:mt-auto sm:pt-20">
               {badge && (
                 <span className="mb-4 inline-flex rounded-full bg-brand px-4 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-white">
                   {badge}
@@ -90,7 +90,7 @@ function StepCard({
             </div>
           </div>
 
-          <div className="relative h-[180px] w-[140px] shrink-0 self-end sm:h-[220px] sm:w-[180px] md:h-[280px] md:w-[240px]">
+          <div className="relative hidden h-[220px] w-[180px] shrink-0 self-end sm:block md:h-[280px] md:w-[240px]">
             <Image
               src={LANDING_IMAGES.qrDemo}
               alt="QR-код участника"
@@ -106,8 +106,8 @@ function StepCard({
 
   return (
     <article
-      className={`relative overflow-hidden rounded-[40px] border border-border bg-surface p-8 ${
-        wide ? "md:col-span-2" : "min-h-[378px]"
+      className={`relative overflow-hidden rounded-[20px] border border-border bg-surface p-8 sm:rounded-[40px] ${
+        wide ? "md:col-span-2" : "sm:min-h-[378px]"
       }`}
     >
       {showNumber && <StepNumber value={step} />}
@@ -116,15 +116,15 @@ function StepCard({
         className={
           wide
             ? "grid h-full gap-6 md:grid-cols-[1fr_auto] md:items-stretch"
-            : "flex h-full min-h-[300px] flex-col"
+            : "flex flex-col gap-4 sm:min-h-[300px] sm:flex-col"
         }
       >
-        <div className={wide ? "flex flex-col justify-end pb-2" : "flex flex-1 flex-col"}>
+        <div className={wide ? "flex flex-col justify-end pb-2" : "flex flex-col sm:flex-1"}>
           <div className="flex h-[52px] w-[52px] items-center justify-center rounded-2xl bg-accent-icon">
             <StepIcon type={stepIcons[step]} />
           </div>
 
-          <div className={wide ? "mt-8" : "mt-auto pt-20"}>
+          <div className={wide ? "mt-8" : "mt-8 sm:mt-auto sm:pt-20"}>
             {badge && (
               <span className="mb-4 inline-flex rounded-full bg-brand px-4 py-1.5 text-[10.5px] font-bold uppercase tracking-[0.08em] text-white">
                 {badge}
@@ -174,8 +174,8 @@ export function HowToParticipate({
         </div>
 
         <div className="grid gap-5 md:grid-cols-3 md:grid-rows-[auto_auto]">
-          <article className="relative flex flex-col overflow-hidden rounded-[40px] bg-brand md:row-span-2">
-            <div className="relative mx-4 mt-4 h-[240px] overflow-hidden rounded-[32px] sm:h-[300px] md:mx-5 md:mt-5 md:h-[374px]">
+          <article className="relative flex flex-col overflow-hidden rounded-[20px] bg-brand sm:rounded-[40px] md:row-span-2">
+            <div className="relative mx-4 mt-4 h-[240px] overflow-hidden rounded-[16px] sm:h-[300px] sm:rounded-[32px] md:mx-5 md:mt-5 md:h-[374px]">
               <Image
                 src={LANDING_IMAGES.howToParticipate}
                 alt="Садовая техника Champion"

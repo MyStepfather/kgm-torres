@@ -179,35 +179,51 @@ export function SearchableSelect({
     ) : null;
 
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef}>
       <label htmlFor={id} className="mb-2 block text-sm text-muted">
         {label}
       </label>
-      <input
-        ref={inputRef}
-        id={id}
-        type="text"
-        value={displayValue}
-        placeholder={placeholder ?? emptyLabel}
-        onFocus={() => {
-          setIsOpen(true);
-          setQuery(selected?.label ?? "");
-        }}
-        onChange={(event) => {
-          const nextQuery = event.target.value;
-          setQuery(nextQuery);
-          setIsOpen(true);
+      <div className="relative">
+        <input
+          ref={inputRef}
+          id={id}
+          type="text"
+          value={displayValue}
+          placeholder={placeholder ?? emptyLabel}
+          onFocus={() => {
+            setIsOpen(true);
+            setQuery(selected?.label ?? "");
+          }}
+          onChange={(event) => {
+            const nextQuery = event.target.value;
+            setQuery(nextQuery);
+            setIsOpen(true);
 
-          if (!nextQuery.trim()) {
-            onChange("");
-          }
-        }}
-        className={fieldClassName}
-        role="combobox"
-        aria-expanded={isOpen}
-        aria-controls={listId}
-        autoComplete="off"
-      />
+            if (!nextQuery.trim()) {
+              onChange("");
+            }
+          }}
+          className={`${fieldClassName} appearance-none pr-14`}
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-controls={listId}
+          autoComplete="off"
+        />
+        <svg
+          className="pointer-events-none absolute right-6 top-1/2 h-5 w-5 -translate-y-1/2 text-brand"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          aria-hidden
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M6 9l6 6 6-6"
+          />
+        </svg>
+      </div>
 
       {dropdown && createPortal(dropdown, document.body)}
     </div>

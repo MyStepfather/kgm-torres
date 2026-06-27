@@ -19,7 +19,7 @@ export function Prizes() {
   return (
     <section id="prizes" className="pb-10 md:pb-16">
       <div className="section-container-wide">
-        <div className="overflow-hidden rounded-[60px] bg-brand-tint px-6 py-12 sm:px-10 md:px-14 md:py-16">
+        <div className="overflow-hidden rounded-[32px] bg-brand-tint px-6 py-12 sm:rounded-[60px] sm:px-10 md:px-14 md:py-16">
           <div>
             <SectionLabel>призы розыгрыша</SectionLabel>
             <h2 className="mt-5 w-full max-w-[980px] text-3xl font-semibold leading-tight text-brand sm:text-4xl md:text-[54px] md:leading-[1.1]">
@@ -34,13 +34,13 @@ export function Prizes() {
               return (
                 <article
                   key={prize.place}
-                  className={`flex flex-col overflow-hidden rounded-[40px] border ${
+                  className={`flex flex-col overflow-hidden rounded-[20px] border sm:rounded-[40px] ${
                     featured
                       ? "border-accent-light/30 bg-brand"
                       : "border-white/40 bg-white/30"
                   }`}
                 >
-                  <div className="relative -mx-px -mt-px h-[260px] w-[calc(100%+2px)] shrink-0 overflow-hidden rounded-[40px] bg-white">
+                  <div className="relative -mx-px -mt-px h-[260px] w-[calc(100%+2px)] shrink-0 overflow-hidden rounded-[20px] bg-white sm:rounded-[40px]">
                     <Image
                       src={prizeImages[prize.imageKey]}
                       alt={prize.title}
