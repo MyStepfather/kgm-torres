@@ -2,7 +2,6 @@
 
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { formatTestDriveDate } from "@/lib/dates";
 
 type RegistrationData = {
   name: string;
@@ -296,12 +295,6 @@ export default function DealerScanPage() {
                     {registration.dealer.address}
                   </dd>
                 )}
-              </div>
-              <div className="app-panel-accent sm:col-span-2">
-                <dt className="text-xs font-semibold text-brand">Дата тест-драйва</dt>
-                <dd className="mt-1 font-medium">
-                  {formatTestDriveDate(registration.testDriveDate)}
-                </dd>
               </div>
               <div className="app-panel sm:col-span-2">
                 <dt className="text-xs text-muted">Дата регистрации</dt>

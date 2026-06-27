@@ -3,9 +3,7 @@ import { sendRegistrationEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { formatPhone, normalizePhone } from "@/lib/phone";
 import { buildRegistrationQr } from "@/lib/qrcode";
-import { parseIsoDate } from "@/lib/dates";
-import { getTestDriveSchedule } from "@/lib/settings";
-import { isValidTestDriveDate } from "@/lib/test-drive-schedule";
+import { startOfDay } from "@/lib/dates";
 import { isValidEmail } from "@/lib/validation";
 
 type RegistrationBody = {
@@ -16,7 +14,6 @@ type RegistrationBody = {
   dealerId: string;
   consentPersonal: boolean;
   consentMarketing: boolean;
-  testDriveDate: string;
 };
 
 async function ensureRegistrationQr(registration: {
@@ -49,7 +46,6 @@ function registrationResponse(
     scanUrl: string;
     qrDataUrl: string;
     createdAt: Date;
-    testDriveDate: Date;
     dealer: { name: string; city: string };
   },
   options?: { isDuplicate?: boolean },
@@ -60,7 +56,6 @@ function registrationResponse(
     scanUrl: registration.scanUrl,
     qrDataUrl: registration.qrDataUrl,
     dealer: registration.dealer,
-    testDriveDate: registration.testDriveDate,
     createdAt: registration.createdAt,
     isDuplicate: options?.isDuplicate ?? false,
     message: options?.isDuplicate
@@ -78,8 +73,7 @@ export async function POST(request: NextRequest) {
       !body.phone?.trim() ||
       !body.email?.trim() ||
       !body.city?.trim() ||
-      !body.dealerId ||
-      !body.testDriveDate?.trim()
+      !body.dealerId
     ) {
       return NextResponse.json(
         { error: "Заполните все обязательные поля" },
@@ -110,14 +104,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!isValidTestDriveDate(body.testDriveDate, await getTestDriveSchedule())) {
-      return NextResponse.json(
-        { error: "Выберите корректную дату тест-драйва" },
-        { status: 400 },
-      );
-    }
-
-    const testDriveDate = parseIsoDate(body.testDriveDate)!;
+    const testDriveDate = startOfDay(new Date());
 
     const existing = await prisma.registration.findFirst({
       where: {
@@ -138,7 +125,6 @@ export async function POST(request: NextRequest) {
           scanUrl: qr.scanUrl,
           qrDataUrl: qr.qrDataUrl,
           createdAt: existing.createdAt,
-          testDriveDate: existing.testDriveDate,
           dealer: existing.dealer,
         },
         { isDuplicate: true },
@@ -199,7 +185,6 @@ export async function POST(request: NextRequest) {
         city: saved.city,
         dealerName: saved.dealer.name,
         dealerCity: saved.dealer.city,
-        testDriveDate: saved.testDriveDate,
         scanUrl: saved.scanUrl,
         qrDataUrl: saved.qrDataUrl,
       });

@@ -5,7 +5,6 @@ import { useCallback, useEffect, useState } from "react";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminStatistics } from "@/components/admin/AdminStatistics";
 import { PRIZES } from "@/lib/constants";
-import { formatTestDriveDate } from "@/lib/dates";
 
 type DealerRow = {
   id: string;
@@ -69,6 +68,21 @@ function formatDate(value: string) {
     dateStyle: "short",
     timeStyle: "short",
   }).format(new Date(value));
+}
+
+function mapRunToLatestGiveaway(run: GiveawayRunRow) {
+  return {
+    runId: run.id,
+    winners: run.winners.map((winner) => ({
+      place: winner.place,
+      emailSent: winner.emailSent,
+      name: winner.registration.name,
+      phone: winner.registration.phone,
+      email: winner.registration.email,
+      city: winner.registration.city,
+      dealer: winner.registration.dealer,
+    })),
+  };
 }
 
 export function AdminDashboard() {
@@ -141,6 +155,9 @@ export function AdminDashboard() {
     setEligibleCount(data.eligibleCount);
     setGiveawayAvailable(Boolean(data.giveawayAvailable));
     setGiveawayDateLabel(data.giveawayDateLabel ?? "");
+    setLatestGiveaway(
+      data.runs.length > 0 ? mapRunToLatestGiveaway(data.runs[0]) : null,
+    );
   }, []);
 
   const loadData = useCallback(async () => {
@@ -525,7 +542,6 @@ export function AdminDashboard() {
                   <th className="px-4 py-3 font-medium">Клиент</th>
                   <th className="px-4 py-3 font-medium">Контакты</th>
                   <th className="px-4 py-3 font-medium">Дилер</th>
-                  <th className="px-4 py-3 font-medium">Тест-драйв</th>
                   <th className="px-4 py-3 font-medium">Статус</th>
                   <th className="px-4 py-3 font-medium">Регистрация</th>
                 </tr>
@@ -550,9 +566,6 @@ export function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3">
                       {registration.dealer.name}, {registration.dealer.city}
-                    </td>
-                    <td className="px-4 py-3">
-                      {formatTestDriveDate(registration.testDriveDate)}
                     </td>
                     <td className="px-4 py-3">
                       <span

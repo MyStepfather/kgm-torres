@@ -1,6 +1,5 @@
 import nodemailer from "nodemailer";
 import { PRIZES } from "@/lib/constants";
-import { formatTestDriveDate } from "@/lib/dates";
 
 type WinnerEmailPayload = {
   name: string;
@@ -15,7 +14,6 @@ type RegistrationEmailPayload = {
   city: string;
   dealerName: string;
   dealerCity: string;
-  testDriveDate: string | Date;
   scanUrl: string;
   qrDataUrl: string;
 };
@@ -93,8 +91,6 @@ function buildWinnerEmailHtml(payload: WinnerEmailPayload) {
 }
 
 function buildRegistrationEmailHtml(payload: RegistrationEmailPayload) {
-  const testDriveDate = formatTestDriveDate(payload.testDriveDate);
-
   return `
     <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #0f172a;">
       <h1 style="color: #1a3a2f;">Спасибо за регистрацию, ${payload.name}!</h1>
@@ -104,7 +100,6 @@ function buildRegistrationEmailHtml(payload: RegistrationEmailPayload) {
         <tr><td style="padding: 8px 0; color: #64748b;">Email</td><td style="padding: 8px 0;"><strong>${payload.email}</strong></td></tr>
         <tr><td style="padding: 8px 0; color: #64748b;">Город</td><td style="padding: 8px 0;"><strong>${payload.city}</strong></td></tr>
         <tr><td style="padding: 8px 0; color: #64748b;">Дилер</td><td style="padding: 8px 0;"><strong>${payload.dealerName}, ${payload.dealerCity}</strong></td></tr>
-        <tr><td style="padding: 8px 0; color: #64748b;">Дата тест-драйва</td><td style="padding: 8px 0;"><strong>${testDriveDate}</strong></td></tr>
       </table>
       <p>Покажите QR-код дилеру при визите в салон:</p>
       <p style="text-align: center; margin: 24px 0;">

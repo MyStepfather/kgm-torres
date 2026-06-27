@@ -3,18 +3,15 @@
 import { useEffect, useState } from "react";
 import { DatePicker } from "@/components/ui/DatePicker";
 import {
+  ADMIN_DATE_PICKER_MAX,
+  ADMIN_DATE_PICKER_MIN,
   formatTestDriveDate,
-  startOfDay,
-  TEST_DRIVE_MAX_DATE,
-  toIsoDate,
 } from "@/lib/dates";
 import type { GiveawayDateSetting } from "@/lib/giveaway-settings";
 import {
   isDateInRange,
   type TestDriveSchedule,
 } from "@/lib/test-drive-schedule";
-
-const maxScheduleIso = toIsoDate(startOfDay(TEST_DRIVE_MAX_DATE));
 
 export function AdminSettings() {
   const [schedule, setSchedule] = useState<TestDriveSchedule | null>(null);
@@ -154,6 +151,8 @@ export function AdminSettings() {
             onChange={(date) =>
               setGiveawayDate((prev) => (prev ? { ...prev, date } : prev))
             }
+            min={ADMIN_DATE_PICKER_MIN}
+            max={ADMIN_DATE_PICKER_MAX}
             placeholder="Выберите дату"
             showRangeFooter={false}
           />
@@ -187,6 +186,7 @@ export function AdminSettings() {
               onChange={(dateFrom) =>
                 setSchedule((prev) => (prev ? { ...prev, dateFrom } : prev))
               }
+              min={ADMIN_DATE_PICKER_MIN}
               max={schedule.dateTo}
               placeholder="Дата начала"
               showRangeFooter={false}
@@ -208,7 +208,7 @@ export function AdminSettings() {
                 setSchedule((prev) => (prev ? { ...prev, dateTo } : prev))
               }
               min={schedule.dateFrom}
-              max={maxScheduleIso}
+              max={ADMIN_DATE_PICKER_MAX}
               placeholder="Дата окончания"
               showRangeFooter={false}
             />

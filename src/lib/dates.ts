@@ -1,4 +1,6 @@
 export const TEST_DRIVE_MAX_DATE = new Date(2026, 8, 30);
+export const ADMIN_DATE_PICKER_MIN = "2020-01-01";
+export const ADMIN_DATE_PICKER_MAX = "2030-12-31";
 
 export function startOfDay(date: Date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());

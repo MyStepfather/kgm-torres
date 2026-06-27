@@ -4,12 +4,9 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { ArrowButton } from "@/components/landing/ArrowButton";
 import { SectionLabel } from "@/components/landing/SectionLabel";
-import { DatePicker } from "@/components/ui/DatePicker";
 import type { DealerOption } from "@/lib/dealers";
-import { formatTestDriveDate } from "@/lib/dates";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 import { applyPhoneMaskKeyDown, isValidPhone, maskPhoneInput } from "@/lib/phone";
-import { isValidTestDriveDate, type TestDriveSchedule } from "@/lib/test-drive-schedule";
 import { isValidEmail } from "@/lib/validation";
 
 type RegistrationResult = {
@@ -17,7 +14,6 @@ type RegistrationResult = {
   scanUrl: string;
   qrDataUrl: string;
   dealer: { name: string; city: string };
-  testDriveDate?: string;
   createdAt: string;
   isDuplicate?: boolean;
   message?: string;
@@ -25,7 +21,6 @@ type RegistrationResult = {
 
 type RegistrationFormProps = {
   dealers: DealerOption[];
-  testDriveSchedule: TestDriveSchedule;
   giveawayDateLabel: string;
 };
 
@@ -35,7 +30,6 @@ const fieldLabelClassName =
 
 export function RegistrationForm({
   dealers,
-  testDriveSchedule,
   giveawayDateLabel,
 }: RegistrationFormProps) {
   const registrationBenefits = useMemo(
@@ -68,7 +62,6 @@ export function RegistrationForm({
     email: "",
     city: "",
     dealerId: "",
-    testDriveDate: "",
     consentPersonal: false,
     consentMarketing: false,
   });
@@ -103,11 +96,6 @@ export function RegistrationForm({
       return;
     }
 
-    if (!form.testDriveDate) {
-      setError("Выберите дату тест-драйва");
-      return;
-    }
-
     if (!isValidPhone(form.phone)) {
       setError("Укажите корректный телефон в формате +7 (999) 000-00-00");
       return;
@@ -115,11 +103,6 @@ export function RegistrationForm({
 
     if (!isValidEmail(form.email)) {
       setError("Укажите корректный email");
-      return;
-    }
-
-    if (!isValidTestDriveDate(form.testDriveDate, testDriveSchedule)) {
-      setError("Выберите доступную дату тест-драйва");
       return;
     }
 
@@ -181,11 +164,6 @@ export function RegistrationForm({
                 ? `Письмо с QR-кодом было отправлено на ${form.email} при регистрации`
                 : `QR-код также отправлен на почту ${form.email}`}
             </p>
-            {result.testDriveDate && (
-              <p className="mt-2 text-base font-semibold text-brand">
-                Дата тест-драйва: {formatTestDriveDate(result.testDriveDate)}
-              </p>
-            )}
 
             <div className="mt-6 inline-block rounded-[28px] border border-border bg-white p-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -386,22 +364,6 @@ export function RegistrationForm({
                       </option>
                     ))}
                   </select>
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label htmlFor="testDriveDate" className={fieldLabelClassName}>
-                    Дата тест-драйва
-                  </label>
-                  <DatePicker
-                    id="testDriveDate"
-                    required
-                    schedule={testDriveSchedule}
-                    value={form.testDriveDate}
-                    onChange={(testDriveDate) =>
-                      setForm((prev) => ({ ...prev, testDriveDate }))
-                    }
-                    className="w-full"
-                  />
                 </div>
               </div>
 

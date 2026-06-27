@@ -198,6 +198,17 @@ export function DatePicker({
       return;
     }
 
+    const selected = parseIsoDate(value);
+    if (selected) {
+      setViewMonth(new Date(selected.getFullYear(), selected.getMonth(), 1));
+    }
+  }, [value]);
+
+  useEffect(() => {
+    if (!value) {
+      return;
+    }
+
     const isValid = schedule
       ? isDateSelectable(value, schedule)
       : isDateInBounds(value, bounds.min, bounds.max);

@@ -2,7 +2,6 @@
 
 import dynamic from "next/dynamic";
 import type { DealerOption } from "@/lib/dealers";
-import type { TestDriveSchedule } from "@/lib/test-drive-schedule";
 
 const RegistrationForm = dynamic(
   () =>
@@ -25,20 +24,14 @@ const RegistrationForm = dynamic(
 
 type RegistrationFormClientProps = {
   dealers: DealerOption[];
-  testDriveSchedule: TestDriveSchedule;
   giveawayDateLabel: string;
 };
 
 export function RegistrationFormClient({
   dealers,
-  testDriveSchedule,
   giveawayDateLabel,
 }: RegistrationFormClientProps) {
   return (
-    <RegistrationForm
-      dealers={dealers}
-      testDriveSchedule={testDriveSchedule}
-      giveawayDateLabel={giveawayDateLabel}
-    />
+    <RegistrationForm dealers={dealers} giveawayDateLabel={giveawayDateLabel} />
   );
 }
