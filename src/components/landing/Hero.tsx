@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { ArrowButton } from "@/components/landing/ArrowButton";
+import { HeroBackgroundMedia } from "@/components/landing/KinescopeEmbed";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 type HeroProps = {
@@ -63,14 +64,7 @@ export function Hero({ testDrivePeriodLabel }: HeroProps) {
     <>
       <section className="relative h-svh min-h-svh overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
         <div className="absolute inset-0 overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
-          <Image
-            src={LANDING_IMAGES.heroBg}
-            alt=""
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="100vw"
-          />
+          <HeroBackgroundMedia posterSrc={LANDING_IMAGES.heroBg} />
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 bg-black/25"

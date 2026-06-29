@@ -11,8 +11,8 @@ const RegistrationForm = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section id="registration" className="section-padding">
-        <div className="container-narrow">
+      <section id="register" className="rounded-t-[40px] bg-brand pt-20 pb-16 sm:rounded-t-[80px] md:pt-28 md:pb-20">
+        <div className="section-container">
           <div className="card p-8 text-center text-muted">
             Загрузка формы регистрации…
           </div>

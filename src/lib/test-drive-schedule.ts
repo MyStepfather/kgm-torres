@@ -101,6 +101,15 @@ export function getSelectableBounds(schedule: TestDriveSchedule) {
   };
 }
 
+export function isTestDriveRegistrationOpen(schedule: TestDriveSchedule) {
+  const endDate = parseIsoDate(schedule.dateTo);
+  if (!endDate) {
+    return false;
+  }
+
+  return startOfDay(new Date()) <= endDate;
+}
+
 export function validateTestDriveScheduleInput(
   schedule: TestDriveSchedule,
 ): string | null {

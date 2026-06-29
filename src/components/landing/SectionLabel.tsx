@@ -1,6 +1,6 @@
 type SectionLabelProps = {
   children: React.ReactNode;
-  variant?: "light" | "dark" | "on-brand";
+  variant?: "light" | "dark" | "on-brand" | "inverse";
 };
 
 export function SectionLabel({
@@ -8,17 +8,17 @@ export function SectionLabel({
   variant = "light",
 }: SectionLabelProps) {
   const lineClass =
-    variant === "on-brand"
-      ? "bg-accent-light"
-      : variant === "dark"
-        ? "bg-brand"
+    variant === "inverse"
+      ? "bg-white"
+      : variant === "on-brand"
+        ? "bg-accent-light"
         : "bg-brand";
 
   const textClass =
-    variant === "on-brand"
-      ? "text-accent-light"
-      : variant === "dark"
-        ? "text-brand"
+    variant === "inverse"
+      ? "text-white"
+      : variant === "on-brand"
+        ? "text-accent-light"
         : "text-brand";
 
   return (

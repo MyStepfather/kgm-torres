@@ -5,6 +5,7 @@ type ArrowButtonBaseProps = {
   variant?: "brand" | "white";
   className?: string;
   disabled?: boolean;
+  target?: string;
 };
 
 type ArrowButtonLinkProps = ArrowButtonBaseProps & {
@@ -68,9 +69,27 @@ export function ArrowButton({
   const buttonClassName = `group inline-flex h-14 w-full items-center rounded-full px-2 text-base font-semibold tracking-wide transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60 ${base} ${className}`;
 
   if ("href" in props && props.href) {
+    const { href, target } = props;
+    const content = (
+      <ArrowButtonContent circleClass={circleClass}>{children}</ArrowButtonContent>
+    );
+
+    if (href.startsWith("#") || href.startsWith("http")) {
+      return (
+        <a
+          href={href}
+          target={target}
+          rel={target === "_blank" ? "noopener noreferrer" : undefined}
+          className={buttonClassName}
+        >
+          {content}
+        </a>
+      );
+    }
+
     return (
-      <Link href={props.href} className={buttonClassName}>
-        <ArrowButtonContent circleClass={circleClass}>{children}</ArrowButtonContent>
+      <Link href={href} className={buttonClassName}>
+        {content}
       </Link>
     );
   }

@@ -8,6 +8,7 @@ import {
 import { prisma } from "@/lib/prisma";
 import {
   getDefaultTestDriveSchedule,
+  isTestDriveRegistrationOpen,
   normalizeTestDriveSchedule,
   TEST_DRIVE_SCHEDULE_KEY,
   type TestDriveSchedule,
@@ -101,4 +102,9 @@ export async function getGiveawayDateLabel() {
 export async function getTestDrivePeriodLabel() {
   const schedule = await getTestDriveSchedule();
   return formatTestDrivePeriodLabel(schedule.dateFrom, schedule.dateTo);
+}
+
+export async function getIsTestDriveRegistrationOpen() {
+  const schedule = await getTestDriveSchedule();
+  return isTestDriveRegistrationOpen(schedule);
 }

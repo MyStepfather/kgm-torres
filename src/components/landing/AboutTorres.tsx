@@ -44,7 +44,7 @@ export function AboutTorres() {
             </h2>
 
             <div className="relative mt-8 w-full">
-              <ArrowButton href="#register" variant="white" className="w-full">
+              <ArrowButton href="https://kgm.ru/models/torres" target="_blank" variant="white" className="w-full">
                 Ознакомиться
               </ArrowButton>
             </div>
@@ -87,14 +87,14 @@ export function AboutTorres() {
           <div className="relative min-h-[245px] overflow-hidden rounded-[20px] border border-border sm:min-h-[245px] sm:rounded-[50px] md:min-h-[245px] lg:min-h-[327px]">
             <Image
               src={LANDING_IMAGES.aboutMotion}
-              alt="KGM Torres динамика"
+              alt="KGM Torres экстерьер"
               fill
               className="object-cover object-[center_68%]"
               sizes="(max-width: 60rem) 100vw, 66vw"
             />
             <span className="brand-badge absolute left-7 top-7">KGM Torres</span>
-            <p className="descriptor absolute bottom-6 right-7 text-white/60">
-              Динамика
+            <p className="descriptor absolute bottom-6 left-7 text-white/60">
+              Экстерьер
             </p>
           </div>
         </div>
