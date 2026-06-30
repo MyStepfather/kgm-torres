@@ -95,7 +95,7 @@ function buildWinnerEmailHtml(payload: WinnerEmailPayload) {
       <p>Вы стали победителем розыгрыша садовой техники Champion в рамках акции KGM Torres.</p>
       <p><strong>Ваш приз (${payload.place} место):</strong> ${prizeTitle}</p>
       <p>Наш менеджер свяжется с вами по указанным контактным данным для уточнения деталей вручения приза.</p>
-      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM Torres</p>
+      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM</p>
     </div>
   `;
 }
@@ -115,7 +115,7 @@ function buildRegistrationEmailHtml(payload: RegistrationEmailPayload) {
       <p style="text-align: center; margin: 24px 0;">
         <img src="${payload.qrDataUrl}" alt="QR-код участника" width="220" height="220" style="display: inline-block;" />
       </p>
-      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM Torres</p>
+      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM</p>
     </div>
   `;
 }
@@ -131,7 +131,7 @@ function buildDealerRegistrationEmailHtml(payload: DealerRegistrationEmailPayloa
         <tr><td style="padding: 8px 0; color: #64748b;">Email</td><td style="padding: 8px 0;"><strong>${payload.participantEmail}</strong></td></tr>
         <tr><td style="padding: 8px 0; color: #64748b;">Город</td><td style="padding: 8px 0;"><strong>${payload.participantCity}</strong></td></tr>
       </table>
-      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM Torres</p>
+      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM</p>
     </div>
   `;
 }
