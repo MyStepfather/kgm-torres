@@ -1,11 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import { ArrowButton } from "@/components/landing/ArrowButton";
-import {
-  HeroBackgroundMedia,
-  HeroVideoProvider,
-  HeroVolumeToggle,
-} from "@/components/landing/KinescopeEmbed";
+import { HeroBackgroundMedia } from "@/components/landing/KinescopeEmbed";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 type HeroProps = {
@@ -68,20 +64,17 @@ function HeroTestDriveCard({ stacked = false }: { stacked?: boolean }) {
 
 export function Hero({ testDrivePeriodLabel }: HeroProps) {
   return (
-    <HeroVideoProvider>
-      <>
-        <section className="relative h-svh min-h-svh overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
-          <div className="absolute inset-0 overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
-            <HeroBackgroundMedia posterSrc={LANDING_IMAGES.heroBg} />
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 bg-black/25"
-            />
-          </div>
+    <>
+      <section className="relative h-svh min-h-svh overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
+        <div className="absolute inset-0 overflow-hidden rounded-b-[40px] sm:rounded-b-[80px]">
+          <HeroBackgroundMedia posterSrc={LANDING_IMAGES.heroBg} />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-black/25"
+          />
+        </div>
 
-          <HeroVolumeToggle />
-
-          <div className="section-container relative z-10 flex h-full min-h-0 flex-col pb-10 pt-24 sm:grid sm:h-full sm:grid-rows-[minmax(0,1fr)_auto] sm:gap-6 sm:pb-10 sm:pt-28 md:pb-12 md:pt-28 lg:pt-32">
+        <div className="section-container relative z-10 flex h-full min-h-0 flex-col pb-10 pt-24 sm:grid sm:h-full sm:grid-rows-[minmax(0,1fr)_auto] sm:gap-6 sm:pb-10 sm:pt-28 md:pb-12 md:pt-28 lg:pt-32">
           <div className="flex min-h-0 flex-col items-start justify-start pt-6 md:pt-8 lg:pt-16">
             <div className="flex flex-col items-start gap-2 sm:hidden">
               <HeroBadge>
@@ -127,7 +120,6 @@ export function Hero({ testDrivePeriodLabel }: HeroProps) {
       <div className="section-container w-full pb-5 pt-5 sm:hidden">
         <HeroTestDriveCard stacked />
       </div>
-      </>
-    </HeroVideoProvider>
+    </>
   );
 }
