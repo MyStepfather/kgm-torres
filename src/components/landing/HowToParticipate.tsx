@@ -221,7 +221,7 @@ export function HowToParticipate({
             showNumber={false}
             wide
             qrImage
-            badge={`результаты ${testDrivePeriodLabel}`}
+            badge={`${testDrivePeriodLabel}`}
           />
         </div>
       </div>

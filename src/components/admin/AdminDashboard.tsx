@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from "react";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminStatistics } from "@/components/admin/AdminStatistics";
 import { PRIZES } from "@/lib/constants";
+import { isValidEmail } from "@/lib/validation";
 
 type DealerRow = {
   id: string;
@@ -98,6 +99,7 @@ export function AdminDashboard() {
     name: "",
     city: "",
     address: "",
+    email: "",
     login: "",
     pin: "",
   });
@@ -204,6 +206,13 @@ export function AdminDashboard() {
     setCreatedCredentials(null);
 
     try {
+      const email = createForm.email.trim().toLowerCase();
+      if (email && !isValidEmail(email)) {
+        setError("Укажите корректный email");
+        setCreating(false);
+        return;
+      }
+
       const response = await fetch("/api/admin/dealers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -211,6 +220,7 @@ export function AdminDashboard() {
           name: createForm.name,
           city: createForm.city,
           address: createForm.address || undefined,
+          email: email || undefined,
           login: createForm.login || undefined,
           pin: createForm.pin || undefined,
         }),
@@ -223,7 +233,14 @@ export function AdminDashboard() {
 
       setCreatedCredentials(data.credentials);
       setSuccess(`Дилер «${data.dealer.name}» создан`);
-      setCreateForm({ name: "", city: "", address: "", login: "", pin: "" });
+      setCreateForm({
+        name: "",
+        city: "",
+        address: "",
+        email: "",
+        login: "",
+        pin: "",
+      });
       await loadDealers();
       setTab("dealers");
     } catch (createError) {
@@ -758,6 +775,19 @@ export function AdminDashboard() {
                   }))
                 }
                 className={fieldClassName}
+              />
+            </label>
+
+            <label className="block">
+              <span className="mb-2 block text-sm text-muted">Email</span>
+              <input
+                type="email"
+                value={createForm.email}
+                onChange={(e) =>
+                  setCreateForm((prev) => ({ ...prev, email: e.target.value }))
+                }
+                className={fieldClassName}
+                placeholder="dealer@example.com"
               />
             </label>
 

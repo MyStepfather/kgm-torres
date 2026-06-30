@@ -6,6 +6,7 @@ import {
   normalizeLogin,
   slugifyLogin,
 } from "@/lib/dealer-credentials";
+import { isValidEmail } from "@/lib/validation";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -43,6 +44,7 @@ export async function POST(request: NextRequest) {
       name?: string;
       city?: string;
       address?: string;
+      email?: string;
       login?: string;
       pin?: string;
     };
@@ -86,11 +88,21 @@ export async function POST(request: NextRequest) {
 
     const pinHash = await hashPin(pin);
 
+    const emailRaw = body.email?.trim().toLowerCase() ?? "";
+    const email = emailRaw || null;
+    if (email && !isValidEmail(email)) {
+      return NextResponse.json(
+        { error: "Укажите корректный email" },
+        { status: 400 },
+      );
+    }
+
     const dealer = await prisma.dealer.create({
       data: {
         name,
         city,
         address: body.address?.trim() || null,
+        email,
         login,
         pinHash,
       },
@@ -99,6 +111,7 @@ export async function POST(request: NextRequest) {
         name: true,
         city: true,
         address: true,
+        email: true,
         login: true,
         createdAt: true,
       },
