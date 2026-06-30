@@ -52,7 +52,10 @@ function HeroTestDriveCard({ stacked = false }: { stacked?: boolean }) {
           и выиграйте садовую технику Champion
         </p>
         <div className="mt-5 md:mt-6">
-          <ArrowButton href="#register">Записаться на тест-драйв</ArrowButton>
+          <ArrowButton href="#register">
+            <span className="min-[451px]:hidden">Записаться</span>
+            <span className="hidden min-[451px]:inline">Записаться на тест-драйв</span>
+          </ArrowButton>
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ function SpecIcon({ type }: { type: (typeof TORRES_SPECS)[number]["icon"] }) {
 
 export function AboutTorres() {
   return (
-    <section id="about" className="pt-16 pb-10 md:pt-20 md:pb-16">
+    <section id="about" className="pt-0 pb-10 sm:pt-16 md:pt-20 md:pb-16">
       <div className="section-container space-y-5">
         <div className="grid gap-5 sm:grid-cols-[1.4fr_1fr]">
           <div className="relative order-2 h-[245px] overflow-hidden rounded-[20px] border border-border sm:order-1 sm:h-[288px] sm:rounded-[50px] md:h-[407px] lg:h-[543px]">

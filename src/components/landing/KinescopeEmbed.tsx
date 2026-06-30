@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-export const KINESCOPE_HERO_VIDEO_ID = "9S8ccdQdbHPX774Ci7WtkC";
+export const KINESCOPE_HERO_VIDEO_ID = "gHf8iGQfTBZZPEsVijHRDW";
 
 const KINESCOPE_ALLOW =
   "autoplay; fullscreen; picture-in-picture; encrypted-media; gyroscope; accelerometer; clipboard-write; screen-wake-lock;";

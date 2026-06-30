@@ -12,6 +12,7 @@
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
     "db:import-dealers": "tsx prisma/import-dealers.ts",
+    "db:import-dealer-emails": "tsx prisma/import-dealer-emails.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate",
     "docker:prod:up": "docker compose -f docker-compose.prod.yml up -d --build",

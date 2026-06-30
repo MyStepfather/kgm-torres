@@ -180,7 +180,7 @@ export function HowToParticipate({
                 src={LANDING_IMAGES.howToParticipate}
                 alt="Садовая техника Champion"
                 fill
-                className="object-cover object-[35%_center] sm:object-[90%_center] sm:scale-[1.1] lg:object-[100%_center] lg:scale-[1.3]"
+                className="object-cover object-[80%_center] sm:object-[90%_center] sm:scale-[1.1] md:object-[78%_center] md:scale-100 lg:object-[100%_center] lg:scale-[1.3]"
                 sizes="(max-width: 60rem) 100vw, 33vw"
               />
             </div>
@@ -195,7 +195,8 @@ export function HowToParticipate({
 
               <div className="mt-8">
                 <ArrowButton href="#register" variant="white">
-                  Записаться на тест-драйв
+                  <span className="min-[451px]:hidden">Записаться</span>
+                  <span className="hidden min-[451px]:inline">Записаться на тест-драйв</span>
                 </ArrowButton>
               </div>
             </div>

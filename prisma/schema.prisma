@@ -12,6 +12,7 @@ model Dealer {
   name          String
   city          String
   address       String?
+  email         String?
   login         String         @unique
   pinHash       String
   registrations Registration[]

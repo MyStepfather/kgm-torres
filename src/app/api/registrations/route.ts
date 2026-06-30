@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendRegistrationEmail } from "@/lib/email";
+import { sendDealerRegistrationEmail, sendRegistrationEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { formatPhone, normalizePhone } from "@/lib/phone";
 import { buildRegistrationQr } from "@/lib/qrcode";
@@ -133,6 +133,7 @@ export async function POST(request: NextRequest) {
 
     const dealer = await prisma.dealer.findUnique({
       where: { id: body.dealerId },
+      select: { id: true, name: true, city: true, email: true },
     });
 
     if (!dealer) {
@@ -188,6 +189,18 @@ export async function POST(request: NextRequest) {
         scanUrl: saved.scanUrl,
         qrDataUrl: saved.qrDataUrl,
       });
+
+      if (dealer.email) {
+        await sendDealerRegistrationEmail({
+          dealerEmail: dealer.email,
+          dealerName: dealer.name,
+          dealerCity: dealer.city,
+          participantName: saved.name,
+          participantPhone: saved.phone,
+          participantEmail: saved.email,
+          participantCity: saved.city,
+        });
+      }
     } catch (emailError) {
       console.error("Registration email error:", emailError);
     }

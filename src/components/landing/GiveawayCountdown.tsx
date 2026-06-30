@@ -17,10 +17,8 @@ export function GiveawayCountdown({
           <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between md:gap-8">
             <div>
               <SectionLabel variant="inverse">Розыгрыш</SectionLabel>
-              <h2 className="mt-4 text-lg font-semibold leading-tight text-white sm:mt-5 sm:text-[28px] md:text-[40px] lg:text-[54px] lg:leading-[1.1]">
-                До подведения
-                <br />
-                итогов
+              <h2 className="mt-4 text-lg font-semibold leading-tight whitespace-nowrap text-white sm:mt-5 sm:text-[28px] md:text-[40px] lg:text-[54px] lg:leading-[1.1]">
+                До подведения итогов
               </h2>
             </div>
 

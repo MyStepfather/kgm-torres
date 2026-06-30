@@ -18,6 +18,16 @@ type RegistrationEmailPayload = {
   qrDataUrl: string;
 };
 
+type DealerRegistrationEmailPayload = {
+  dealerEmail: string;
+  dealerName: string;
+  dealerCity: string;
+  participantName: string;
+  participantPhone: string;
+  participantEmail: string;
+  participantCity: string;
+};
+
 function getSmtpConfig() {
   const host = process.env.SMTP_HOST;
   const port = Number(process.env.SMTP_PORT ?? 587);
@@ -110,6 +120,22 @@ function buildRegistrationEmailHtml(payload: RegistrationEmailPayload) {
   `;
 }
 
+function buildDealerRegistrationEmailHtml(payload: DealerRegistrationEmailPayload) {
+  return `
+    <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto; color: #0f172a;">
+      <h1 style="color: #1a3a2f;">Новая заявка на тест-драйв KGM Torres</h1>
+      <p>Клиент записался на тест-драйв и выбрал ваш дилерский центр <strong>${payload.dealerName}, ${payload.dealerCity}</strong>.</p>
+      <table style="width: 100%; border-collapse: collapse; margin: 24px 0; font-size: 15px;">
+        <tr><td style="padding: 8px 0; color: #64748b;">Имя</td><td style="padding: 8px 0;"><strong>${payload.participantName}</strong></td></tr>
+        <tr><td style="padding: 8px 0; color: #64748b;">Телефон</td><td style="padding: 8px 0;"><strong>${payload.participantPhone}</strong></td></tr>
+        <tr><td style="padding: 8px 0; color: #64748b;">Email</td><td style="padding: 8px 0;"><strong>${payload.participantEmail}</strong></td></tr>
+        <tr><td style="padding: 8px 0; color: #64748b;">Город</td><td style="padding: 8px 0;"><strong>${payload.participantCity}</strong></td></tr>
+      </table>
+      <p style="color: #64748b; font-size: 14px;">С уважением,<br/>Команда KGM Torres</p>
+    </div>
+  `;
+}
+
 export async function sendWinnerEmail(payload: WinnerEmailPayload) {
   const transporter = createTransporter();
   const subject = `Поздравляем! Вы выиграли в розыгрыше Champion — ${payload.place} место`;
@@ -129,5 +155,23 @@ export async function sendRegistrationEmail(payload: RegistrationEmailPayload) {
     to: payload.email,
     subject,
     html: buildRegistrationEmailHtml(payload),
+  });
+}
+
+export async function sendDealerRegistrationEmail(
+  payload: DealerRegistrationEmailPayload,
+) {
+  const dealerEmail = payload.dealerEmail.trim();
+  if (!dealerEmail) {
+    return { ok: true, skipped: true };
+  }
+
+  const transporter = createTransporter();
+  const subject = `Новая заявка на тест-драйв — ${payload.participantName}`;
+
+  return sendMail(transporter, {
+    to: dealerEmail,
+    subject,
+    html: buildDealerRegistrationEmailHtml(payload),
   });
 }

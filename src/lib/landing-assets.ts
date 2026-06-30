@@ -16,4 +16,7 @@ export const LANDING_IMAGES = {
   registerBenefit2: "/images/landing/register-benefit-2.svg",
   registerBenefit3: "/images/landing/register-benefit-3.svg",
   registerBenefit4: "/images/landing/register-benefit-4.svg",
+  socialVk: "/images/landing/social-vk.svg",
+  socialMax: "/images/landing/social-max.svg",
+  socialDzen: "/images/landing/social-dzen.svg",
 } as const;
