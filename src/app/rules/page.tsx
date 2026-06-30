@@ -7,7 +7,7 @@ import { PROMOTION_RULES_SECTIONS } from "@/lib/promotion-rules-content";
 export const metadata: Metadata = {
   title: "Полные правила акции — KGM Torres",
   description:
-    "Полные правила акции «Тест-драйв KGM Torres — выиграй технику Champion»",
+    "Правила проведения рекламной акции «KGM Torres. Тест-драйв»",
 };
 
 export default function PromotionRulesPage() {

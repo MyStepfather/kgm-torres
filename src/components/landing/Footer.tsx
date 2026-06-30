@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { HomeLink } from "@/components/landing/HomeLink";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 const socialLinks = [
@@ -72,7 +73,10 @@ export function Footer() {
       <div className="section-container">
         <div className="flex flex-col items-start gap-8 sm:flex-row sm:flex-wrap sm:items-start sm:justify-start sm:gap-x-12 sm:gap-y-8 md:gap-x-[177px] lg:gap-x-64">
           <div className="w-full max-w-[360px] rounded-[22px] bg-white/[0.03] px-7 py-6 sm:w-fit sm:max-w-[265px] sm:px-5 sm:py-5 md:w-fit md:max-w-[486px] md:rounded-[40px] md:p-0 md:pt-[43px] md:pr-[46px] md:pb-[43px] md:pl-[32px]">
-            <div className="flex items-center gap-4 sm:gap-[13px] md:gap-6">
+            <HomeLink
+              className="flex items-center gap-4 sm:gap-[13px] md:gap-6"
+              aria-label="На главную"
+            >
               <Image
                 src={LANDING_IMAGES.logoKgmWhite}
                 alt="KGM"
@@ -87,7 +91,7 @@ export function Footer() {
                 height={116}
                 className="h-7 w-auto sm:h-[26px] md:h-[41px]"
               />
-            </div>
+            </HomeLink>
           </div>
 
           <div className="flex flex-col items-start sm:pt-1">

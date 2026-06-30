@@ -47,8 +47,11 @@ export function LegalDocumentPage({ title, sections }: LegalDocumentPageProps) {
                     {section.title}
                   </h2>
                   <div className="space-y-5 text-[15px] font-medium leading-[1.3] text-[#282828]">
-                    {section.paragraphs.map((paragraph) => (
-                      <p key={paragraph.slice(0, 40)} className="whitespace-pre-line">
+                    {section.paragraphs.map((paragraph, index) => (
+                      <p
+                        key={`${section.title}-${index}`}
+                        className="whitespace-pre-line"
+                      >
                         {paragraph}
                       </p>
                     ))}

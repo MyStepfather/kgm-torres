@@ -389,9 +389,13 @@ export function RegistrationForm({
                   className={checkboxInputClassName}
                 />
                 <span>
-                  Я соглашаюсь с обработкой персональных данных в соответствии с{" "}
-                  <Link href="/privacy" className="text-brand hover:underline">
-                    Политикой конфиденциальности
+                  Согласен на{" "}
+                  <Link href="/consent" className="text-brand hover:underline">
+                    обработку персональных данных
+                  </Link>{" "}
+                  и с{" "}
+                  <Link href="/rules" className="text-brand hover:underline">
+                    Правилами акции
                   </Link>
                 </span>
               </label>

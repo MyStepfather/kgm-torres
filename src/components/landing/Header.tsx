@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { HomeLink } from "@/components/landing/HomeLink";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
 
 const navLinks = [
@@ -107,7 +108,11 @@ export function Header({ solid = false }: HeaderProps) {
                 }`}
               />
 
-              <div className="relative flex h-full items-center px-5 sm:px-10">
+              <HomeLink
+                onClick={closeMenu}
+                className="relative flex h-full items-center px-5 sm:px-10"
+                aria-label="На главную"
+              >
                 <Image
                   src={LANDING_IMAGES.logoKgmWhite}
                   alt="KGM"
@@ -116,7 +121,7 @@ export function Header({ solid = false }: HeaderProps) {
                   className="h-[20px] w-auto sm:h-[28px]"
                   priority
                 />
-              </div>
+              </HomeLink>
             </div>
 
             <nav className="hidden items-center justify-self-center gap-8 text-[15px] font-medium text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.45)] md:flex lg:gap-10">
