@@ -17,6 +17,7 @@ type StatisticsItem = {
   phone: string;
   email: string;
   city: string;
+  consentMarketing: boolean;
   testDriveDate: string;
   isActivated: boolean;
   activatedAt: string | null;
@@ -341,6 +342,7 @@ export function AdminStatistics({
               <th className="px-4 py-3 font-medium">Клиент</th>
               <th className="px-4 py-3 font-medium">Контакты</th>
               <th className="px-4 py-3 font-medium">Дилер</th>
+              <th className="px-4 py-3 font-medium">Согласился на рассылку</th>
               <th className="px-4 py-3 font-medium">Статус</th>
               <th className="px-4 py-3 font-medium">Регистрация</th>
             </tr>
@@ -348,7 +350,7 @@ export function AdminStatistics({
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted">
                   Загрузка...
                 </td>
               </tr>
@@ -374,6 +376,9 @@ export function AdminStatistics({
                     {registration.dealer.name}, {registration.dealer.city}
                   </td>
                   <td className="px-4 py-3">
+                    {registration.consentMarketing ? "Да" : "Нет"}
+                  </td>
+                  <td className="px-4 py-3">
                     <span
                       className={`rounded-full px-2 py-1 text-xs font-medium ${
                         registration.isActivated
@@ -391,7 +396,7 @@ export function AdminStatistics({
               ))
             ) : (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-muted">
+                <td colSpan={6} className="px-4 py-8 text-center text-muted">
                   Нет регистраций по выбранным фильтрам
                 </td>
               </tr>

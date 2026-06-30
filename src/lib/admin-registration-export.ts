@@ -25,6 +25,7 @@ export function registrationToExportRow(
     Город: registration.city,
     Дилер: registration.dealer.name,
     "Город дилера": registration.dealer.city,
+    "Согласился на рассылку": registration.consentMarketing ? "Да" : "Нет",
     Статус: registration.isActivated ? "Тест-драйв пройден" : "Ожидает",
     "Дата регистрации": formatDateTime(registration.createdAt),
     "Дата активации": formatDateTime(registration.activatedAt),

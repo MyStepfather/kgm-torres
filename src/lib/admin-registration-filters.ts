@@ -14,6 +14,7 @@ export const REGISTRATION_LIST_SELECT = {
   phone: true,
   email: true,
   city: true,
+  consentMarketing: true,
   isActivated: true,
   activatedAt: true,
   testDriveDate: true,
@@ -98,6 +99,7 @@ export function serializeRegistration(
     phone: string;
     email: string;
     city: string;
+    consentMarketing: boolean;
     isActivated: boolean;
     activatedAt: Date | null;
     testDriveDate: Date;
@@ -111,6 +113,7 @@ export function serializeRegistration(
     phone: registration.phone,
     email: registration.email,
     city: registration.city,
+    consentMarketing: registration.consentMarketing,
     isActivated: registration.isActivated,
     activatedAt: registration.activatedAt?.toISOString() ?? null,
     testDriveDate: registration.testDriveDate.toISOString().slice(0, 10),

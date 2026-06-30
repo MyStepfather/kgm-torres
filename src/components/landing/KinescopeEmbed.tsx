@@ -25,6 +25,10 @@ const KINESCOPE_API_SRC = "https://player.kinescope.io/latest/iframe.player.js";
 const VIDEO_LOAD_TIMEOUT_MS = 12_000;
 
 type KinescopePlayer = {
+  play: () => Promise<void>;
+  pause: () => Promise<void>;
+  isPaused: () => Promise<boolean>;
+  setVolume: (volume: number) => Promise<void>;
   mute: () => Promise<void>;
   unmute: () => Promise<void>;
   isMuted: () => Promise<boolean>;
@@ -94,25 +98,37 @@ export function HeroVideoProvider({ children }: HeroVideoProviderProps) {
     playerRef.current = player;
   }, []);
 
-  const toggleMute = useCallback(async () => {
+  const toggleMute = useCallback(() => {
     const player = playerRef.current;
     if (!player) {
       return;
     }
 
-    try {
-      const isMuted = await player.isMuted();
-      if (isMuted) {
-        await player.unmute();
-        setMuted(false);
-      } else {
-        await player.mute();
-        setMuted(true);
-      }
-    } catch (error) {
-      console.error("Hero video mute toggle error:", error);
+    if (muted) {
+      setMuted(false);
+
+      // Safari: start play() while still muted, then unmute in the same gesture chain.
+      void player
+        .play()
+        .catch(() => undefined)
+        .then(() => player.unmute())
+        .then(() => player.setVolume(1))
+        .catch((error) => {
+          console.error("Hero video unmute error:", error);
+          setMuted(true);
+          void player.mute().catch(() => undefined);
+        });
+    } else {
+      setMuted(true);
+      void player
+        .mute()
+        .then(() => player.setVolume(0))
+        .catch((error) => {
+          console.error("Hero video mute error:", error);
+          setMuted(false);
+        });
     }
-  }, []);
+  }, [muted]);
 
   return (
     <HeroVideoContext.Provider
@@ -257,7 +273,11 @@ export function HeroVolumeToggle() {
   return (
     <button
       type="button"
-      onClick={toggleMute}
+      onClick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleMute();
+      }}
       aria-label={muted ? "Включить звук" : "Выключить звук"}
       aria-pressed={!muted}
       className="absolute bottom-6 left-[15px] z-20 flex h-14 w-14 items-center justify-center rounded-full border border-white/20 bg-black/35 text-white backdrop-blur-sm transition hover:bg-black/50 sm:bottom-8 sm:left-10 md:left-[60px] lg:left-20"

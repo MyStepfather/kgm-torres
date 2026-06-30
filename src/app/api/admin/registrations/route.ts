@@ -11,6 +11,7 @@ export async function GET() {
       phone: true,
       email: true,
       city: true,
+      consentMarketing: true,
       isActivated: true,
       activatedAt: true,
       testDriveDate: true,

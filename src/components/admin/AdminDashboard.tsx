@@ -24,6 +24,7 @@ type RegistrationRow = {
   phone: string;
   email: string;
   city: string;
+  consentMarketing: boolean;
   testDriveDate: string;
   isActivated: boolean;
   activatedAt: string | null;
@@ -559,6 +560,7 @@ export function AdminDashboard() {
                   <th className="px-4 py-3 font-medium">Клиент</th>
                   <th className="px-4 py-3 font-medium">Контакты</th>
                   <th className="px-4 py-3 font-medium">Дилер</th>
+                  <th className="px-4 py-3 font-medium">Согласился на рассылку</th>
                   <th className="px-4 py-3 font-medium">Статус</th>
                   <th className="px-4 py-3 font-medium">Регистрация</th>
                 </tr>
@@ -583,6 +585,9 @@ export function AdminDashboard() {
                     </td>
                     <td className="px-4 py-3">
                       {registration.dealer.name}, {registration.dealer.city}
+                    </td>
+                    <td className="px-4 py-3">
+                      {registration.consentMarketing ? "Да" : "Нет"}
                     </td>
                     <td className="px-4 py-3">
                       <span
