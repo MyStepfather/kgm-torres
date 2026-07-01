@@ -13,6 +13,7 @@ type DealerRow = {
   name: string;
   city: string;
   address: string | null;
+  email: string | null;
   login: string;
   createdAt: string;
   registrationsCount: number;
@@ -112,6 +113,15 @@ export function AdminDashboard() {
   } | null>(null);
 
   const [resetDealerId, setResetDealerId] = useState<string | null>(null);
+  const [editDealerId, setEditDealerId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    city: "",
+    address: "",
+    email: "",
+    login: "",
+  });
+  const [editingDealer, setEditingDealer] = useState(false);
   const [resetPin, setResetPin] = useState("");
   const [resetting, setResetting] = useState(false);
   const [resetResult, setResetResult] = useState<{
@@ -119,6 +129,10 @@ export function AdminDashboard() {
     pin: string;
   } | null>(null);
   const [exportingPins, setExportingPins] = useState(false);
+  const [selectedRegistrationIds, setSelectedRegistrationIds] = useState<
+    string[]
+  >([]);
+  const [deletingRegistrations, setDeletingRegistrations] = useState(false);
 
   const [giveawayRuns, setGiveawayRuns] = useState<GiveawayRunRow[]>([]);
   const [latestGiveaway, setLatestGiveaway] = useState<{
@@ -296,6 +310,144 @@ export function AdminDashboard() {
     }
   }
 
+  function openEditDealer(dealer: DealerRow) {
+    setEditDealerId(dealer.id);
+    setEditForm({
+      name: dealer.name,
+      city: dealer.city,
+      address: dealer.address ?? "",
+      email: dealer.email ?? "",
+      login: dealer.login,
+    });
+    setError("");
+    setSuccess("");
+  }
+
+  async function handleEditDealer(event: React.FormEvent) {
+    event.preventDefault();
+    if (!editDealerId) return;
+
+    setEditingDealer(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const email = editForm.email.trim().toLowerCase();
+      if (email && !isValidEmail(email)) {
+        setError("Укажите корректный email");
+        setEditingDealer(false);
+        return;
+      }
+
+      const response = await fetch(`/api/admin/dealers/${editDealerId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: editForm.name,
+          city: editForm.city,
+          address: editForm.address,
+          email,
+          login: editForm.login,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Не удалось обновить дилера");
+      }
+
+      setSuccess(`Дилер «${data.name}» обновлён`);
+      setEditDealerId(null);
+      await loadDealers();
+    } catch (editError) {
+      setError(
+        editError instanceof Error
+          ? editError.message
+          : "Не удалось обновить дилера",
+      );
+    } finally {
+      setEditingDealer(false);
+    }
+  }
+
+  function toggleRegistrationSelection(id: string) {
+    setSelectedRegistrationIds((current) =>
+      current.includes(id)
+        ? current.filter((item) => item !== id)
+        : [...current, id],
+    );
+  }
+
+  function toggleAllRegistrations() {
+    if (selectedRegistrationIds.length === registrations.length) {
+      setSelectedRegistrationIds([]);
+      return;
+    }
+
+    setSelectedRegistrationIds(registrations.map((registration) => registration.id));
+  }
+
+  async function handleDeleteRegistrations(ids: string[]) {
+    if (ids.length === 0) {
+      return;
+    }
+
+    const confirmed = window.confirm(
+      ids.length === 1
+        ? "Удалить выбранную регистрацию? Действие нельзя отменить."
+        : `Удалить ${ids.length} регистраций? Действие нельзя отменить.`,
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setDeletingRegistrations(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch(
+        ids.length === 1
+          ? `/api/admin/registrations/${ids[0]}`
+          : "/api/admin/registrations/bulk-delete",
+        {
+          method: ids.length === 1 ? "DELETE" : "POST",
+          ...(ids.length > 1
+            ? {
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ ids }),
+              }
+            : {}),
+        },
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error ?? "Не удалось удалить регистрации");
+      }
+
+      setSelectedRegistrationIds((current) =>
+        current.filter((id) => !ids.includes(id)),
+      );
+      setSuccess(
+        data.deletedCount === 1
+          ? "Регистрация удалена"
+          : `Удалено регистраций: ${data.deletedCount}`,
+      );
+      await loadRegistrations();
+      await loadDealers();
+    } catch (deleteError) {
+      setError(
+        deleteError instanceof Error
+          ? deleteError.message
+          : "Не удалось удалить регистрации",
+      );
+    } finally {
+      setDeletingRegistrations(false);
+    }
+  }
+
   async function handleExportResetPins() {
     const confirmed = window.confirm(
       "Будут сгенерированы новые PIN для всех дилеров. Старые PIN перестанут работать. Продолжить?",
@@ -408,6 +560,10 @@ export function AdminDashboard() {
   }
 
   const resetDealer = dealers.find((dealer) => dealer.id === resetDealerId);
+  const editDealer = dealers.find((dealer) => dealer.id === editDealerId);
+  const allRegistrationsSelected =
+    registrations.length > 0 &&
+    selectedRegistrationIds.length === registrations.length;
 
   return (
     <div className="app-shell">
@@ -524,6 +680,11 @@ export function AdminDashboard() {
                           {dealer.address}
                         </div>
                       )}
+                      {dealer.email && (
+                        <div className="mt-1 text-xs text-muted">
+                          {dealer.email}
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3">{dealer.city}</td>
                     <td className="px-4 py-3">
@@ -534,19 +695,28 @@ export function AdminDashboard() {
                       {formatDate(dealer.createdAt)}
                     </td>
                     <td className="px-4 py-3">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setResetDealerId(dealer.id);
-                          setResetPin("");
-                          setResetResult(null);
-                          setError("");
-                          setSuccess("");
-                        }}
-                        className="link-brand"
-                      >
-                        Сменить PIN
-                      </button>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          type="button"
+                          onClick={() => openEditDealer(dealer)}
+                          className="link-brand"
+                        >
+                          Редактировать
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setResetDealerId(dealer.id);
+                            setResetPin("");
+                            setResetResult(null);
+                            setError("");
+                            setSuccess("");
+                          }}
+                          className="link-brand"
+                        >
+                          Сменить PIN
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -555,16 +725,46 @@ export function AdminDashboard() {
             </div>
           </div>
         ) : tab === "registrations" ? (
-          <div className="mt-8 overflow-x-auto card-surface">
-            <table className="w-full min-w-[900px] text-left text-sm">
+          <div className="mt-8">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm text-muted">
+                Всего регистраций: {registrations.length}
+                {selectedRegistrationIds.length > 0 &&
+                  ` · выбрано: ${selectedRegistrationIds.length}`}
+              </p>
+              {selectedRegistrationIds.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleDeleteRegistrations(selectedRegistrationIds)}
+                  disabled={deletingRegistrations}
+                  className="btn-secondary text-red-700 disabled:opacity-60"
+                >
+                  {deletingRegistrations
+                    ? "Удаление..."
+                    : `Удалить выбранные (${selectedRegistrationIds.length})`}
+                </button>
+              )}
+            </div>
+            <div className="overflow-x-auto card-surface">
+            <table className="w-full min-w-[980px] text-left text-sm">
               <thead className="app-table-head">
                 <tr>
+                  <th className="px-4 py-3 font-medium">
+                    <input
+                      type="checkbox"
+                      checked={allRegistrationsSelected}
+                      onChange={toggleAllRegistrations}
+                      aria-label="Выбрать все регистрации"
+                      className="h-4 w-4 rounded border-border"
+                    />
+                  </th>
                   <th className="px-4 py-3 font-medium">Клиент</th>
                   <th className="px-4 py-3 font-medium">Контакты</th>
                   <th className="px-4 py-3 font-medium">Дилер</th>
                   <th className="px-4 py-3 font-medium">Согласился на рассылку</th>
                   <th className="px-4 py-3 font-medium">Статус</th>
                   <th className="px-4 py-3 font-medium">Регистрация</th>
+                  <th className="px-4 py-3 font-medium" />
                 </tr>
               </thead>
               <tbody>
@@ -573,6 +773,15 @@ export function AdminDashboard() {
                     key={registration.id}
                     className="app-table-row"
                   >
+                    <td className="px-4 py-3">
+                      <input
+                        type="checkbox"
+                        checked={selectedRegistrationIds.includes(registration.id)}
+                        onChange={() => toggleRegistrationSelection(registration.id)}
+                        aria-label={`Выбрать ${registration.name}`}
+                        className="h-4 w-4 rounded border-border"
+                      />
+                    </td>
                     <td className="px-4 py-3">
                       <div className="font-medium">{registration.name}</div>
                       <div className="mt-1 text-xs text-muted">
@@ -605,10 +814,23 @@ export function AdminDashboard() {
                     <td className="px-4 py-3 text-muted">
                       {formatDate(registration.createdAt)}
                     </td>
+                    <td className="px-4 py-3">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDeleteRegistrations([registration.id])
+                        }
+                        disabled={deletingRegistrations}
+                        className="text-sm text-red-700 hover:underline disabled:opacity-60"
+                      >
+                        Удалить
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
         ) : tab === "statistics" ? (
           <AdminStatistics
@@ -844,6 +1066,93 @@ export function AdminDashboard() {
           </form>
         )}
       </main>
+
+      {editDealerId && editDealer && (
+        <div className="app-modal-overlay">
+          <div className="w-full max-w-md card-surface p-8">
+            <h2 className="text-lg font-semibold">Редактировать дилера</h2>
+            <p className="mt-2 text-sm text-muted">{editDealer.name}</p>
+
+            <form onSubmit={handleEditDealer} className="mt-6 space-y-4">
+              <label className="block">
+                <span className="mb-2 block text-sm text-muted">Название *</span>
+                <input
+                  required
+                  value={editForm.name}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, name: e.target.value }))
+                  }
+                  className={fieldClassName}
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-muted">Город *</span>
+                <input
+                  required
+                  value={editForm.city}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, city: e.target.value }))
+                  }
+                  className={fieldClassName}
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-muted">Адрес</span>
+                <input
+                  value={editForm.address}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, address: e.target.value }))
+                  }
+                  className={fieldClassName}
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-muted">Email</span>
+                <input
+                  type="email"
+                  value={editForm.email}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
+                  }
+                  className={fieldClassName}
+                />
+              </label>
+
+              <label className="block">
+                <span className="mb-2 block text-sm text-muted">Логин *</span>
+                <input
+                  required
+                  value={editForm.login}
+                  onChange={(e) =>
+                    setEditForm((prev) => ({ ...prev, login: e.target.value }))
+                  }
+                  className={fieldClassName}
+                />
+              </label>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setEditDealerId(null)}
+                  className="btn-secondary flex-1"
+                >
+                  Отмена
+                </button>
+                <button
+                  type="submit"
+                  disabled={editingDealer}
+                  className="btn-primary flex-1 disabled:opacity-60"
+                >
+                  {editingDealer ? "Сохранение..." : "Сохранить"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {resetDealerId && resetDealer && (
         <div className="app-modal-overlay">

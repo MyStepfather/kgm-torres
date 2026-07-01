@@ -17,6 +17,7 @@ export async function GET() {
       name: true,
       city: true,
       address: true,
+      email: true,
       login: true,
       createdAt: true,
       _count: {
@@ -31,6 +32,7 @@ export async function GET() {
       name: dealer.name,
       city: dealer.city,
       address: dealer.address,
+      email: dealer.email,
       login: dealer.login,
       createdAt: dealer.createdAt,
       registrationsCount: dealer._count.registrations,
