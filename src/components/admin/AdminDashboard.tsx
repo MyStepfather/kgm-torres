@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { AdminLegalDocuments } from "@/components/admin/AdminLegalDocuments";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminStatistics } from "@/components/admin/AdminStatistics";
 import { PRIZES } from "@/lib/constants";
@@ -35,7 +36,7 @@ type RegistrationRow = {
   };
 };
 
-type Tab = "dealers" | "registrations" | "statistics" | "create" | "giveaway" | "settings";
+type Tab = "dealers" | "registrations" | "statistics" | "create" | "giveaway" | "settings" | "documents";
 
 type GiveawayWinnerRow = {
   place: number;
@@ -431,6 +432,7 @@ export function AdminDashboard() {
               ["statistics", "Статистика"],
               ["giveaway", "Розыгрыш"],
               ["settings", "Настройки"],
+              ["documents", "Документы"],
               ["create", "Создать дилера"],
             ] as const
           ).map(([id, label]) => (
@@ -736,6 +738,8 @@ export function AdminDashboard() {
           </div>
         ) : tab === "settings" ? (
           <AdminSettings />
+        ) : tab === "documents" ? (
+          <AdminLegalDocuments />
         ) : (
           <form
             onSubmit={handleCreateDealer}

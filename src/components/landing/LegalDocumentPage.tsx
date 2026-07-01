@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { DocumentSection } from "@/lib/promotion-rules-content";
+import { LegalDocumentMarkdown } from "@/components/landing/LegalDocumentMarkdown";
 
 function BreadcrumbChevron() {
   return (
@@ -16,10 +16,10 @@ function BreadcrumbChevron() {
 
 type LegalDocumentPageProps = {
   title: string;
-  sections: DocumentSection[];
+  markdown: string;
 };
 
-export function LegalDocumentPage({ title, sections }: LegalDocumentPageProps) {
+export function LegalDocumentPage({ title, markdown }: LegalDocumentPageProps) {
   return (
     <div className="section-container pb-16 pt-24 md:pb-20 md:pt-32 lg:pb-24">
       <nav
@@ -39,25 +39,9 @@ export function LegalDocumentPage({ title, sections }: LegalDocumentPageProps) {
             {title}
           </h1>
 
-          {sections.length > 0 && (
-            <div className="mt-[60px] space-y-10">
-              {sections.map((section) => (
-                <section key={section.title} className="space-y-5">
-                  <h2 className="text-sm font-bold leading-none text-[#282828]">
-                    {section.title}
-                  </h2>
-                  <div className="space-y-5 text-[15px] font-medium leading-[1.3] text-[#282828]">
-                    {section.paragraphs.map((paragraph, index) => (
-                      <p
-                        key={`${section.title}-${index}`}
-                        className="whitespace-pre-line"
-                      >
-                        {paragraph}
-                      </p>
-                    ))}
-                  </div>
-                </section>
-              ))}
+          {markdown.trim() && (
+            <div className="mt-[60px]">
+              <LegalDocumentMarkdown markdown={markdown} />
             </div>
           )}
         </article>
