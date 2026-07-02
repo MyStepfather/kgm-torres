@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 
 export const KINESCOPE_HERO_VIDEO_ID = "gHf8iGQfTBZZPEsVijHRDW";
 
@@ -23,28 +23,29 @@ export function HeroBackgroundMedia({
   posterSrc,
   posterAlt = "",
 }: HeroBackgroundMediaProps) {
-  const [videoSrc, setVideoSrc] = useState<string | null>(null);
-  const [videoVisible, setVideoVisible] = useState(false);
-
-  useEffect(() => {
-    setVideoSrc(KINESCOPE_HERO_EMBED_SRC);
-  }, []);
-
-  useEffect(() => {
-    if (!videoSrc || videoVisible) {
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setVideoSrc(null);
-    }, VIDEO_LOAD_TIMEOUT_MS);
-
-    return () => window.clearTimeout(timeoutId);
-  }, [videoSrc, videoVisible]);
-
-  function handleVideoLoad() {
-    setVideoVisible(true);
-  }
+  // Видео временно отключено — только постер.
+  // const [videoSrc, setVideoSrc] = useState<string | null>(null);
+  // const [videoVisible, setVideoVisible] = useState(false);
+  //
+  // useEffect(() => {
+  //   setVideoSrc(KINESCOPE_HERO_EMBED_SRC);
+  // }, []);
+  //
+  // useEffect(() => {
+  //   if (!videoSrc || videoVisible) {
+  //     return;
+  //   }
+  //
+  //   const timeoutId = window.setTimeout(() => {
+  //     setVideoSrc(null);
+  //   }, VIDEO_LOAD_TIMEOUT_MS);
+  //
+  //   return () => window.clearTimeout(timeoutId);
+  // }, [videoSrc, videoVisible]);
+  //
+  // function handleVideoLoad() {
+  //   setVideoVisible(true);
+  // }
 
   return (
     <div className="absolute inset-0 overflow-hidden">
@@ -53,13 +54,11 @@ export function HeroBackgroundMedia({
         alt={posterAlt}
         fill
         priority
-        className={`object-cover object-center transition-opacity duration-700 ${
-          videoVisible ? "opacity-0" : "opacity-100"
-        }`}
+        className="object-cover object-center"
         sizes="100vw"
       />
 
-      {videoSrc && (
+      {/* {videoSrc && (
         <iframe
           src={videoSrc}
           allow={KINESCOPE_ALLOW}
@@ -69,7 +68,7 @@ export function HeroBackgroundMedia({
             videoVisible ? "opacity-100" : "opacity-0"
           }`}
         />
-      )}
+      )} */}
     </div>
   );
 }
