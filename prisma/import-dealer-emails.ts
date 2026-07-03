@@ -236,7 +236,7 @@ async function main() {
 
   const dealers = await prisma.dealer.findMany({
     orderBy: [{ city: "asc" }, { name: "asc" }],
-    select: { id: true, name: true, city: true, email: true },
+    select: { id: true, name: true, city: true, emails: true },
   });
 
   let updated = 0;
@@ -258,14 +258,14 @@ async function main() {
       continue;
     }
 
-    if (dealer.email === email) {
+    if (dealer.emails.includes(email)) {
       skipped += 1;
       continue;
     }
 
     await prisma.dealer.update({
       where: { id: dealer.id },
-      data: { email },
+      data: { emails: [...dealer.emails, email] },
     });
     updated += 1;
     console.log(`✓ ${dealer.name} (${dealer.city}) → ${email}`);

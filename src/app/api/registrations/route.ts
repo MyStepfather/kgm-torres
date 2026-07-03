@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
 
     const dealer = await prisma.dealer.findUnique({
       where: { id: body.dealerId },
-      select: { id: true, name: true, city: true, email: true },
+      select: { id: true, name: true, city: true, emails: true },
     });
 
     if (!dealer) {
@@ -190,9 +190,9 @@ export async function POST(request: NextRequest) {
         qrDataUrl: saved.qrDataUrl,
       });
 
-      if (dealer.email) {
+      if (dealer.emails.length) {
         await sendDealerRegistrationEmail({
-          dealerEmail: dealer.email,
+          dealerEmails: dealer.emails,
           dealerName: dealer.name,
           dealerCity: dealer.city,
           participantName: saved.name,

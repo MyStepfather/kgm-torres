@@ -6,7 +6,7 @@ import {
   normalizeLogin,
   slugifyLogin,
 } from "@/lib/dealer-credentials";
-import { isValidEmail } from "@/lib/validation";
+import { parseDealerEmailsInput } from "@/lib/dealer-emails";
 import { prisma } from "@/lib/prisma";
 
 export async function GET() {
@@ -17,7 +17,7 @@ export async function GET() {
       name: true,
       city: true,
       address: true,
-      email: true,
+      emails: true,
       login: true,
       createdAt: true,
       _count: {
@@ -32,7 +32,7 @@ export async function GET() {
       name: dealer.name,
       city: dealer.city,
       address: dealer.address,
-      email: dealer.email,
+      emails: dealer.emails,
       login: dealer.login,
       createdAt: dealer.createdAt,
       registrationsCount: dealer._count.registrations,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       name?: string;
       city?: string;
       address?: string;
-      email?: string;
+      emails?: string[];
       login?: string;
       pin?: string;
     };
@@ -90,13 +90,9 @@ export async function POST(request: NextRequest) {
 
     const pinHash = await hashPin(pin);
 
-    const emailRaw = body.email?.trim().toLowerCase() ?? "";
-    const email = emailRaw || null;
-    if (email && !isValidEmail(email)) {
-      return NextResponse.json(
-        { error: "Укажите корректный email" },
-        { status: 400 },
-      );
+    const parsedEmails = parseDealerEmailsInput(body.emails ?? []);
+    if ("error" in parsedEmails) {
+      return NextResponse.json({ error: parsedEmails.error }, { status: 400 });
     }
 
     const dealer = await prisma.dealer.create({
@@ -104,7 +100,7 @@ export async function POST(request: NextRequest) {
         name,
         city,
         address: body.address?.trim() || null,
-        email,
+        emails: parsedEmails.emails,
         login,
         pinHash,
       },
@@ -113,7 +109,7 @@ export async function POST(request: NextRequest) {
         name: true,
         city: true,
         address: true,
-        email: true,
+        emails: true,
         login: true,
         createdAt: true,
       },

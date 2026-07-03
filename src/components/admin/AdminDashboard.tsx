@@ -3,6 +3,10 @@
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { AdminLegalDocuments } from "@/components/admin/AdminLegalDocuments";
+import {
+  DealerEmailsField,
+  normalizeDealerEmailInputs,
+} from "@/components/admin/DealerEmailsField";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { AdminStatistics } from "@/components/admin/AdminStatistics";
 import { PRIZES } from "@/lib/constants";
@@ -13,7 +17,7 @@ type DealerRow = {
   name: string;
   city: string;
   address: string | null;
-  email: string | null;
+  emails: string[];
   login: string;
   createdAt: string;
   registrationsCount: number;
@@ -102,7 +106,7 @@ export function AdminDashboard() {
     name: "",
     city: "",
     address: "",
-    email: "",
+    emails: [""],
     login: "",
     pin: "",
   });
@@ -118,7 +122,7 @@ export function AdminDashboard() {
     name: "",
     city: "",
     address: "",
-    email: "",
+    emails: [""],
     login: "",
   });
   const [editingDealer, setEditingDealer] = useState(false);
@@ -222,11 +226,13 @@ export function AdminDashboard() {
     setCreatedCredentials(null);
 
     try {
-      const email = createForm.email.trim().toLowerCase();
-      if (email && !isValidEmail(email)) {
-        setError("Укажите корректный email");
-        setCreating(false);
-        return;
+      const emails = normalizeDealerEmailInputs(createForm.emails);
+      for (const email of emails) {
+        if (!isValidEmail(email)) {
+          setError("Укажите корректные email-адреса");
+          setCreating(false);
+          return;
+        }
       }
 
       const response = await fetch("/api/admin/dealers", {
@@ -236,7 +242,7 @@ export function AdminDashboard() {
           name: createForm.name,
           city: createForm.city,
           address: createForm.address || undefined,
-          email: email || undefined,
+          emails,
           login: createForm.login || undefined,
           pin: createForm.pin || undefined,
         }),
@@ -253,7 +259,7 @@ export function AdminDashboard() {
         name: "",
         city: "",
         address: "",
-        email: "",
+        emails: [""],
         login: "",
         pin: "",
       });
@@ -316,7 +322,7 @@ export function AdminDashboard() {
       name: dealer.name,
       city: dealer.city,
       address: dealer.address ?? "",
-      email: dealer.email ?? "",
+      emails: dealer.emails.length ? [...dealer.emails] : [""],
       login: dealer.login,
     });
     setError("");
@@ -332,11 +338,13 @@ export function AdminDashboard() {
     setSuccess("");
 
     try {
-      const email = editForm.email.trim().toLowerCase();
-      if (email && !isValidEmail(email)) {
-        setError("Укажите корректный email");
-        setEditingDealer(false);
-        return;
+      const emails = normalizeDealerEmailInputs(editForm.emails);
+      for (const email of emails) {
+        if (!isValidEmail(email)) {
+          setError("Укажите корректные email-адреса");
+          setEditingDealer(false);
+          return;
+        }
       }
 
       const response = await fetch(`/api/admin/dealers/${editDealerId}`, {
@@ -346,7 +354,7 @@ export function AdminDashboard() {
           name: editForm.name,
           city: editForm.city,
           address: editForm.address,
-          email,
+          emails,
           login: editForm.login,
         }),
       });
@@ -660,6 +668,7 @@ export function AdminDashboard() {
               <thead className="app-table-head">
                 <tr>
                   <th className="px-4 py-3 font-medium">Название</th>
+                  <th className="px-4 py-3 font-medium">Email</th>
                   <th className="px-4 py-3 font-medium">Город</th>
                   <th className="px-4 py-3 font-medium">Логин</th>
                   <th className="px-4 py-3 font-medium">Регистрации</th>
@@ -680,10 +689,16 @@ export function AdminDashboard() {
                           {dealer.address}
                         </div>
                       )}
-                      {dealer.email && (
-                        <div className="mt-1 text-xs text-muted">
-                          {dealer.email}
+                    </td>
+                    <td className="px-4 py-3 align-top">
+                      {dealer.emails.length ? (
+                        <div className="space-y-1 text-xs text-muted">
+                          {dealer.emails.map((email) => (
+                            <div key={email}>{email}</div>
+                          ))}
                         </div>
+                      ) : (
+                        <span className="text-xs text-muted">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3">{dealer.city}</td>
@@ -1009,18 +1024,13 @@ export function AdminDashboard() {
               />
             </label>
 
-            <label className="block">
-              <span className="mb-2 block text-sm text-muted">Email</span>
-              <input
-                type="email"
-                value={createForm.email}
-                onChange={(e) =>
-                  setCreateForm((prev) => ({ ...prev, email: e.target.value }))
-                }
-                className={fieldClassName}
-                placeholder="dealer@example.com"
-              />
-            </label>
+            <DealerEmailsField
+              values={createForm.emails}
+              onChange={(emails) =>
+                setCreateForm((prev) => ({ ...prev, emails }))
+              }
+              fieldClassName={fieldClassName}
+            />
 
             <label className="block">
               <span className="mb-2 block text-sm text-muted">
@@ -1109,17 +1119,13 @@ export function AdminDashboard() {
                 />
               </label>
 
-              <label className="block">
-                <span className="mb-2 block text-sm text-muted">Email</span>
-                <input
-                  type="email"
-                  value={editForm.email}
-                  onChange={(e) =>
-                    setEditForm((prev) => ({ ...prev, email: e.target.value }))
-                  }
-                  className={fieldClassName}
-                />
-              </label>
+              <DealerEmailsField
+                values={editForm.emails}
+                onChange={(emails) =>
+                  setEditForm((prev) => ({ ...prev, emails }))
+                }
+                fieldClassName={fieldClassName}
+              />
 
               <label className="block">
                 <span className="mb-2 block text-sm text-muted">Логин *</span>

@@ -19,7 +19,7 @@ type RegistrationEmailPayload = {
 };
 
 type DealerRegistrationEmailPayload = {
-  dealerEmail: string;
+  dealerEmails: string[];
   dealerName: string;
   dealerCity: string;
   participantName: string;
@@ -161,17 +161,31 @@ export async function sendRegistrationEmail(payload: RegistrationEmailPayload) {
 export async function sendDealerRegistrationEmail(
   payload: DealerRegistrationEmailPayload,
 ) {
-  const dealerEmail = payload.dealerEmail.trim();
-  if (!dealerEmail) {
-    return { ok: true, skipped: true };
+  const dealerEmails = [
+    ...new Set(
+      payload.dealerEmails
+        .map((email) => email.trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  ];
+
+  if (!dealerEmails.length) {
+    return { ok: true, skipped: true, sent: 0 };
   }
 
   const transporter = createTransporter();
   const subject = `Новая заявка на тест-драйв — ${payload.participantName}`;
+  const html = buildDealerRegistrationEmailHtml(payload);
 
-  return sendMail(transporter, {
-    to: dealerEmail,
-    subject,
-    html: buildDealerRegistrationEmailHtml(payload),
-  });
+  await Promise.all(
+    dealerEmails.map((to) =>
+      sendMail(transporter, {
+        to,
+        subject,
+        html,
+      }),
+    ),
+  );
+
+  return { ok: true, sent: dealerEmails.length };
 }

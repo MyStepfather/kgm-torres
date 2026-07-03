@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { normalizeLogin } from "@/lib/dealer-credentials";
+import { parseDealerEmailsInput } from "@/lib/dealer-emails";
 import { prisma } from "@/lib/prisma";
-import { isValidEmail } from "@/lib/validation";
 
 type RouteContext = {
   params: Promise<{ id: string }>;
@@ -14,7 +14,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       name?: string;
       city?: string;
       address?: string;
-      email?: string;
+      emails?: string[];
       login?: string;
     };
 
@@ -61,16 +61,14 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       }
     }
 
-    let email: string | null | undefined;
-    if (body.email !== undefined) {
-      const emailRaw = body.email.trim().toLowerCase();
-      email = emailRaw || null;
-      if (email && !isValidEmail(email)) {
-        return NextResponse.json(
-          { error: "Укажите корректный email" },
-          { status: 400 },
-        );
+    let emails: string[] | undefined;
+    if (body.emails !== undefined) {
+      const parsedEmails = parseDealerEmailsInput(body.emails);
+      if ("error" in parsedEmails) {
+        return NextResponse.json({ error: parsedEmails.error }, { status: 400 });
       }
+
+      emails = parsedEmails.emails;
     }
 
     const updated = await prisma.dealer.update({
@@ -81,7 +79,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         ...(body.address !== undefined
           ? { address: body.address.trim() || null }
           : {}),
-        ...(email !== undefined ? { email } : {}),
+        ...(emails !== undefined ? { emails } : {}),
         ...(login !== undefined ? { login } : {}),
       },
       select: {
@@ -89,7 +87,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         name: true,
         city: true,
         address: true,
-        email: true,
+        emails: true,
         login: true,
         createdAt: true,
         _count: {
@@ -103,7 +101,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       name: updated.name,
       city: updated.city,
       address: updated.address,
-      email: updated.email,
+      emails: updated.emails,
       login: updated.login,
       createdAt: updated.createdAt,
       registrationsCount: updated._count.registrations,
