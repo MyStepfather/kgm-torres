@@ -8,6 +8,10 @@ const notoSans = Noto_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 export const metadata: Metadata = {
   title: "KGM Torres — Тест-драйв и розыгрыш Champion",
   description:
@@ -20,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" className={`${notoSans.variable} h-full antialiased`}>
+    <html lang="ru" className={`${notoSans.variable} h-full antialiased`} data-scroll-behavior="smooth">
       <body className="min-h-full">{children}</body>
     </html>
   );

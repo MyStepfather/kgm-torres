@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+!.env.production.example
+data
+*.md
+!README.md
+terminals
+.cursor
+Dockerfile
+docker-compose*.yml
