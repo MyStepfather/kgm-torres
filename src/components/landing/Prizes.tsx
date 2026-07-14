@@ -2,12 +2,22 @@ import Image from "next/image";
 import { SectionLabel } from "@/components/landing/SectionLabel";
 import { PRIZES } from "@/lib/constants";
 import { LANDING_IMAGES } from "@/lib/landing-assets";
+import "./Prizes.css";
 
 const prizeImages = {
   prize1: LANDING_IMAGES.prize1,
   prize2: LANDING_IMAGES.prize2,
   prize3: LANDING_IMAGES.prize3,
 } as const;
+
+const prizeImageClasses: Record<
+  (typeof PRIZES)[number]["imageKey"],
+  string
+> = {
+  prize1: "prize-image-1 object-contain object-right",
+  prize2: "prize-image-2 object-contain object-right",
+  prize3: "prize-image-3 object-contain object-right",
+};
 
 const placeLabels: Record<number, string> = {
   1: "1 место",
@@ -40,12 +50,12 @@ export function Prizes() {
                       : "border-white/40 bg-white/30"
                   }`}
                 >
-                  <div className="relative -mx-px -mt-px h-[260px] w-[calc(100%+2px)] shrink-0 overflow-hidden rounded-[20px] bg-white sm:rounded-[40px]">
+                  <div className="relative -mx-px -mt-px h-[260px] w-[calc(100%+2px)] shrink-0 overflow-hidden rounded-[20px] bg-white sm:rounded-[40px] md:h-[388px]">
                     <Image
                       src={prizeImages[prize.imageKey]}
                       alt={prize.title}
                       fill
-                      className="origin-right scale-[1.2] object-contain object-right sm:scale-[1.28] md:scale-[1.35]"
+                      className={prizeImageClasses[prize.imageKey]}
                       sizes="(max-width: 60rem) 100vw, 620px"
                     />
                     <span className="brand-badge absolute left-5 top-5">

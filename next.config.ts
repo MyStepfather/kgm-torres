@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
   output: "standalone",
   allowedDevOrigins: ["192.168.1.82", "localhost"],
   async headers() {
+    if (process.env.NODE_ENV === "development") {
+      return [
+        {
+          source: "/((?!_next/image|images/).*)",
+          headers: noStoreHeaders,
+        },
+      ];
+    }
+
     return [
       {
         source: "/_next/static/:path*",
